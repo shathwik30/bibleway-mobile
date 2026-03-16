@@ -1,0 +1,12 @@
+export const APP_NAME = 'BibleWay';
+export const DEEP_LINK_SCHEME = 'bibleway';
+export const UNIVERSAL_LINK_PREFIX = 'https://bibleway.app';
+export const NOTIFICATION_POLL_INTERVAL = 30000;
+export const SEARCH_DEBOUNCE_MS = 300;
+export const MAX_POST_LENGTH = 2000;
+export const MAX_COMMENT_LENGTH = 1000;
+export const MAX_BIO_LENGTH = 250;
+export const MAX_IMAGES_PER_POST = 10;
+export const IMAGE_MAX_WIDTH = 1920;
+export const IMAGE_MAX_HEIGHT = 1080;
+export const IMAGE_QUALITY = 0.8;

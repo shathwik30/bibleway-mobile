@@ -1,30 +1,61 @@
 {
   "expo": {
-    "name": "bibleway-app",
+    "name": "BibleWay",
     "slug": "bibleway-app",
     "version": "1.0.0",
+    "scheme": "bibleway",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#4A6FA5"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bibleway.app"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "package": "com.bibleway.app",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-notifications",
+      "expo-camera",
+      "expo-video",
+      "expo-image-picker",
+      "expo-local-authentication",
+      "expo-image",
+      "expo-sharing",
+      [
+        "@sentry/react-native",
+        {
+          "organization": "bibleway",
+          "project": "bibleway-app",
+          "uploadSourceMaps": false
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b6301dfd-13d5-4638-8f36-53d25fe77a2c"
+      }
     }
   }
 }
