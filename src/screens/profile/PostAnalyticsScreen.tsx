@@ -43,19 +43,13 @@ export default function PostAnalyticsScreen() {
             <AnalyticsCard title="Views" value={analytics.views ?? 0} icon="eye-outline" />
           </View>
           <View className="flex-1 min-w-[45%]">
-            <AnalyticsCard title="Likes" value={analytics.likes ?? 0} icon="heart-outline" />
+            <AnalyticsCard title="Reactions" value={analytics.reactions ?? 0} icon="heart-outline" />
           </View>
           <View className="flex-1 min-w-[45%]">
             <AnalyticsCard title="Comments" value={analytics.comments ?? 0} icon="chatbubble-outline" />
           </View>
           <View className="flex-1 min-w-[45%]">
             <AnalyticsCard title="Shares" value={analytics.shares ?? 0} icon="share-outline" />
-          </View>
-          <View className="flex-1 min-w-[45%]">
-            <AnalyticsCard title="Saves" value={analytics.saves ?? 0} icon="bookmark-outline" />
-          </View>
-          <View className="flex-1 min-w-[45%]">
-            <AnalyticsCard title="Reach" value={analytics.reach ?? 0} icon="people-outline" />
           </View>
         </View>
       </ScrollView>

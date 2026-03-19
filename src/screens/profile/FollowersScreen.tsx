@@ -6,6 +6,7 @@ import ScreenHeader from '@/components/layout/ScreenHeader';
 import Avatar from '@/components/ui/Avatar';
 import { useFollowers } from '@/hooks/useProfile';
 import type { HomeStackParamList } from '@/types/navigation';
+import type { FollowRelationship } from '@/types/models';
 
 export default function FollowersScreen() {
   const navigation = useNavigation<any>();
@@ -30,20 +31,23 @@ export default function FollowersScreen() {
       <ScreenHeader title="Followers" />
       <FlatList
         data={followers}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: FollowRelationship) => item.id}
         contentContainerStyle={{ padding: 16 }}
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => navigation.navigate('UserProfile', { userId: item.id })}
-            className="flex-row items-center p-4 bg-surface rounded-xl mb-2"
-          >
-            <Avatar source={item.profile_picture} name={item.full_name} size={40} />
-            <View className="flex-1 ml-3">
-              <Text className="text-base font-semibold text-textPrimary">{item.full_name}</Text>
-              {item.bio && <Text className="text-sm text-textSecondary mt-0.5" numberOfLines={1}>{item.bio}</Text>}
-            </View>
-          </Pressable>
-        )}
+        renderItem={({ item }: { item: FollowRelationship }) => {
+          const user = item.follower;
+          return (
+            <Pressable
+              onPress={() => navigation.navigate('UserProfile', { userId: user.id })}
+              className="flex-row items-center p-4 bg-surface rounded-xl mb-2"
+            >
+              <Avatar source={user.profile_photo} name={user.full_name} size={40} />
+              <View className="flex-1 ml-3">
+                <Text className="text-base font-semibold text-textPrimary">{user.full_name}</Text>
+                {user.bio ? <Text className="text-sm text-textSecondary mt-0.5" numberOfLines={1}>{user.bio}</Text> : null}
+              </View>
+            </Pressable>
+          );
+        }}
         ListEmptyComponent={
           <View className="items-center pt-20">
             <Text className="text-base text-textSecondary">No followers yet</Text>

@@ -9,6 +9,8 @@ import LanguageSettingsScreen from '@/screens/profile/LanguageSettingsScreen';
 import PrivacySettingsScreen from '@/screens/profile/PrivacySettingsScreen';
 import BlockedUsersScreen from '@/screens/profile/BlockedUsersScreen';
 import FollowRequestsScreen from '@/screens/profile/FollowRequestsScreen';
+import FollowersScreen from '@/screens/profile/FollowersScreen';
+import FollowingScreen from '@/screens/profile/FollowingScreen';
 import PostAnalyticsScreen from '@/screens/profile/PostAnalyticsScreen';
 import BoostPostScreen from '@/screens/profile/BoostPostScreen';
 import BoostAnalyticsScreen from '@/screens/profile/BoostAnalyticsScreen';
@@ -31,6 +33,8 @@ export default function ProfileStackNavigator() {
       <Stack.Screen name="PrivacySettings" component={PrivacySettingsScreen} />
       <Stack.Screen name="BlockedUsers" component={BlockedUsersScreen} />
       <Stack.Screen name="FollowRequests" component={FollowRequestsScreen} />
+      <Stack.Screen name="Followers" component={FollowersScreen} />
+      <Stack.Screen name="Following" component={FollowingScreen} />
       <Stack.Screen name="PostAnalytics" component={PostAnalyticsScreen} />
       <Stack.Screen name="BoostPost" component={BoostPostScreen} />
       <Stack.Screen name="BoostAnalytics" component={BoostAnalyticsScreen} />

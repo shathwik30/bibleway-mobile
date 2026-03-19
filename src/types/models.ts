@@ -156,7 +156,6 @@ export interface Notification {
 export interface SegregatedSection {
   id: string;
   title: string;
-  description: string;
   age_min: number;
   age_max: number;
   order: number;
@@ -172,7 +171,6 @@ export interface SegregatedChapter {
   id: string;
   section: string;
   title: string;
-  description: string;
   order: number;
   is_active: boolean;
   page_count: number;
@@ -185,8 +183,7 @@ export interface SegregatedPage {
   id: string;
   chapter: string;
   title: string;
-  summary: string;
-  youtube_url: string | null;
+  youtube_url: string;
   order: number;
   is_active: boolean;
   created_at: string;
@@ -254,10 +251,8 @@ export interface ProductListItem {
 // Product (detail)
 export interface Product extends ProductListItem {
   description: string;
-  price_display: string;
   download_count: number;
   download_url: string | null;
-  is_purchased: boolean;
   updated_at: string;
 }
 
@@ -294,11 +289,8 @@ export interface VerseOfDay {
 export interface PostAnalytics {
   views: number;
   reactions: number;
-  likes: number;
   comments: number;
   shares: number;
-  saves: number;
-  reach: number;
 }
 
 // PostBoost
@@ -321,18 +313,9 @@ export interface BoostAnalyticSnapshot {
   boost: string;
   impressions: number;
   reach: number;
-  engagement_rate: number;
+  engagement_rate: string;
   link_clicks: number;
   profile_visits: number;
   snapshot_date: string;
   created_at: string;
-}
-
-// BoostAnalyticsSummary (returned by boost analytics endpoint)
-export interface BoostAnalyticsSummary {
-  total_impressions: number;
-  total_clicks: number;
-  new_followers: number;
-  total_engagements: number;
-  snapshots: BoostAnalyticSnapshot[];
 }

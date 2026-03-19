@@ -77,7 +77,7 @@ export default function ProductDetailScreen() {
         )}
         <View className="px-4 pt-4">
           <Text className="text-xl font-bold text-textPrimary">{product.title}</Text>
-          <Text className="text-lg font-semibold text-primary mt-2">{product.price_display || 'Free'}</Text>
+          <Text className="text-lg font-semibold text-primary mt-2">{product.is_free ? 'Free' : product.price_tier}</Text>
           <Text className="text-base text-textSecondary mt-4 leading-6">{product.description}</Text>
         </View>
         <View className="h-24" />
@@ -86,7 +86,7 @@ export default function ProductDetailScreen() {
       <View className="absolute bottom-0 left-0 right-0 bg-background border-t border-border px-4 py-4">
         <PurchaseButton
           isFree={product.is_free ?? false}
-          isPurchased={product.is_purchased ?? false}
+          isPurchased={!!product.download_url}
           onPurchase={handlePurchase}
           onDownload={handleDownload}
         />

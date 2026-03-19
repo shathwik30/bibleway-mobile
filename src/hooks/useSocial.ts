@@ -11,11 +11,40 @@ export function usePosts() {
     queryKey: ['posts'],
     queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
       if (pageParam) {
-        // pageParam is the full next URL from cursor pagination
         const res = await api.get<CursorPaginatedResponse<Post>>(pageParam);
         return res;
       }
       return api.get<CursorPaginatedResponse<Post>>(ENDPOINTS.social.posts);
+    },
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: cursorNextPage,
+    ...CACHE_DURATIONS.feed,
+  });
+}
+
+export function useUserPosts(userId: string) {
+  return useInfiniteQuery({
+    queryKey: ['posts', 'user', userId],
+    queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
+      if (pageParam) {
+        return api.get<CursorPaginatedResponse<Post>>(pageParam);
+      }
+      return api.get<CursorPaginatedResponse<Post>>(ENDPOINTS.social.posts, { author: userId });
+    },
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: cursorNextPage,
+    ...CACHE_DURATIONS.feed,
+  });
+}
+
+export function useUserPrayers(userId: string) {
+  return useInfiniteQuery({
+    queryKey: ['prayers', 'user', userId],
+    queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
+      if (pageParam) {
+        return api.get<CursorPaginatedResponse<Prayer>>(pageParam);
+      }
+      return api.get<CursorPaginatedResponse<Prayer>>(ENDPOINTS.social.prayers, { author: userId });
     },
     initialPageParam: undefined as string | undefined,
     getNextPageParam: cursorNextPage,
@@ -150,7 +179,7 @@ export function useShareContent() {
       const endpoint = contentType === 'post'
         ? ENDPOINTS.social.postShare(objectId)
         : ENDPOINTS.social.prayerShare(objectId);
-      return api.post(endpoint);
+      return api.get(endpoint);
     },
   });
 }

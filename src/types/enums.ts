@@ -10,4 +10,15 @@ export type NoteType = 'api_bible' | 'segregated';
 export type Platform = 'ios' | 'android';
 export type ReportReason = 'inappropriate' | 'spam' | 'false_teaching' | 'other';
 export type ReportContentType = 'post' | 'prayer' | 'comment' | 'user';
-export type NotificationType = 'follow' | 'reaction' | 'comment' | 'reply' | 'share';
+export type NotificationType =
+  | 'follow'
+  | 'reaction'
+  | 'comment'
+  | 'reply'
+  | 'share'
+  | 'boost_live'
+  | 'boost_digest'
+  | 'new_message'
+  | 'missed_call'
+  | 'prayer_comment'
+  | 'system_broadcast';

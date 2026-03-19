@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/api/client';
 import { ENDPOINTS } from '@/api/endpoints';
-import type { PostAnalytics, PostBoost, BoostAnalyticsSummary } from '@/types/models';
+import type { PaginatedResponse } from '@/types/api';
+import type { PostAnalytics, PostBoost, BoostAnalyticSnapshot } from '@/types/models';
 
 export function usePostAnalytics(postId: string) {
   return useQuery({
@@ -24,7 +25,7 @@ export function useCreateBoost() {
       post_id: string;
       tier: string;
       platform: string;
-      receipt_data?: string;
+      receipt_data: string;
       transaction_id: string;
       duration_days: number;
     }) => api.post(ENDPOINTS.analytics.boostCreate, data),
@@ -44,7 +45,7 @@ export function useBoosts() {
 export function useBoostAnalytics(boostId: string) {
   return useQuery({
     queryKey: ['analytics', 'boost', boostId],
-    queryFn: () => api.get<BoostAnalyticsSummary>(ENDPOINTS.analytics.boostAnalytics(boostId)),
+    queryFn: () => api.get<PaginatedResponse<BoostAnalyticSnapshot>>(ENDPOINTS.analytics.boostAnalytics(boostId)),
     enabled: !!boostId,
   });
 }

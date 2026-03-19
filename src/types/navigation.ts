@@ -45,6 +45,9 @@ export type ShopStackParamList = {
 export type GamesStackParamList = {
   GamesList: undefined;
   TicTacToe: undefined;
+  BibleCrossword: undefined;
+  BibleQuiz: undefined;
+  FindDifference: undefined;
 };
 
 export type ProfileStackParamList = {
@@ -55,6 +58,8 @@ export type ProfileStackParamList = {
   PrivacySettings: undefined;
   BlockedUsers: undefined;
   FollowRequests: undefined;
+  Followers: { userId: string };
+  Following: { userId: string };
   PostAnalytics: { postId: string };
   BoostPost: { postId: string };
   BoostAnalytics: { boostId: string };

@@ -38,9 +38,7 @@ export default function SegregatedChaptersScreen() {
           >
             <View className="flex-1 mr-3">
               <Text className="text-base font-semibold text-textPrimary">{item.title}</Text>
-              {item.description && (
-                <Text className="text-sm text-textSecondary mt-1" numberOfLines={2}>{item.description}</Text>
-              )}
+              <Text className="text-sm text-textSecondary mt-1">{item.page_count} {item.page_count === 1 ? 'page' : 'pages'}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color="#6B7280" />
           </Pressable>

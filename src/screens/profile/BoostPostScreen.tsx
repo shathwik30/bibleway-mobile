@@ -27,8 +27,9 @@ export default function BoostPostScreen() {
     const tier = BOOST_TIERS.find(t => t.id === selectedTier);
     if (!tier) return;
 
+    // TODO: Integrate real IAP flow to obtain receipt_data and transaction_id
     boostMutation.mutate(
-      { post_id: postId, tier: tier.id, platform: 'ios', transaction_id: '', duration_days: tier.id === 'basic' ? 1 : tier.id === 'standard' ? 3 : 7 },
+      { post_id: postId, tier: tier.id, platform: 'ios', receipt_data: '', transaction_id: '', duration_days: tier.id === 'basic' ? 1 : tier.id === 'standard' ? 3 : 7 },
       {
         onSuccess: () => {
           showToast('success', 'Boosted', 'Your post is now being boosted!');
