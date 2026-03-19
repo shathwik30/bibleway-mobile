@@ -9,15 +9,15 @@ import ShopStackNavigator from './ShopStackNavigator';
 import GamesStackNavigator from './GamesStackNavigator';
 import ProfileStackNavigator from './ProfileStackNavigator';
 import { useNotificationStore } from '@/stores/notificationStore';
-import { useAppStore } from '@/stores/appStore';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 export default function MainTabNavigator() {
   const { t } = useTranslation();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
-  const isDark = useAppStore((s) => s.isDark);
+  const insets = useSafeAreaInsets();
 
   const hapticListeners = () => ({
     tabPress: () => {
@@ -25,19 +25,21 @@ export default function MainTabNavigator() {
     },
   });
 
+  const tabBarHeight = 56 + Math.max(insets.bottom, 4);
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#4A6FA5',
-        tabBarInactiveTintColor: isDark ? '#9CA3AF' : '#6B7280',
+        tabBarInactiveTintColor: '#6B7280',
         tabBarStyle: {
-          backgroundColor: isDark ? '#1A1A2E' : '#FFFFFF',
-          borderTopColor: isDark ? '#2D2D3F' : '#E5E7EB',
+          backgroundColor: '#FFFFFF',
+          borderTopColor: '#E5E7EB',
           borderTopWidth: 1,
-          paddingBottom: 4,
+          paddingBottom: Math.max(insets.bottom, 4),
           paddingTop: 4,
-          height: 56,
+          height: tabBarHeight,
         },
         tabBarLabelStyle: {
           fontSize: 11,

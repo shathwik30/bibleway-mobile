@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import AnimatedPressable from '@/components/ui/AnimatedPressable';
-import { useAppStore } from '@/stores/appStore';
 
 interface GameItem {
   id: string;
@@ -25,35 +24,58 @@ const GAMES: GameItem[] = [
     screen: 'TicTacToe',
     players: '1-2 Players',
   },
+  {
+    id: 'bible-crossword',
+    title: 'Bible Crossword',
+    description: 'Solve clues about biblical places and fill the crossword grid. Hints available!',
+    icon: 'extension-puzzle-outline',
+    screen: 'BibleCrossword',
+    players: '1 Player',
+  },
+  {
+    id: 'bible-quiz',
+    title: 'Bible Quiz',
+    description: 'Read Bible stories and answer comprehension questions. 30 levels from Creation to the Great Commission!',
+    icon: 'help-circle-outline',
+    screen: 'BibleQuiz',
+    players: '1 Player',
+  },
+  {
+    id: 'find-difference',
+    title: 'Find the Difference',
+    description: 'Spot the hidden differences between two Bible-themed pictures. 30 levels!',
+    icon: 'eye-outline',
+    screen: 'FindDifference',
+    players: '1 Player',
+  },
 ];
 
 function GameCard({ game }: { game: GameItem }) {
   const navigation = useNavigation<any>();
-  const isDark = useAppStore((s) => s.isDark);
 
   return (
     <AnimatedPressable
       onPress={() => navigation.navigate(game.screen)}
-      className="mx-4 mb-3 p-4 rounded-xl border border-border dark:border-borderDark bg-white dark:bg-darkCard flex-row items-center"
+      className="mx-4 mb-3 p-4 rounded-xl border border-border bg-white flex-row items-center"
     >
-      <View className="w-14 h-14 rounded-xl bg-primary/10 dark:bg-primary/20 items-center justify-center mr-4">
+      <View className="w-14 h-14 rounded-xl bg-primary/10 items-center justify-center mr-4">
         <Ionicons name={game.icon} size={28} color="#4A6FA5" />
       </View>
       <View className="flex-1">
-        <Text className="text-base font-bold text-textPrimary dark:text-gray-100">
+        <Text className="text-base font-bold text-textPrimary">
           {game.title}
         </Text>
-        <Text className="text-sm text-textSecondary dark:text-gray-400 mt-0.5" numberOfLines={2}>
+        <Text className="text-sm text-textSecondary mt-0.5" numberOfLines={2}>
           {game.description}
         </Text>
         <View className="flex-row items-center mt-1.5">
-          <Ionicons name="people-outline" size={14} color={isDark ? '#9CA3AF' : '#6B7280'} />
-          <Text className="text-xs text-textSecondary dark:text-gray-400 ml-1">
+          <Ionicons name="people-outline" size={14} color="#6B7280" />
+          <Text className="text-xs text-textSecondary ml-1">
             {game.players}
           </Text>
         </View>
       </View>
-      <Ionicons name="chevron-forward" size={20} color={isDark ? '#9CA3AF' : '#6B7280'} />
+      <Ionicons name="chevron-forward" size={20} color="#6B7280" />
     </AnimatedPressable>
   );
 }
@@ -69,7 +91,7 @@ export default function GamesListScreen() {
         renderItem={({ item }) => <GameCard game={item} />}
         ListHeaderComponent={
           <View className="px-4 pb-3">
-            <Text className="text-sm text-textSecondary dark:text-gray-400">
+            <Text className="text-sm text-textSecondary">
               Rejoice and have fun with these games
             </Text>
           </View>

@@ -4,7 +4,6 @@ import RNToast from 'react-native-toast-message';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { successHaptic, errorHaptic } from '@/lib/haptics';
-import { useAppStore } from '@/stores/appStore';
 
 interface ToastProps {
   text1?: string;
@@ -15,28 +14,27 @@ interface ToastProps {
 
 const TOAST_STYLES = {
   success: {
-    bg: 'bg-emerald-50 dark:bg-emerald-950/60',
-    border: 'border-emerald-200 dark:border-emerald-800',
-    iconBg: 'bg-emerald-100 dark:bg-emerald-900/80',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    iconBg: 'bg-emerald-100',
     iconColor: '#059669',
     iconName: 'checkmark-circle' as const,
-    titleColor: 'text-emerald-900 dark:text-emerald-100',
-    messageColor: 'text-emerald-700 dark:text-emerald-300',
+    titleColor: 'text-emerald-900',
+    messageColor: 'text-emerald-700',
   },
   error: {
-    bg: 'bg-red-50 dark:bg-red-950/60',
-    border: 'border-red-200 dark:border-red-800',
-    iconBg: 'bg-red-100 dark:bg-red-900/80',
+    bg: 'bg-red-50',
+    border: 'border-red-200',
+    iconBg: 'bg-red-100',
     iconColor: '#DC2626',
     iconName: 'close-circle' as const,
-    titleColor: 'text-red-900 dark:text-red-100',
-    messageColor: 'text-red-700 dark:text-red-300',
+    titleColor: 'text-red-900',
+    messageColor: 'text-red-700',
   },
 };
 
 function CustomToast({ type, props }: { type: 'success' | 'error'; props: ToastProps }) {
   const style = TOAST_STYLES[type];
-  const isDark = useAppStore((s) => s.isDark);
 
   return (
     <Animated.View
@@ -48,9 +46,9 @@ function CustomToast({ type, props }: { type: 'success' | 'error'; props: ToastP
         onPress={props.hide}
         className={`flex-row items-center px-4 py-3.5 rounded-2xl border ${style.bg} ${style.border}`}
         style={{
-          shadowColor: isDark ? '#000' : '#000',
+          shadowColor: '#000',
           shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: isDark ? 0.3 : 0.08,
+          shadowOpacity: 0.08,
           shadowRadius: 12,
           elevation: 6,
         }}
@@ -60,7 +58,7 @@ function CustomToast({ type, props }: { type: 'success' | 'error'; props: ToastP
           <Ionicons
             name={style.iconName}
             size={20}
-            color={isDark ? (type === 'success' ? '#34D399' : '#F87171') : style.iconColor}
+            color={style.iconColor}
           />
         </View>
 
@@ -83,7 +81,7 @@ function CustomToast({ type, props }: { type: 'success' | 'error'; props: ToastP
           <Ionicons
             name="close"
             size={16}
-            color={isDark ? '#9CA3AF' : '#9CA3AF'}
+            color="#9CA3AF"
           />
         </Pressable>
       </Pressable>

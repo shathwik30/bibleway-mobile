@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm, Controller } from 'react-hook-form';
@@ -49,7 +49,11 @@ export default function LoginScreen() {
       <KeyboardAvoidingWrapper>
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24 }} keyboardShouldPersistTaps="handled">
         <View className="items-center mb-8">
-          <Text className="text-3xl font-bold text-primary">BibleWay</Text>
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={{ width: 220, height: 80 }}
+            resizeMode="contain"
+          />
           <Text className="text-sm text-textSecondary mt-1">Faith-centered community</Text>
         </View>
 

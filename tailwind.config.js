@@ -2,7 +2,6 @@
 module.exports = {
   content: ["./App.tsx", "./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
-  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -15,11 +14,9 @@ module.exports = {
         primaryDark: "#2D4A7A",
         secondary: "#D4A373",
         surface: "#F8F9FA",
-        surfaceDark: "#1E1E2E",
         textPrimary: "#1A1A2E",
         textSecondary: "#6B7280",
         border: "#E5E7EB",
-        borderDark: "#2D2D3F",
         error: "#EF4444",
         success: "#22C55E",
         warning: "#F59E0B",
@@ -29,8 +26,6 @@ module.exports = {
           blue: "#DBEAFE",
           pink: "#FCE7F3",
         },
-        darkBg: "#121220",
-        darkCard: "#1A1A2E",
       },
     },
   },

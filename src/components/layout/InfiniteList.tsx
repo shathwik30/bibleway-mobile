@@ -14,6 +14,7 @@ interface InfiniteListProps<T> {
   headerComponent?: React.ReactElement;
   estimatedItemSize?: number;
   loadingComponent?: React.ReactElement;
+  bottomInset?: number;
 }
 
 export default function InfiniteList<T>({
@@ -24,6 +25,7 @@ export default function InfiniteList<T>({
   emptyMessage,
   headerComponent,
   loadingComponent,
+  bottomInset = 0,
 }: InfiniteListProps<T>) {
   const {
     data,
@@ -81,7 +83,7 @@ export default function InfiniteList<T>({
       }
       keyboardDismissMode="on-drag"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: bottomInset + 24 }}
     />
   );
 }

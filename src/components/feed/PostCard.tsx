@@ -25,7 +25,7 @@ function PostCard({ post }: PostCardProps) {
   return (
     <AnimatedPressable
       onPress={() => navigation.navigate('PostDetail', { postId: post.id })}
-      className="bg-white dark:bg-darkBg border-b border-border dark:border-borderDark"
+      className="bg-white border-b border-border"
     >
       <View className="px-4 pt-3">
         {/* Author Row */}
@@ -36,8 +36,8 @@ function PostCard({ post }: PostCardProps) {
           >
             <Avatar source={post.author.profile_photo} name={post.author.full_name} size={40} />
             <View className="ml-3 flex-1">
-              <Text className="text-sm font-semibold text-textPrimary dark:text-gray-100">{post.author.full_name}</Text>
-              <Text className="text-xs text-textSecondary dark:text-gray-400">
+              <Text className="text-sm font-semibold text-textPrimary">{post.author.full_name}</Text>
+              <Text className="text-xs text-textSecondary">
                 {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
               </Text>
             </View>
@@ -48,7 +48,7 @@ function PostCard({ post }: PostCardProps) {
         {/* Text Content */}
         {post.text_content ? (
           <View className="mb-2">
-            <Text className="text-base text-textPrimary dark:text-gray-200 leading-6">{displayText}</Text>
+            <Text className="text-base text-textPrimary leading-6">{displayText}</Text>
             {shouldTruncate && !expanded && (
               <Pressable onPress={() => setExpanded(true)}>
                 <Text className="text-primary text-sm font-medium mt-1">Read more</Text>

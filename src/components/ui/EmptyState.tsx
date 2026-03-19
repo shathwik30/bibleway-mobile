@@ -15,9 +15,9 @@ export default function EmptyState({ icon = 'albums-outline', title, message, ac
   return (
     <View className="flex-1 items-center justify-center py-12 px-6">
       <Ionicons name={icon} size={64} color="#D1D5DB" />
-      <Text className="text-lg font-semibold text-textPrimary dark:text-gray-100 mt-4 text-center">{title}</Text>
+      <Text className="text-lg font-semibold text-textPrimary mt-4 text-center">{title}</Text>
       {message && (
-        <Text className="text-sm text-textSecondary dark:text-gray-400 mt-2 text-center">{message}</Text>
+        <Text className="text-sm text-textSecondary mt-2 text-center">{message}</Text>
       )}
       {actionLabel && onAction && (
         <View className="mt-4">

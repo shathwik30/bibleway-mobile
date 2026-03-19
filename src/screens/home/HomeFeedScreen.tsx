@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import TabBar from '@/components/ui/TabBar';
 import InfiniteList from '@/components/layout/InfiniteList';
@@ -23,6 +24,7 @@ export default function HomeFeedScreen() {
   const postsQuery = usePosts();
   const prayersQuery = usePrayers();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
+  const tabBarHeight = useBottomTabBarHeight();
   useUnreadCount();
 
   const tabs = [
@@ -58,6 +60,7 @@ export default function HomeFeedScreen() {
           keyExtractor={(item) => item.id}
           headerComponent={<VerseOfDayBanner />}
           emptyTitle={t('feed.noPostsYet')}
+          bottomInset={tabBarHeight}
         />
       ) : (
         <InfiniteList<Prayer>
@@ -65,6 +68,7 @@ export default function HomeFeedScreen() {
           renderItem={({ item }) => <PrayerCard prayer={item} />}
           keyExtractor={(item) => item.id}
           emptyTitle={t('feed.noPrayersYet')}
+          bottomInset={tabBarHeight}
         />
       )}
 
@@ -74,7 +78,8 @@ export default function HomeFeedScreen() {
           lightHaptic();
           navigation.navigate(activeTab === 'posts' ? 'CreatePost' : 'CreatePrayer');
         }}
-        className="absolute bottom-6 right-6 w-14 h-14 bg-primary rounded-full items-center justify-center shadow-lg"
+        style={{ position: 'absolute', bottom: tabBarHeight + 16, right: 24 }}
+        className="w-14 h-14 bg-primary rounded-full items-center justify-center shadow-lg"
         accessibilityLabel="Create new"
       >
         <Ionicons name="add" size={28} color="#FFFFFF" />

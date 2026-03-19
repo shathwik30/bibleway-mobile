@@ -5,7 +5,6 @@ import * as Haptics from 'expo-haptics';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
-import { useAppStore } from '@/stores/appStore';
 
 // ── Types ──────────────────────────────────────────────
 type Player = 'X' | 'O';
@@ -107,15 +106,15 @@ function CellButton({
   disabled: boolean;
 }) {
   const bgClass = isWinning
-    ? 'bg-primary/20 dark:bg-primary/30'
-    : 'bg-surface dark:bg-darkCard';
+    ? 'bg-primary/20'
+    : 'bg-surface';
 
   return (
     <View className="m-1.5">
       <Pressable
         onPress={() => { if (!value && !disabled) onPress(); }}
         disabled={disabled}
-        className={`w-24 h-24 rounded-xl items-center justify-center border border-border dark:border-borderDark ${bgClass}`}
+        className={`w-24 h-24 rounded-xl items-center justify-center border border-border ${bgClass}`}
       >
         {value === 'X' && (
           <Ionicons name="add" size={48} color="#4A6FA5" />
@@ -132,14 +131,12 @@ function CellButton({
 function ModeToggle({
   mode,
   onToggle,
-  isDark,
 }: {
   mode: GameMode;
   onToggle: (m: GameMode) => void;
-  isDark: boolean;
 }) {
   return (
-    <View className="flex-row bg-surface dark:bg-darkCard rounded-xl border border-border dark:border-borderDark overflow-hidden mb-5">
+    <View className="flex-row bg-surface rounded-xl border border-border overflow-hidden mb-5">
       <Pressable
         onPress={() => onToggle('1P')}
         className={`flex-1 flex-row items-center justify-center py-2.5 px-4 ${
@@ -149,11 +146,11 @@ function ModeToggle({
         <Ionicons
           name="person-outline"
           size={16}
-          color={mode === '1P' ? '#FFFFFF' : isDark ? '#9CA3AF' : '#6B7280'}
+          color={mode === '1P' ? '#FFFFFF' : '#6B7280'}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
-            mode === '1P' ? 'text-white' : 'text-textSecondary dark:text-gray-400'
+            mode === '1P' ? 'text-white' : 'text-textSecondary'
           }`}
         >
           vs Computer
@@ -168,11 +165,11 @@ function ModeToggle({
         <Ionicons
           name="people-outline"
           size={16}
-          color={mode === '2P' ? '#FFFFFF' : isDark ? '#9CA3AF' : '#6B7280'}
+          color={mode === '2P' ? '#FFFFFF' : '#6B7280'}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
-            mode === '2P' ? 'text-white' : 'text-textSecondary dark:text-gray-400'
+            mode === '2P' ? 'text-white' : 'text-textSecondary'
           }`}
         >
           2 Players
@@ -184,7 +181,6 @@ function ModeToggle({
 
 // ── Main Screen ────────────────────────────────────────
 export default function TicTacToeScreen() {
-  const isDark = useAppStore((s) => s.isDark);
   const [mode, setMode] = useState<GameMode>('1P');
   const [board, setBoard] = useState<Board>(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>('X');
@@ -317,7 +313,7 @@ export default function TicTacToeScreen() {
             <Ionicons
               name="refresh-outline"
               size={22}
-              color={isDark ? '#E5E7EB' : '#1A1A2E'}
+              color="#1A1A2E"
             />
           </Pressable>
         }
@@ -325,10 +321,10 @@ export default function TicTacToeScreen() {
 
       <View className="flex-1 items-center justify-center px-4">
         {/* Mode Toggle */}
-        <ModeToggle mode={mode} onToggle={handleModeChange} isDark={isDark} />
+        <ModeToggle mode={mode} onToggle={handleModeChange} />
 
         {/* Scoreboard */}
-        <View className="flex-row items-center mb-6 bg-white dark:bg-darkCard rounded-xl border border-border dark:border-borderDark overflow-hidden">
+        <View className="flex-row items-center mb-6 bg-white rounded-xl border border-border overflow-hidden">
           <View className="items-center px-6 py-3">
             <View className="flex-row items-center mb-1">
               <Ionicons name="add" size={18} color="#4A6FA5" />
@@ -336,17 +332,17 @@ export default function TicTacToeScreen() {
                 {youLabel}
               </Text>
             </View>
-            <Text className="text-2xl font-bold text-textPrimary dark:text-gray-100">
+            <Text className="text-2xl font-bold text-textPrimary">
               {scores.X}
             </Text>
           </View>
-          <View className="w-px h-12 bg-border dark:bg-borderDark" />
+          <View className="w-px h-12 bg-border" />
           <View className="items-center px-5 py-3">
-            <Text className="text-sm font-semibold text-textSecondary dark:text-gray-400">
+            <Text className="text-sm font-semibold text-textSecondary">
               VS
             </Text>
           </View>
-          <View className="w-px h-12 bg-border dark:bg-borderDark" />
+          <View className="w-px h-12 bg-border" />
           <View className="items-center px-6 py-3">
             <View className="flex-row items-center mb-1">
               <Ionicons name="star" size={14} color="#D4A373" />
@@ -354,7 +350,7 @@ export default function TicTacToeScreen() {
                 {opponentLabel}
               </Text>
             </View>
-            <Text className="text-2xl font-bold text-textPrimary dark:text-gray-100">
+            <Text className="text-2xl font-bold text-textPrimary">
               {scores.O}
             </Text>
           </View>
@@ -370,7 +366,7 @@ export default function TicTacToeScreen() {
                   : 'text-secondary'
                 : isDraw
                 ? 'text-warning'
-                : 'text-textPrimary dark:text-gray-100'
+                : 'text-textPrimary'
             }`}
           >
             {statusText}
@@ -414,7 +410,7 @@ export default function TicTacToeScreen() {
         {/* Scripture Verse */}
         {gameOver && verse !== '' && (
           <Animated.View entering={FadeIn.delay(200).duration(400)} className="mt-5 mx-4">
-            <Text className="text-xs text-center text-textSecondary dark:text-gray-400 italic leading-5">
+            <Text className="text-xs text-center text-textSecondary italic leading-5">
               {verse}
             </Text>
           </Animated.View>
