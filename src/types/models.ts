@@ -17,6 +17,7 @@ export interface Author {
   id: string;
   full_name: string;
   profile_photo: string | null;
+  age: number;
 }
 
 // UserProfile (own profile - all fields)
@@ -59,6 +60,7 @@ export interface UserPublicProfile {
   following_count: number;
   post_count: number;
   prayer_count: number;
+  follow_status: 'none' | 'following' | 'requested' | 'self';
 }
 
 // UserListItem
@@ -67,6 +69,7 @@ export interface UserListItem {
   full_name: string;
   profile_photo: string | null;
   bio: string;
+  age: number;
 }
 
 // MediaItem (for PostMedia / PrayerMedia)
@@ -151,6 +154,146 @@ export interface Notification {
   is_read: boolean;
   created_at: string;
 }
+
+// ---------------------------------------------------------------------------
+// API Bible types (from api.bible/v1)
+// ---------------------------------------------------------------------------
+
+export interface ApiBibleLanguage {
+  id: string;
+  name: string;
+  nameLocal: string;
+  script: string;
+  scriptDirection: string;
+}
+
+export interface ApiBibleCountry {
+  id: string;
+  name: string;
+  nameLocal: string;
+}
+
+export interface BibleVersion {
+  id: string;
+  dblId: string;
+  abbreviation: string;
+  abbreviationLocal: string;
+  name: string;
+  nameLocal: string;
+  description: string;
+  descriptionLocal: string;
+  language: ApiBibleLanguage;
+  countries: ApiBibleCountry[];
+  type: string;
+  updatedAt: string;
+}
+
+export interface BibleBook {
+  id: string;
+  bibleId: string;
+  abbreviation: string;
+  name: string;
+  nameLong: string;
+}
+
+export interface BibleChapterSummary {
+  id: string;
+  bibleId: string;
+  bookId: string;
+  number: string;
+  reference: string;
+}
+
+export interface BibleChapterContent {
+  id: string;
+  bibleId: string;
+  bookId: string;
+  number: string;
+  reference: string;
+  content: string;
+  copyright: string;
+  next: { id: string; bookId: string; number: string } | null;
+  previous: { id: string; bookId: string; number: string } | null;
+}
+
+export interface BibleVerseSummary {
+  id: string;
+  orgId: string;
+  bibleId: string;
+  bookId: string;
+  chapterId: string;
+  reference: string;
+}
+
+export interface BibleVerseContent {
+  id: string;
+  orgId: string;
+  bibleId: string;
+  bookId: string;
+  chapterId: string;
+  reference: string;
+  content: string;
+  copyright: string;
+  next: { id: string } | null;
+  previous: { id: string } | null;
+}
+
+export interface BiblePassageContent {
+  id: string;
+  bibleId: string;
+  orgId: string;
+  reference: string;
+  content: string;
+  copyright: string;
+}
+
+export interface BibleSearchVerse {
+  id: string;
+  orgId: string;
+  bibleId: string;
+  bookId: string;
+  chapterId: string;
+  reference: string;
+  text: string;
+}
+
+export interface BibleSearchResult {
+  query: string;
+  limit: number;
+  offset: number;
+  total: number;
+  verseCount: number;
+  verses: BibleSearchVerse[];
+}
+
+export interface AudioBible {
+  id: string;
+  dblId: string;
+  abbreviation: string;
+  abbreviationLocal: string;
+  name: string;
+  nameLocal: string;
+  description: string;
+  descriptionLocal: string;
+  language: ApiBibleLanguage;
+  countries: ApiBibleCountry[];
+  type: string;
+  updatedAt: string;
+}
+
+export interface AudioBibleChapter {
+  id: string;
+  bibleId: string;
+  bookId: string;
+  number: string;
+  reference: string;
+  resourceUrl: string;
+  timecodes: Array<{ end: string; start: string; verseId: string }>;
+}
+
+// ---------------------------------------------------------------------------
+// Segregated Bible types
+// ---------------------------------------------------------------------------
 
 // SegregatedSection
 export interface SegregatedSection {

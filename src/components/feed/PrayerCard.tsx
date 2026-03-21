@@ -35,7 +35,10 @@ function PrayerCard({ prayer }: PrayerCardProps) {
           >
             <Avatar source={prayer.author.profile_photo} name={prayer.author.full_name} size={40} />
             <View className="ml-3 flex-1">
-              <Text className="text-sm font-semibold text-textPrimary">{prayer.author.full_name}</Text>
+              <View className="flex-row items-center">
+                <Text className="text-sm font-semibold text-textPrimary">{prayer.author.full_name}</Text>
+                {prayer.author.age ? <Text className="text-xs text-textTertiary ml-1.5">· {prayer.author.age}y</Text> : null}
+              </View>
               <Text className="text-xs text-textSecondary">
                 {formatDistanceToNow(new Date(prayer.created_at), { addSuffix: true })}
               </Text>

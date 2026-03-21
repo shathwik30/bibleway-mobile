@@ -32,7 +32,7 @@ export type BibleStackParamList = {
   SegregatedPageDetail: { pageId: string };
   Bookmarks: undefined;
   Notes: undefined;
-  BibleSearch: undefined;
+  BibleSearch: { bibleId?: string } | undefined;
 };
 
 export type ShopStackParamList = {

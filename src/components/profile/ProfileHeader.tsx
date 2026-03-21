@@ -16,6 +16,9 @@ export default function ProfileHeader({ user, isOwnProfile = false, onEditPress,
     <View className="items-center pt-6 pb-4 px-4">
       <Avatar source={user.profile_photo} name={user.full_name} size={80} />
       <Text className="text-xl font-bold text-textPrimary mt-3">{user.full_name}</Text>
+      {user.age ? (
+        <Text className="text-xs text-textTertiary mt-0.5">{user.age} years old</Text>
+      ) : null}
       {user.bio ? (
         <Text className="text-sm text-textSecondary mt-1 text-center px-6">{user.bio}</Text>
       ) : null}

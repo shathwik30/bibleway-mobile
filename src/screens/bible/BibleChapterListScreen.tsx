@@ -3,14 +3,15 @@ import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
-import { useApiBible } from '@/hooks/useBible';
+import { useBibleChapters } from '@/hooks/useBible';
 import type { BibleStackParamList } from '@/types/navigation';
+import type { BibleChapterSummary } from '@/types/models';
 
 export default function BibleChapterListScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<RouteProp<BibleStackParamList, 'BibleChapterList'>>();
   const { bibleId, bookId } = route.params;
-  const { data: chapters, isLoading } = useApiBible(`bibles/${bibleId}/books/${bookId}/chapters`) as { data: any; isLoading: boolean };
+  const { data: chapters, isLoading } = useBibleChapters(bibleId, bookId);
 
   if (isLoading) {
     return (
@@ -27,7 +28,7 @@ export default function BibleChapterListScreen() {
     <SafeAreaScreen>
       <ScreenHeader title="Chapters" />
       <FlatList
-        data={chapters}
+        data={chapters as BibleChapterSummary[] | undefined}
         keyExtractor={(item) => item.id}
         numColumns={4}
         contentContainerStyle={{ padding: 16 }}

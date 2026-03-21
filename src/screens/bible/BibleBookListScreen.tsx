@@ -4,14 +4,15 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
-import { useApiBible } from '@/hooks/useBible';
+import { useBibleBooks } from '@/hooks/useBible';
 import type { BibleStackParamList } from '@/types/navigation';
+import type { BibleBook } from '@/types/models';
 
 export default function BibleBookListScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<RouteProp<BibleStackParamList, 'BibleBookList'>>();
   const { bibleId } = route.params;
-  const { data: books, isLoading } = useApiBible(`bibles/${bibleId}/books`) as { data: any; isLoading: boolean };
+  const { data: books, isLoading } = useBibleBooks(bibleId);
 
   if (isLoading) {
     return (
@@ -28,7 +29,7 @@ export default function BibleBookListScreen() {
     <SafeAreaScreen>
       <ScreenHeader title="Books" />
       <FlatList
-        data={books}
+        data={books as BibleBook[] | undefined}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ padding: 16 }}
         renderItem={({ item }) => (

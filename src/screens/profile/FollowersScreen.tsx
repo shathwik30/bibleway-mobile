@@ -42,7 +42,10 @@ export default function FollowersScreen() {
             >
               <Avatar source={user.profile_photo} name={user.full_name} size={40} />
               <View className="flex-1 ml-3">
-                <Text className="text-base font-semibold text-textPrimary">{user.full_name}</Text>
+                <View className="flex-row items-center">
+                  <Text className="text-base font-semibold text-textPrimary">{user.full_name}</Text>
+                  {user.age ? <Text className="text-sm text-textTertiary ml-1.5">· {user.age}y</Text> : null}
+                </View>
                 {user.bio ? <Text className="text-sm text-textSecondary mt-0.5" numberOfLines={1}>{user.bio}</Text> : null}
               </View>
             </Pressable>

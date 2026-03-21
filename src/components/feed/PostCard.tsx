@@ -36,7 +36,10 @@ function PostCard({ post }: PostCardProps) {
           >
             <Avatar source={post.author.profile_photo} name={post.author.full_name} size={40} />
             <View className="ml-3 flex-1">
-              <Text className="text-sm font-semibold text-textPrimary">{post.author.full_name}</Text>
+              <View className="flex-row items-center">
+                <Text className="text-sm font-semibold text-textPrimary">{post.author.full_name}</Text>
+                {post.author.age ? <Text className="text-xs text-textTertiary ml-1.5">· {post.author.age}y</Text> : null}
+              </View>
               <Text className="text-xs text-textSecondary">
                 {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
               </Text>

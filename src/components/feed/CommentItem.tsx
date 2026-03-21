@@ -21,7 +21,10 @@ export default function CommentItem({ comment, onReply, onViewReplies }: Comment
       </Pressable>
       <View className="flex-1 ml-3">
         <View className="bg-surface rounded-xl px-3 py-2">
-          <Text className="text-sm font-semibold text-textPrimary">{comment.user.full_name}</Text>
+          <View className="flex-row items-center">
+            <Text className="text-sm font-semibold text-textPrimary">{comment.user.full_name}</Text>
+            {(comment.user as any).age ? <Text className="text-xs text-textTertiary ml-1.5">· {(comment.user as any).age}y</Text> : null}
+          </View>
           <Text className="text-sm text-textPrimary mt-0.5">{comment.text}</Text>
         </View>
         <View className="flex-row items-center mt-1 ml-1">

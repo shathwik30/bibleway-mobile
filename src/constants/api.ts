@@ -1,5 +1,5 @@
 export const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'https://feudalistic-devora-preobviously.ngrok-free.dev/api/v1';
-export const API_TIMEOUT = 15000;
+export const API_TIMEOUT = 30000;
 
 export const CACHE_DURATIONS = {
   feed: { staleTime: 30 * 1000, gcTime: 5 * 60 * 1000 },

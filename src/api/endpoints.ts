@@ -34,6 +34,7 @@ export const ENDPOINTS = {
     prayerReact: (prayerId: string) => `/social/prayers/${prayerId}/react/`,
     prayerComments: (prayerId: string) => `/social/prayers/${prayerId}/comments/`,
     prayerShare: (prayerId: string) => `/social/prayers/${prayerId}/share/`,
+    mediaUpload: '/social/media/upload/',
     commentDetail: (commentId: string) => `/social/comments/${commentId}/`,
     replies: (commentId: string) => `/social/comments/${commentId}/replies/`,
     replyDetail: (commentId: string, replyId: string) =>
@@ -71,6 +72,7 @@ export const ENDPOINTS = {
     deregisterToken: '/notifications/device-tokens/deregister/',
   },
   analytics: {
+    recordView: '/analytics/views/',
     postAnalytics: (postId: string) => `/analytics/posts/${postId}/`,
     userAnalytics: '/analytics/me/',
     boostCreate: '/analytics/boosts/',

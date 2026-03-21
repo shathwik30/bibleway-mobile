@@ -1,15 +1,38 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import SearchBar from '@/components/ui/SearchBar';
-import { useBibleSearch } from '@/hooks/useBible';
+import { useBibleSearch, useApiBibleSearch } from '@/hooks/useBible';
+import type { BibleStackParamList } from '@/types/navigation';
+import type { BibleSearchVerse } from '@/types/models';
 
 export default function BibleSearchScreen() {
   const navigation = useNavigation<any>();
+  const route = useRoute<RouteProp<BibleStackParamList, 'BibleSearch'>>();
+  const bibleId = route.params?.bibleId;
   const [query, setQuery] = useState('');
-  const { data: results, isLoading, isFetching } = useBibleSearch(query) as { data: any; isLoading: boolean; isFetching: boolean };
+
+  // Use API Bible search when a bibleId is available, otherwise fall back to segregated search
+  const apiBibleSearch = useApiBibleSearch(bibleId ?? '', query);
+  const segregatedSearch = useBibleSearch(bibleId ? '' : query);
+
+  const isApiSearch = !!bibleId;
+  const isLoading = isApiSearch ? apiBibleSearch.isLoading : segregatedSearch.isLoading;
+  const isFetching = isApiSearch ? apiBibleSearch.isFetching : segregatedSearch.isFetching;
+
+  // Normalize results into a consistent shape
+  const searchResult = apiBibleSearch.data as any;
+  const results: Array<{ id: string; reference: string; text: string; bibleId?: string; chapterId?: string }> = isApiSearch
+    ? (searchResult?.verses ?? []).map((v: BibleSearchVerse) => ({
+        id: v.id,
+        reference: v.reference,
+        text: v.text,
+        bibleId: v.bibleId,
+        chapterId: v.chapterId,
+      }))
+    : ((segregatedSearch.data as any[]) ?? []);
 
   return (
     <SafeAreaScreen>
@@ -32,7 +55,11 @@ export default function BibleSearchScreen() {
           contentContainerStyle={{ padding: 16 }}
           renderItem={({ item }) => (
             <Pressable
-              onPress={() => navigation.navigate('BibleVerse', { bibleId: item.bibleId, chapterId: item.chapterId })}
+              onPress={() => {
+                if (item.bibleId && item.chapterId) {
+                  navigation.navigate('BibleVerse', { bibleId: item.bibleId, chapterId: item.chapterId });
+                }
+              }}
               className="p-4 bg-surface rounded-xl mb-3"
             >
               <Text className="text-sm font-semibold text-primary mb-1">{item.reference}</Text>

@@ -19,7 +19,10 @@ export default function ReplyItem({ reply }: ReplyItemProps) {
       </Pressable>
       <View className="flex-1 ml-2">
         <View className="bg-surface rounded-xl px-3 py-2">
-          <Text className="text-xs font-semibold text-textPrimary">{reply.user.full_name}</Text>
+          <View className="flex-row items-center">
+            <Text className="text-xs font-semibold text-textPrimary">{reply.user.full_name}</Text>
+            {(reply.user as any).age ? <Text className="text-[10px] text-textTertiary ml-1">· {(reply.user as any).age}y</Text> : null}
+          </View>
           <Text className="text-xs text-textPrimary mt-0.5">{reply.text}</Text>
         </View>
         <Text className="text-[10px] text-textSecondary mt-1 ml-1">

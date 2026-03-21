@@ -49,7 +49,12 @@ export default function BlockedUsersScreen() {
         renderItem={({ item }) => (
           <View className="flex-row items-center p-4 bg-surface rounded-xl mb-3">
             <Avatar source={item.profile_picture} name={item.full_name} size={40} />
-            <Text className="flex-1 text-base text-textPrimary ml-3">{item.full_name}</Text>
+            <View className="flex-1 ml-3">
+              <View className="flex-row items-center">
+                <Text className="text-base text-textPrimary">{item.full_name}</Text>
+                {item.age ? <Text className="text-sm text-textTertiary ml-1.5">· {item.age}y</Text> : null}
+              </View>
+            </View>
             <Button title="Unblock" variant="outline" size="sm" onPress={() => handleUnblock(item.id)} />
           </View>
         )}
