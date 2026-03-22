@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Dimensions, FlatList } from 'react-native';
 import { Image } from 'expo-image';
-import { Video, ResizeMode } from 'expo-av';
+import { VideoView, useVideoPlayer } from 'expo-video';
 import type { MediaItem } from '@/types/models';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -10,20 +10,28 @@ interface MediaCarouselProps {
   media: MediaItem[];
 }
 
+function VideoItem({ uri }: { uri: string }) {
+  const player = useVideoPlayer(uri, (p) => {
+    p.loop = false;
+  });
+
+  return (
+    <VideoView
+      player={player}
+      style={{ width: SCREEN_WIDTH, height: SCREEN_WIDTH * 0.75 }}
+      contentFit="contain"
+      fullscreenOptions={{ enable: true }}
+      allowsPictureInPicture={false}
+    />
+  );
+}
+
 export default function MediaCarousel({ media }: MediaCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const renderItem = ({ item }: { item: MediaItem }) => {
     if (item.media_type === 'video') {
-      return (
-        <Video
-          source={{ uri: item.file }}
-          style={{ width: SCREEN_WIDTH, height: SCREEN_WIDTH * 0.75 }}
-          resizeMode={ResizeMode.CONTAIN}
-          useNativeControls
-          isLooping={false}
-        />
-      );
+      return <VideoItem uri={item.file} />;
     }
 
     return (

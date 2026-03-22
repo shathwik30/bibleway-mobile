@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { compressImage } from '@/lib/imageCompressor';
+import { API_BASE_URL } from '@/constants/api';
+import { ENDPOINTS } from '@/api/endpoints';
 import { MAX_IMAGES_PER_POST } from '@/constants/app';
 
 interface SelectedMedia {
@@ -14,7 +16,7 @@ export function useMediaUpload() {
 
   const pickImages = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ['images', 'videos'],
       allowsMultipleSelection: true,
       selectionLimit: MAX_IMAGES_PER_POST - media.length,
       quality: 1,
@@ -41,30 +43,60 @@ export function useMediaUpload() {
 
   const clearMedia = () => setMedia([]);
 
-  const createFormData = (textFields: Record<string, string>) => {
-    const formData = new FormData();
-    Object.entries(textFields).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    media.forEach((item, index) => {
-      const ext = item.type === 'video' ? 'mp4' : 'jpg';
-      formData.append('media_files', {
-        uri: item.uri,
-        type: item.type === 'video' ? 'video/mp4' : 'image/jpeg',
-        name: `media_${index}.${ext}`,
-      } as any);
-      formData.append('media_types', item.type);
-    });
-    return formData;
+  /**
+   * Upload all selected media to UploadThing via the backend.
+   * Uses fetch (not Axios) because RN Axios has issues with FormData file uploads on Android.
+   */
+  const uploadMedia = async (accessToken: string): Promise<{ keys: string[]; types: string[] }> => {
+    if (media.length === 0) return { keys: [], types: [] };
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < media.length; i++) {
+        const item = media[i];
+        const ext = item.type === 'video' ? 'mp4' : 'jpg';
+        formData.append('files', {
+          uri: item.uri,
+          type: item.type === 'video' ? 'video/mp4' : 'image/jpeg',
+          name: `media_${i}.${ext}`,
+        } as any);
+      }
+
+      const url = `${API_BASE_URL}${ENDPOINTS.social.mediaUpload}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'ngrok-skip-browser-warning': 'true',
+        },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        throw new Error(errBody?.message || `Upload failed (${res.status})`);
+      }
+
+      const body = await res.json();
+      // Backend returns { message, data: [{key, url}, ...] }
+      const results: { key: string; url: string }[] = body?.data ?? body ?? [];
+
+      return {
+        keys: results.map((r) => r.key),
+        types: media.map((m) => m.type),
+      };
+    } finally {
+      setUploading(false);
+    }
   };
 
   return {
     media,
     uploading,
-    setUploading,
     pickImages,
     removeMedia,
     clearMedia,
-    createFormData,
+    uploadMedia,
   };
 }

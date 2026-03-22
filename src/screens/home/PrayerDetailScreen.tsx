@@ -5,12 +5,14 @@ import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import PrayerCard from '@/components/feed/PrayerCard';
 import { usePrayerDetail } from '@/hooks/useSocial';
+import { useRecordView } from '@/hooks/useAnalytics';
 import type { HomeStackParamList } from '@/types/navigation';
 
 export default function PrayerDetailScreen() {
   const route = useRoute<RouteProp<HomeStackParamList, 'PrayerDetail'>>();
   const { prayerId } = route.params;
   const { data: prayer, isLoading, isError } = usePrayerDetail(prayerId);
+  useRecordView('prayer', prayerId);
 
   if (isLoading) {
     return (

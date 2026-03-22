@@ -20,6 +20,16 @@
         "EXPO_PUBLIC_API_BASE_URL": "https://staging-api.bibleway.app/api/v1"
       }
     },
+    "apk": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://bibleway-backend-production.up.railway.app/api/v1",
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+      }
+    },
     "production": {
       "autoIncrement": true,
       "env": {

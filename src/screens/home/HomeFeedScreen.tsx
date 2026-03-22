@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, Platform } from 'react-native';
+import { Image } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -36,9 +37,11 @@ export default function HomeFeedScreen() {
     <SafeAreaScreen>
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-3">
-        <View>
-          <Text className="text-2xl font-bold text-primary">BibleWay</Text>
-        </View>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={{ width: 120, height: 36 }}
+          contentFit="contain"
+        />
         <View className="flex-row items-center">
           <Pressable onPress={() => navigation.navigate('Notifications')} className="relative p-2" accessibilityLabel="Notifications">
             <Ionicons name="notifications-outline" size={24} color="#1A1A2E" />

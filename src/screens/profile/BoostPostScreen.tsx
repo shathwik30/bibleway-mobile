@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Pressable, ScrollView, Platform } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
@@ -7,40 +7,75 @@ import ScreenHeader from '@/components/layout/ScreenHeader';
 import Button from '@/components/ui/Button';
 import { useCreateBoost } from '@/hooks/useAnalytics';
 import { showToast } from '@/components/ui/Toast';
+import { initIAP, purchaseBoost, teardownIAP, type BoostProductId } from '@/lib/iap';
 import type { ProfileStackParamList } from '@/types/navigation';
 
-const BOOST_TIERS = [
-  { id: 'basic', name: 'Basic Boost', duration: '24 hours', reach: '500+', productId: 'boost_basic' },
-  { id: 'standard', name: 'Standard Boost', duration: '3 days', reach: '2,000+', productId: 'boost_standard' },
-  { id: 'premium', name: 'Premium Boost', duration: '7 days', reach: '5,000+', productId: 'boost_premium' },
+const BOOST_TIERS: {
+  productId: BoostProductId;
+  name: string;
+  duration: string;
+  durationDays: number;
+  reach: string;
+}[] = [
+  { productId: 'boost_basic', name: 'Basic Boost', duration: '24 hours', durationDays: 1, reach: '500+' },
+  { productId: 'boost_standard', name: 'Standard Boost', duration: '3 days', durationDays: 3, reach: '2,000+' },
+  { productId: 'boost_premium', name: 'Premium Boost', duration: '7 days', durationDays: 7, reach: '5,000+' },
 ];
 
 export default function BoostPostScreen() {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<ProfileStackParamList, 'BoostPost'>>();
   const { postId } = route.params;
-  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const [selectedTier, setSelectedTier] = useState<BoostProductId | null>(null);
+  const [purchasing, setPurchasing] = useState(false);
   const boostMutation = useCreateBoost();
 
-  const handleBoost = () => {
+  useEffect(() => {
+    initIAP().catch(() => {});
+    return () => { teardownIAP().catch(() => {}); };
+  }, []);
+
+  const handleBoost = async () => {
     if (!selectedTier) return;
-    const tier = BOOST_TIERS.find(t => t.id === selectedTier);
+    const tier = BOOST_TIERS.find((t) => t.productId === selectedTier);
     if (!tier) return;
 
-    // TODO: Integrate real IAP flow to obtain receipt_data and transaction_id
-    boostMutation.mutate(
-      { post_id: postId, tier: tier.id, platform: 'ios', receipt_data: '', transaction_id: '', duration_days: tier.id === 'basic' ? 1 : tier.id === 'standard' ? 3 : 7 },
-      {
-        onSuccess: () => {
-          showToast('success', 'Boosted', 'Your post is now being boosted!');
-          navigation.goBack();
+    setPurchasing(true);
+    try {
+      // Step 1: Complete the IAP purchase to get receipt data
+      const { receiptData, transactionId } = await purchaseBoost(tier.productId);
+
+      // Step 2: Send receipt to backend for validation + boost activation
+      boostMutation.mutate(
+        {
+          post_id: postId,
+          tier: tier.productId,
+          platform: Platform.OS as 'ios' | 'android',
+          receipt_data: receiptData,
+          transaction_id: transactionId,
+          duration_days: tier.durationDays,
         },
-        onError: (error: any) => {
-          showToast('error', 'Error', error?.response?.data?.message || 'Failed to boost post');
+        {
+          onSuccess: () => {
+            showToast('success', 'Boosted', 'Your post is now being boosted!');
+            navigation.goBack();
+          },
+          onError: (error: any) => {
+            showToast('error', 'Error', error?.response?.data?.message || 'Failed to activate boost');
+          },
+          onSettled: () => setPurchasing(false),
         },
-      },
-    );
+      );
+    } catch (error: any) {
+      setPurchasing(false);
+      if (error?.message?.includes('cancelled')) {
+        return; // User cancelled — don't show error
+      }
+      showToast('error', 'Purchase Failed', error?.message || 'Could not complete purchase');
+    }
   };
+
+  const isLoading = purchasing || boostMutation.isPending;
 
   return (
     <SafeAreaScreen>
@@ -52,15 +87,15 @@ export default function BoostPostScreen() {
 
         {BOOST_TIERS.map((tier) => (
           <Pressable
-            key={tier.id}
-            onPress={() => setSelectedTier(tier.id)}
+            key={tier.productId}
+            onPress={() => setSelectedTier(tier.productId)}
             className={`p-4 rounded-xl mb-3 border-2 ${
-              selectedTier === tier.id ? 'border-primary bg-primary/5' : 'border-border bg-surface'
+              selectedTier === tier.productId ? 'border-primary bg-primary/5' : 'border-border bg-surface'
             }`}
           >
             <View className="flex-row items-center justify-between">
               <Text className="text-lg font-bold text-textPrimary">{tier.name}</Text>
-              {selectedTier === tier.id && (
+              {selectedTier === tier.productId && (
                 <Ionicons name="checkmark-circle" size={24} color="#4A6FA5" />
               )}
             </View>
@@ -81,8 +116,8 @@ export default function BoostPostScreen() {
           <Button
             title="Boost Now"
             onPress={handleBoost}
-            loading={boostMutation.isPending}
-            disabled={!selectedTier}
+            loading={isLoading}
+            disabled={!selectedTier || isLoading}
             fullWidth
             size="lg"
           />

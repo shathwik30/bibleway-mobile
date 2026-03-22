@@ -6,6 +6,7 @@ import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import PostCard from '@/components/feed/PostCard';
 import { usePostDetail } from '@/hooks/useSocial';
+import { useRecordView } from '@/hooks/useAnalytics';
 import type { HomeStackParamList } from '@/types/navigation';
 
 export default function PostDetailScreen() {
@@ -13,6 +14,7 @@ export default function PostDetailScreen() {
   const route = useRoute<RouteProp<HomeStackParamList, 'PostDetail'>>();
   const { postId } = route.params;
   const { data: post, isLoading, isError } = usePostDetail(postId);
+  useRecordView('post', postId);
 
   if (isLoading) {
     return (
@@ -43,7 +45,7 @@ export default function PostDetailScreen() {
         <PostCard post={post} />
 
         <Pressable
-          onPress={() => navigation.navigate('Comments', { postId: post.id })}
+          onPress={() => navigation.navigate('Comments', { contentType: 'post', objectId: post.id })}
           className="flex-row items-center justify-between mx-4 mt-2 p-4 bg-surface rounded-xl"
         >
           <View className="flex-row items-center">

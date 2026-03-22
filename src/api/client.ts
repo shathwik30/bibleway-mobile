@@ -2,6 +2,17 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { API_BASE_URL, API_TIMEOUT } from '@/constants/api';
 import { ENDPOINTS } from './endpoints';
 
+console.log('[API] Base URL:', API_BASE_URL);
+
+// Retry config for network errors (e.g. Railway cold starts)
+const MAX_NETWORK_RETRIES = 3;
+const RETRY_DELAY_MS = 1500;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const isNetworkError = (error: AxiosError) =>
+  !error.response && (error.code === 'ERR_NETWORK' || error.code === 'ECONNABORTED' || error.message === 'Network Error');
+
 // Module-level refresh state for race condition handling
 let refreshPromise: Promise<string> | null = null;
 let failedQueue: Array<{
@@ -25,6 +36,7 @@ const apiClient = axios.create({
   timeout: API_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   },
 });
 
@@ -45,6 +57,22 @@ apiClient.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+// Response interceptor - retry on network errors (handles Railway cold starts)
+apiClient.interceptors.response.use(undefined, async (error: AxiosError) => {
+  const config = error.config as InternalAxiosRequestConfig & { _networkRetry?: number };
+  if (!config || !isNetworkError(error)) return Promise.reject(error);
+
+  config._networkRetry = (config._networkRetry || 0) + 1;
+  if (config._networkRetry > MAX_NETWORK_RETRIES) {
+    console.warn(`[API] Network error after ${MAX_NETWORK_RETRIES} retries:`, error.code, error.message, config.url);
+    return Promise.reject(error);
+  }
+
+  console.log(`[API] Network error (${error.code}), retry ${config._networkRetry}/${MAX_NETWORK_RETRIES} for ${config.url}`);
+  await sleep(RETRY_DELAY_MS * config._networkRetry);
+  return apiClient(config);
+});
 
 // Response interceptor - unwrap { message, data } envelope
 apiClient.interceptors.response.use(

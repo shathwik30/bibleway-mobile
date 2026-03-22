@@ -29,6 +29,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "navigationBarColor": "#FFFFFF",
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.bibleway.app",
       "permissions": [
         "android.permission.CAMERA",
@@ -56,7 +57,8 @@
           "project": "bibleway-app",
           "uploadSourceMaps": false
         }
-      ]
+      ],
+      "react-native-iap"
     ],
     "extra": {
       "eas": {
