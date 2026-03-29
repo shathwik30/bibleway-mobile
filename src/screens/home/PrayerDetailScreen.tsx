@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
+import LoadingScreen from '@/components/layout/LoadingScreen';
 import PrayerCard from '@/components/feed/PrayerCard';
 import { usePrayerDetail } from '@/hooks/useSocial';
 import { useRecordView } from '@/hooks/useAnalytics';
@@ -14,16 +15,7 @@ export default function PrayerDetailScreen() {
   const { data: prayer, isLoading, isError } = usePrayerDetail(prayerId);
   useRecordView('prayer', prayerId);
 
-  if (isLoading) {
-    return (
-      <SafeAreaScreen>
-        <ScreenHeader title="Prayer Request" />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
-    );
-  }
+  if (isLoading) return <LoadingScreen title="Prayer Request" />;
 
   if (isError || !prayer) {
     return (

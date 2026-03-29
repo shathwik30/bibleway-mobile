@@ -3,6 +3,7 @@ import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import { api } from '@/api/client';
 import { ENDPOINTS } from '@/api/endpoints';
+import { mmkvStorage } from '@/lib/storage';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -16,7 +17,6 @@ Notifications.setNotificationHandler({
 
 export async function registerForPushNotifications(): Promise<string | null> {
   if (!Device.isDevice) {
-    console.warn('Push notifications require a physical device');
     return null;
   }
 
@@ -42,14 +42,14 @@ export async function registerForPushNotifications(): Promise<string | null> {
   const tokenData = await Notifications.getExpoPushTokenAsync();
   const token = tokenData.data;
 
-  // Register with backend
   try {
     await api.post(ENDPOINTS.notifications.registerToken, {
       token,
       platform: Platform.OS as 'ios' | 'android',
     });
-  } catch (error) {
-    console.error('Failed to register push token:', error);
+    mmkvStorage.setString('push_token', token);
+  } catch (e) {
+    console.warn('[push] Failed to register device token', e);
   }
 
   return token;
@@ -58,7 +58,7 @@ export async function registerForPushNotifications(): Promise<string | null> {
 export async function deregisterPushNotifications(token: string): Promise<void> {
   try {
     await api.post(ENDPOINTS.notifications.deregisterToken, { token });
-  } catch (error) {
-    console.error('Failed to deregister push token:', error);
+  } catch (e) {
+    console.warn('[push] Failed to deregister device token', e);
   }
 }

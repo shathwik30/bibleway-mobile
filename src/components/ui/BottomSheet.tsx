@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import GorhomBottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
+import GorhomBottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetView } from '@gorhom/bottom-sheet';
 
 interface BottomSheetProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export default function BottomSheet({ children, snapPoints: customSnapPoints, on
   const snapPoints = useMemo(() => customSnapPoints || ['25%', '50%'], [customSnapPoints]);
 
   const renderBackdrop = useCallback(
-    (props: any) => (
+    (props: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />
     ),
     []

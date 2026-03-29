@@ -6,7 +6,6 @@ import { useAppStore } from '@/stores/appStore';
 import { SUPPORTED_LANGUAGES } from '@/constants/languages';
 import { translateLocale, getCachedLocale } from '@/lib/i18nTranslate';
 
-// Bundled locale files (manually translated, highest quality)
 import en from '../../locales/en.json';
 import es from '../../locales/es.json';
 import fr from '../../locales/fr.json';
@@ -15,7 +14,7 @@ import hi from '../../locales/hi.json';
 import ar from '../../locales/ar.json';
 import sw from '../../locales/sw.json';
 
-const BUNDLED_LOCALES: Record<string, any> = { en, es, fr, pt, hi, ar, sw };
+const BUNDLED_LOCALES: Record<string, object> = { en, es, fr, pt, hi, ar, sw };
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -39,20 +38,12 @@ i18n.use(initReactI18next).init({
 
 export { i18n };
 
-/**
- * Load or auto-translate locale for a given language code.
- * Bundled locales are used directly; other languages are
- * translated from English using the free translation API
- * and cached in AsyncStorage.
- */
 async function loadLanguage(langCode: string): Promise<void> {
-  // Already loaded or bundled
   if (i18n.hasResourceBundle(langCode, 'translation')) {
     i18n.changeLanguage(langCode);
     return;
   }
 
-  // Try loading from cache first (instant)
   const cached = await getCachedLocale(langCode);
   if (cached) {
     i18n.addResourceBundle(langCode, 'translation', cached, true, true);
@@ -60,7 +51,6 @@ async function loadLanguage(langCode: string): Promise<void> {
     return;
   }
 
-  // Switch to English while translating, then swap once ready
   i18n.changeLanguage('en');
 
   try {
@@ -68,7 +58,6 @@ async function loadLanguage(langCode: string): Promise<void> {
     i18n.addResourceBundle(langCode, 'translation', translated, true, true);
     i18n.changeLanguage(langCode);
   } catch {
-    // Stay on English if translation fails
     i18n.changeLanguage('en');
   }
 }
@@ -78,6 +67,7 @@ export default function I18nProvider({ children }: { children: React.ReactNode }
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    setIsReady(false);
     loadLanguage(language).finally(() => setIsReady(true));
 
     const langDef = SUPPORTED_LANGUAGES.find((l) => l.code === language);
@@ -87,6 +77,7 @@ export default function I18nProvider({ children }: { children: React.ReactNode }
     }
   }, [language]);
 
-  // Don't block render — English is always available as fallback
+  if (!isReady) return null;
+
   return <>{children}</>;
 }

@@ -1,21 +1,11 @@
-/**
- * Free client-side translation using the Google Translate web API.
- * No API key required. Works for individual app usage.
- */
-
 const TRANSLATE_URL = 'https://translate.googleapis.com/translate_a/single';
 
-// Simple in-memory cache to avoid re-translating the same content
 const cache = new Map<string, string>();
 
 function cacheKey(text: string, from: string, to: string): string {
   return `${from}:${to}:${text.slice(0, 100)}`;
 }
 
-/**
- * Translate text from one language to another.
- * Splits long text into chunks to stay within API limits.
- */
 export async function translateText(
   text: string,
   targetLang: string,
@@ -27,7 +17,6 @@ export async function translateText(
   const cached = cache.get(key);
   if (cached) return cached;
 
-  // Split into chunks of ~4000 chars (API limit is ~5000)
   const chunks = splitText(text, 4000);
   const translated: string[] = [];
 
@@ -39,7 +28,6 @@ export async function translateText(
   const fullResult = translated.join('');
   cache.set(key, fullResult);
 
-  // Keep cache from growing too large
   if (cache.size > 200) {
     const firstKey = cache.keys().next().value;
     if (firstKey) cache.delete(firstKey);
@@ -68,15 +56,14 @@ async function translateChunk(
 
   const data = await response.json();
 
-  // Response format: [[["translated text","original text",null,null,int],...]]
   if (Array.isArray(data) && Array.isArray(data[0])) {
-    return data[0]
-      .filter((segment: any) => segment && segment[0])
-      .map((segment: any) => segment[0])
+    return (data[0] as Array<[string, ...unknown[]] | null>)
+      .filter((segment): segment is [string, ...unknown[]] => !!segment?.[0])
+      .map((segment) => segment[0])
       .join('');
   }
 
-  return text; // fallback to original
+  return text;
 }
 
 function splitText(text: string, maxLength: number): string[] {
@@ -91,7 +78,6 @@ function splitText(text: string, maxLength: number): string[] {
       break;
     }
 
-    // Find a good break point (sentence end or newline)
     let breakAt = remaining.lastIndexOf('. ', maxLength);
     if (breakAt === -1 || breakAt < maxLength * 0.5) {
       breakAt = remaining.lastIndexOf('\n', maxLength);

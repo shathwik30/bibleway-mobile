@@ -2,41 +2,46 @@ import React from 'react';
 import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { formatDistanceToNow } from 'date-fns';
+import { colors } from '@/theme/colors';
 import { useTranslation } from 'react-i18next';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import Avatar from '@/components/ui/Avatar';
 import EmptyState from '@/components/ui/EmptyState';
+import ErrorState from '@/components/ui/ErrorState';
 import { useNotifications, useMarkRead } from '@/hooks/useNotifications';
+import { flattenPages } from '@/lib/pages';
 import type { Notification } from '@/types/models';
 
 export default function NotificationsScreen() {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const notificationsQuery = useNotifications();
   const markRead = useMarkRead();
 
-  const allNotifications: Notification[] = notificationsQuery.data?.pages?.flatMap(
-    (page: any) => page.results || []
-  ) ?? [];
+  const allNotifications = flattenPages(notificationsQuery.data);
 
   const handlePress = (notification: Notification) => {
     if (!notification.is_read) {
       markRead.mutate(notification.id);
     }
-    const data = notification.data || {};
+    const data = notification.data;
     switch (notification.notification_type) {
       case 'follow':
-        if (data.user_id) navigation.navigate('UserProfile', { userId: data.user_id });
+        if (data.user_id) navigation.navigate('UserProfile', { userId: String(data.user_id) });
         break;
       case 'reaction':
       case 'comment':
+      case 'prayer_comment':
       case 'share':
-        if (data.post_id) navigation.navigate('PostDetail', { postId: data.post_id });
-        else if (data.prayer_id) navigation.navigate('PrayerDetail', { prayerId: data.prayer_id });
+      case 'boost_live':
+      case 'boost_digest':
+        if (data.post_id) navigation.navigate('PostDetail', { postId: String(data.post_id) });
+        else if (data.prayer_id) navigation.navigate('PrayerDetail', { prayerId: String(data.prayer_id) });
         break;
       case 'reply':
-        if (data.post_id) navigation.navigate('Comments', { contentType: 'post', objectId: data.post_id });
+        if (data.post_id) navigation.navigate('Comments', { contentType: 'post', objectId: String(data.post_id) });
+        else if (data.prayer_id) navigation.navigate('Comments', { contentType: 'prayer', objectId: String(data.prayer_id) });
         break;
     }
   };
@@ -80,7 +85,9 @@ export default function NotificationsScreen() {
         renderItem={renderItem}
         ListEmptyComponent={
           notificationsQuery.isLoading ? (
-            <View className="py-8"><ActivityIndicator color="#4A6FA5" /></View>
+            <View className="py-8"><ActivityIndicator color={colors.primary.DEFAULT} /></View>
+          ) : notificationsQuery.isError ? (
+            <ErrorState message={notificationsQuery.error?.message} onRetry={() => notificationsQuery.refetch()} />
           ) : (
             <EmptyState icon="notifications-outline" title={t('notifications.noNotifications')} />
           )

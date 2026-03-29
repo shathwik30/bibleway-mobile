@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react';
 import { FlatList, RefreshControl, ActivityIndicator, View, FlatListProps } from 'react-native';
-import { UseInfiniteQueryResult } from '@tanstack/react-query';
+import { colors } from '@/theme/colors';
+import { UseInfiniteQueryResult, InfiniteData } from '@tanstack/react-query';
 import EmptyState from '../ui/EmptyState';
 import ErrorState from '../ui/ErrorState';
 import { FeedSkeleton } from '../ui/Skeleton';
+import { flattenPages } from '@/lib/pages';
 
 interface InfiniteListProps<T> {
-  queryResult: UseInfiniteQueryResult<any, Error>;
+  queryResult: UseInfiniteQueryResult<InfiniteData<{ results: T[] }>, Error>;
   renderItem: FlatListProps<T>['renderItem'];
   keyExtractor: (item: T) => string;
   emptyTitle?: string;
@@ -39,7 +41,7 @@ export default function InfiniteList<T>({
     isRefetching,
   } = queryResult;
 
-  const allItems = data?.pages?.flatMap((page: any) => page.results || page.data?.results || []) ?? [];
+  const allItems = flattenPages(data);
 
   const handleEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -51,7 +53,7 @@ export default function InfiniteList<T>({
     if (!isFetchingNextPage) return null;
     return (
       <View className="py-4">
-        <ActivityIndicator size="small" color="#4A6FA5" />
+        <ActivityIndicator size="small" color={colors.primary.DEFAULT} />
       </View>
     );
   };
@@ -66,7 +68,7 @@ export default function InfiniteList<T>({
 
   return (
     <FlatList
-      data={allItems as T[]}
+      data={allItems}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       ListHeaderComponent={headerComponent}
@@ -78,11 +80,14 @@ export default function InfiniteList<T>({
         <RefreshControl
           refreshing={isRefetching && !isFetchingNextPage}
           onRefresh={() => refetch()}
-          tintColor="#4A6FA5"
+          tintColor={colors.primary.DEFAULT}
         />
       }
       keyboardDismissMode="on-drag"
       showsVerticalScrollIndicator={false}
+      maxToRenderPerBatch={10}
+      windowSize={7}
+      removeClippedSubviews
       contentContainerStyle={{ flexGrow: 1, paddingBottom: bottomInset + 24 }}
     />
   );

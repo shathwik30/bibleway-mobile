@@ -33,7 +33,7 @@ export default function ResetPasswordScreen() {
         showToast('success', 'Success', 'Password reset successfully');
         navigation.navigate('Login');
       },
-      onError: (error: any) => showToast('error', 'Error', error?.response?.data?.message || 'Failed to reset password'),
+      onError: (error) => showToast('error', 'Error', error.message || 'Failed to reset password'),
     });
   };
 

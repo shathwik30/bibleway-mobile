@@ -5,6 +5,27 @@ import { useAuthStore } from '@/stores/authStore';
 import { AuthTokens } from '@/types/api';
 import { UserProfile } from '@/types/models';
 
+interface GoogleAuthInput {
+  id_token: string;
+  date_of_birth?: string;
+  gender?: string;
+  country?: string;
+  preferred_language?: string;
+  phone_number?: string;
+}
+
+interface GoogleAuthResponse {
+  is_new_user: boolean;
+  access?: string;
+  refresh?: string;
+  user_id?: string;
+  google_user?: {
+    email: string;
+    full_name: string;
+    profile_photo: string;
+  };
+}
+
 interface RegisterInput {
   email: string;
   password: string;
@@ -30,9 +51,33 @@ export function useLogin() {
       api.post<AuthTokens>(ENDPOINTS.auth.login, input),
     onSuccess: async (data) => {
       await setTokens(data as AuthTokens);
-      // Fetch user profile
-      const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
-      setUser(profile);
+      try {
+        const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
+        setUser(profile);
+      } catch {
+        // Tokens are valid; profile will load on next navigation
+      }
+    },
+  });
+}
+
+export function useGoogleAuth() {
+  const setTokens = useAuthStore((s) => s.setTokens);
+  const setUser = useAuthStore((s) => s.setUser);
+
+  return useMutation({
+    mutationFn: (input: GoogleAuthInput) =>
+      api.post<GoogleAuthResponse>(ENDPOINTS.auth.googleAuth, input),
+    onSuccess: async (data) => {
+      if (!data.is_new_user && data.access && data.refresh) {
+        await setTokens({ access: data.access, refresh: data.refresh });
+        try {
+          const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
+          setUser(profile);
+        } catch {
+          // Tokens are valid; profile will load on next navigation
+        }
+      }
     },
   });
 }

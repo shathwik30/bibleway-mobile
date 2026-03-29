@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import ProfileHeader from '@/components/profile/ProfileHeader';
@@ -16,7 +17,7 @@ import type { Post, Prayer } from '@/types/models';
 type Tab = 'posts' | 'prayers';
 
 export default function UserProfileScreen() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const route = useRoute<RouteProp<HomeStackParamList, 'UserProfile'>>();
   const { userId } = route.params;
   const { data: profile, isLoading } = useUserProfile(userId);
@@ -31,7 +32,7 @@ export default function UserProfileScreen() {
       <SafeAreaScreen>
         <ScreenHeader title="Profile" />
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
+          <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
         </View>
       </SafeAreaScreen>
     );

@@ -42,11 +42,9 @@ const LANGUAGE_OPTIONS = SUPPORTED_LANGUAGES.map((lang) => ({
   value: lang.code,
 }));
 
-// Maximum date = 13 years ago (minimum age)
 const MAX_DOB = new Date();
 MAX_DOB.setFullYear(MAX_DOB.getFullYear() - 13);
 
-// Minimum date = 120 years ago
 const MIN_DOB = new Date();
 MIN_DOB.setFullYear(MIN_DOB.getFullYear() - 120);
 
@@ -69,9 +67,8 @@ export default function RegisterScreen() {
         showToast('success', 'Account Created', 'Please verify your email');
         navigation.navigate('OTPVerification', { email: data.email, purpose: 'email_verification' });
       },
-      onError: (error: any) => {
-        const message = error?.response?.data?.message || 'Registration failed';
-        showToast('error', 'Error', message);
+      onError: (error) => {
+        showToast('error', 'Error', error.message || 'Registration failed');
       },
     });
   };
@@ -96,7 +93,6 @@ export default function RegisterScreen() {
           )}
         />
 
-        {/* Date of Birth - Date Picker */}
         <Controller control={control} name="date_of_birth"
           render={({ field: { onChange, value } }) => (
             <DatePicker
@@ -110,7 +106,6 @@ export default function RegisterScreen() {
           )}
         />
 
-        {/* Gender - Select Picker */}
         <Controller control={control} name="gender"
           render={({ field: { onChange, value } }) => (
             <SelectPicker
@@ -124,7 +119,6 @@ export default function RegisterScreen() {
           )}
         />
 
-        {/* Country - Searchable Country Picker */}
         <Controller control={control} name="country"
           render={({ field: { onChange, value } }) => (
             <CountryPicker
@@ -136,7 +130,6 @@ export default function RegisterScreen() {
           )}
         />
 
-        {/* Preferred Language - Select Picker */}
         <Controller control={control} name="preferred_language"
           render={({ field: { onChange, value } }) => (
             <SelectPicker

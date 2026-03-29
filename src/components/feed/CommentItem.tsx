@@ -3,6 +3,8 @@ import { View, Text, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { formatDistanceToNow } from 'date-fns';
 import Avatar from '../ui/Avatar';
+import StickerMessage from './StickerMessage';
+import { isSticker } from '@/constants/stickers';
 import type { Comment } from '@/types/models';
 
 interface CommentItemProps {
@@ -12,7 +14,8 @@ interface CommentItemProps {
 }
 
 export default function CommentItem({ comment, onReply, onViewReplies }: CommentItemProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
+  const isStickerComment = isSticker(comment.text);
 
   return (
     <View className="flex-row px-4 py-3">
@@ -23,9 +26,13 @@ export default function CommentItem({ comment, onReply, onViewReplies }: Comment
         <View className="bg-surface rounded-xl px-3 py-2">
           <View className="flex-row items-center">
             <Text className="text-sm font-semibold text-textPrimary">{comment.user.full_name}</Text>
-            {(comment.user as any).age ? <Text className="text-xs text-textTertiary ml-1.5">· {(comment.user as any).age}y</Text> : null}
+            {comment.user.age ? <Text className="text-xs text-textTertiary ml-1.5">· {comment.user.age}y</Text> : null}
           </View>
-          <Text className="text-sm text-textPrimary mt-0.5">{comment.text}</Text>
+          {isStickerComment ? (
+            <StickerMessage text={comment.text} size={100} />
+          ) : (
+            <Text className="text-sm text-textPrimary mt-0.5">{comment.text}</Text>
+          )}
         </View>
         <View className="flex-row items-center mt-1 ml-1">
           <Text className="text-xs text-textSecondary">

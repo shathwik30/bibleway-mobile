@@ -8,11 +8,10 @@ interface StatsRowProps {
   posts: number;
   prayers: number;
   userId: string;
-  hideFollowers?: boolean;
 }
 
-export default function StatsRow({ followers, following, posts, prayers, userId, hideFollowers = false }: StatsRowProps) {
-  const navigation = useNavigation<any>();
+export default function StatsRow({ followers, following, posts, prayers, userId }: StatsRowProps) {
+  const navigation = useNavigation();
 
   return (
     <View className="flex-row mt-4 w-full justify-around">
@@ -25,11 +24,10 @@ export default function StatsRow({ followers, following, posts, prayers, userId,
         <Text className="text-xs text-textSecondary">Prayers</Text>
       </View>
       <Pressable
-        onPress={() => !hideFollowers && navigation.navigate('Followers', { userId })}
+        onPress={() => navigation.navigate('Followers', { userId })}
         className="items-center"
-        disabled={hideFollowers}
       >
-        <Text className="text-lg font-bold text-textPrimary">{hideFollowers ? '-' : followers}</Text>
+        <Text className="text-lg font-bold text-textPrimary">{followers}</Text>
         <Text className="text-xs text-textSecondary">Followers</Text>
       </Pressable>
       <Pressable

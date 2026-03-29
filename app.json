@@ -20,7 +20,13 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.bibleway.app"
+      "bundleIdentifier": "com.bibleway.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "BibleWay needs access to your camera to take photos for posts and your profile.",
+        "NSPhotoLibraryUsageDescription": "BibleWay needs access to your photo library to share photos in posts and prayers.",
+        "NSFaceIDUsageDescription": "BibleWay uses Face ID for quick and secure login.",
+        "NSUserTrackingUsageDescription": "BibleWay uses this to improve your experience."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -33,13 +39,12 @@
       "package": "com.bibleway.app",
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO",
         "android.permission.USE_BIOMETRIC",
-        "android.permission.USE_FINGERPRINT"
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO"
       ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-secure-store",
@@ -50,15 +55,8 @@
       "expo-local-authentication",
       "expo-image",
       "expo-sharing",
-      [
-        "@sentry/react-native",
-        {
-          "organization": "bibleway",
-          "project": "bibleway-app",
-          "uploadSourceMaps": false
-        }
-      ],
-      "react-native-iap"
+      "react-native-iap",
+      "@react-native-google-signin/google-signin"
     ],
     "extra": {
       "eas": {

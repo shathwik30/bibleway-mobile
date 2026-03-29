@@ -1,26 +1,24 @@
 import React from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
+import LoadingScreen from '@/components/layout/LoadingScreen';
+import EmptyState from '@/components/ui/EmptyState';
 import { useBookmarks, useDeleteBookmark } from '@/hooks/useBible';
+import { flattenPages } from '@/lib/pages';
+import { confirmAction } from '@/lib/confirm';
+import { colors } from '@/theme/colors';
 
 export default function BookmarksScreen() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const { data, isLoading } = useBookmarks();
-  const bookmarks = data?.pages?.flatMap((page: any) => page.results || []) ?? [];
+  const bookmarks = flattenPages(data);
   const deleteMutation = useDeleteBookmark();
 
   if (isLoading) {
-    return (
-      <SafeAreaScreen>
-        <ScreenHeader title="Bookmarks" />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
-    );
+    return <LoadingScreen title="Bookmarks" />;
   }
 
   return (
@@ -33,29 +31,24 @@ export default function BookmarksScreen() {
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3">
             <Pressable
-              onPress={() => navigation.navigate('SegregatedPageDetail', { pageId: item.page_id })}
+              onPress={() => item.object_id ? navigation.navigate('SegregatedPageDetail', { pageId: item.object_id }) : undefined}
               className="flex-1 mr-3"
             >
-              <Text className="text-base font-semibold text-textPrimary">{item.title}</Text>
-              <Text className="text-sm text-textSecondary mt-1">{item.reference || ''}</Text>
+              <Text className="text-base font-semibold text-textPrimary">{item.verse_reference}</Text>
+              <Text className="text-sm text-textSecondary mt-1">{item.bookmark_type}</Text>
             </Pressable>
-            <Pressable onPress={() => Alert.alert(
+            <Pressable onPress={() => confirmAction(
               'Delete Bookmark',
-              'Are you sure you want to delete this bookmark?',
-              [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Delete', style: 'destructive', onPress: () => deleteMutation.mutate(item.id) },
-              ],
+              'Are you sure?',
+              () => deleteMutation.mutate(item.id),
+              'Delete',
             )} className="p-2">
-              <Ionicons name="trash-outline" size={20} color="#EF4444" />
+              <Ionicons name="trash-outline" size={20} color={colors.error} />
             </Pressable>
           </View>
         )}
         ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Ionicons name="bookmark-outline" size={48} color="#9CA3AF" />
-            <Text className="text-base text-textSecondary mt-4">No bookmarks yet</Text>
-          </View>
+          <EmptyState icon="bookmark-outline" title="No bookmarks yet" />
         }
       />
     </SafeAreaScreen>

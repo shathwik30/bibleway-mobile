@@ -4,6 +4,7 @@ import { api } from '@/api/client';
 import { ENDPOINTS } from '@/api/endpoints';
 import { getSecureValue, saveSecureValue, deleteSecureValue } from '@/lib/secureStorage';
 import { mmkvStorage } from '@/lib/storage';
+import { deregisterPushNotifications } from '@/lib/pushNotifications';
 import { AuthTokens } from '@/types/api';
 
 interface AuthState {
@@ -41,12 +42,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const token = get().accessToken;
     if (token) {
       try {
+        const pushToken = mmkvStorage.getString('push_token');
+        if (pushToken) {
+          await deregisterPushNotifications(pushToken).catch(() => {});
+          mmkvStorage.delete('push_token');
+        }
+      } catch {}
+      try {
         const refreshToken = await getSecureValue('refresh_token');
         if (refreshToken) {
           await api.post(ENDPOINTS.auth.logout, { refresh: refreshToken });
         }
-      } catch {
-        // Ignore logout API errors
+      } catch (e) {
+        console.warn('[auth] Server-side logout failed', e);
       }
     }
     await deleteSecureValue('refresh_token');
@@ -66,7 +74,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         return;
       }
 
-      // Try to get new access token
       const tokens = await api.post<AuthTokens>(
         ENDPOINTS.auth.refreshToken,
         { refresh: refreshToken }
@@ -78,7 +85,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         await saveSecureValue('refresh_token', tokens.refresh);
       }
 
-      // Fetch user profile
       const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
       set({ user: profile, isLoading: false });
     } catch {

@@ -1,8 +1,8 @@
 export interface FTDLevel {
   id: number;
   title: string;
-  correct: string[];   // 4 correct differences
-  wrong: string[];     // 2 distractors
+  correct: string[];
+  wrong: string[];
 }
 
 export const FTD_LEVELS: FTDLevel[] = [

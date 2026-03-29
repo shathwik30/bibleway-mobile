@@ -28,7 +28,7 @@ export default function ForgotPasswordScreen() {
         showToast('success', 'Code Sent', 'Check your email for the reset code');
         navigation.navigate('OTPVerification', { email: data.email, purpose: 'password_reset' });
       },
-      onError: (error: any) => showToast('error', 'Error', error?.response?.data?.message || 'Failed to send code'),
+      onError: (error) => showToast('error', 'Error', error.message || 'Failed to send code'),
     });
   };
 

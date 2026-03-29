@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import Button from '@/components/ui/Button';
@@ -25,18 +26,21 @@ export default function CreatePrayerScreen() {
       return;
     }
 
+    if (media.length > 0 && !accessToken) {
+      showToast('error', 'Error', 'Please log in again');
+      return;
+    }
+
     setSubmitting(true);
     try {
-      // Step 1: Upload media if any
       let mediaKeys: string[] = [];
       let mediaTypes: string[] = [];
       if (media.length > 0) {
-        const uploaded = await uploadMedia(accessToken ?? '');
+        const uploaded = await uploadMedia(accessToken!);
         mediaKeys = uploaded.keys;
         mediaTypes = uploaded.types;
       }
 
-      // Step 2: Create the prayer
       await createMutation.mutateAsync({
         title: title.trim(),
         description: description.trim(),
@@ -45,13 +49,8 @@ export default function CreatePrayerScreen() {
 
       showToast('success', 'Submitted', 'Your prayer request has been shared');
       navigation.goBack();
-    } catch (error: any) {
-      console.error('Create prayer error:', error);
-      const msg =
-        error?.response?.data?.message ||
-        error?.response?.data?.detail ||
-        error?.message ||
-        'Something went wrong';
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : 'Something went wrong';
       showToast('error', 'Error', msg);
     } finally {
       setSubmitting(false);
@@ -84,8 +83,8 @@ export default function CreatePrayerScreen() {
 
         {media.length > 0 && (
           <View className="flex-row flex-wrap gap-2 mt-3">
-            {media.map((item, index) => (
-              <Pressable key={index} onLongPress={() => removeMedia(index)}>
+            {media.map((item, i) => (
+              <Pressable key={item.uri} onLongPress={() => removeMedia(i)}>
                 <Image source={{ uri: item.uri }} className="w-20 h-20 rounded-lg" />
               </Pressable>
             ))}
@@ -94,7 +93,7 @@ export default function CreatePrayerScreen() {
 
         <View className="flex-row items-center justify-between py-4">
           <Pressable onPress={pickImages} disabled={isLoading} className="flex-row items-center p-2">
-            <Ionicons name="image-outline" size={24} color="#4A6FA5" />
+            <Ionicons name="image-outline" size={24} color={colors.primary.DEFAULT} />
           </Pressable>
           <Button
             title="Submit"

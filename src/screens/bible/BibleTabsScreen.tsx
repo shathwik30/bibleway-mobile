@@ -2,6 +2,7 @@ import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useTranslation } from 'react-i18next';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
+import { colors } from '@/theme/colors';
 import BibleVersionSelectScreen from './BibleVersionSelectScreen';
 import SegregatedSectionsScreen from './SegregatedSectionsScreen';
 
@@ -15,9 +16,9 @@ export default function BibleTabsScreen() {
       <TopTab.Navigator
         screenOptions={{
           tabBarLabelStyle: { fontSize: 14, fontWeight: '600', textTransform: 'none' },
-          tabBarIndicatorStyle: { backgroundColor: '#4A6FA5' },
-          tabBarActiveTintColor: '#4A6FA5',
-          tabBarInactiveTintColor: '#6B7280',
+          tabBarIndicatorStyle: { backgroundColor: colors.primary.DEFAULT },
+          tabBarActiveTintColor: colors.primary.DEFAULT,
+          tabBarInactiveTintColor: colors.textSecondary,
         }}
       >
         <TopTab.Screen

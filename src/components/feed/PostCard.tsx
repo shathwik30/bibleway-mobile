@@ -14,7 +14,7 @@ interface PostCardProps {
 }
 
 function PostCard({ post }: PostCardProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const [expanded, setExpanded] = React.useState(false);
 
   const shouldTruncate = post.text_content.length > 200;
@@ -28,7 +28,6 @@ function PostCard({ post }: PostCardProps) {
       className="bg-white border-b border-border"
     >
       <View className="px-4 pt-3">
-        {/* Author Row */}
         <View className="flex-row items-center mb-2">
           <Pressable
             onPress={() => navigation.navigate('UserProfile', { userId: post.author.id })}
@@ -48,7 +47,6 @@ function PostCard({ post }: PostCardProps) {
           {post.is_boosted && <BoostedBadge />}
         </View>
 
-        {/* Text Content */}
         {post.text_content ? (
           <View className="mb-2">
             <Text className="text-base text-textPrimary leading-6">{displayText}</Text>
@@ -61,10 +59,8 @@ function PostCard({ post }: PostCardProps) {
         ) : null}
       </View>
 
-      {/* Media */}
       {post.media.length > 0 && <MediaCarousel media={post.media} />}
 
-      {/* Reactions & Actions */}
       <View className="px-4 py-2">
         <ReactionBar
           contentType="post"

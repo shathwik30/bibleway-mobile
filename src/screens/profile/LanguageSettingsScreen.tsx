@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, FlatList, Pressable, TextInput, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import { SUPPORTED_LANGUAGES } from '@/constants/languages';
@@ -30,10 +31,8 @@ export default function LanguageSettingsScreen() {
     const langName = SUPPORTED_LANGUAGES.find((l) => l.code === langCode)?.name || langCode;
 
     if (!BUNDLED_CODES.has(langCode)) {
-      // Non-bundled language — I18nProvider will auto-translate
       setLoadingLang(langCode);
       setLanguage(langCode);
-      // Give time for translation to complete, then clear loading
       setTimeout(() => setLoadingLang(null), 3000);
     } else {
       setLanguage(langCode);
@@ -46,7 +45,6 @@ export default function LanguageSettingsScreen() {
     <SafeAreaScreen>
       <ScreenHeader title="Language" />
 
-      {/* Search bar */}
       <View className="mx-4 mt-2 mb-3 bg-gray-100 rounded-xl flex-row items-center px-3">
         <Ionicons name="search" size={18} color="#9CA3AF" />
         <TextInput
@@ -79,9 +77,9 @@ export default function LanguageSettingsScreen() {
               <Text className="text-xs text-textSecondary">{item.nativeName}</Text>
             </View>
             {loadingLang === item.code ? (
-              <ActivityIndicator size="small" color="#4A6FA5" />
+              <ActivityIndicator size="small" color={colors.primary.DEFAULT} />
             ) : currentLanguage === item.code ? (
-              <Ionicons name="checkmark-circle" size={24} color="#4A6FA5" />
+              <Ionicons name="checkmark-circle" size={24} color={colors.primary.DEFAULT} />
             ) : null}
           </Pressable>
         )}

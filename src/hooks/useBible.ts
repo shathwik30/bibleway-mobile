@@ -8,9 +8,10 @@ import type { BookmarkType, HighlightType, HighlightColor, NoteType } from '@/ty
 import type {
   SegregatedSection, SegregatedChapter, SegregatedPage, SegregatedPageDetail,
   Bookmark, Highlight, Note,
-  BibleVersion, BibleBook, BibleChapterSummary, BibleChapterContent,
+  BibleVersion, BibleDetail, BibleBook, BibleChapterSummary, BibleChapterContent,
   BibleVerseSummary, BibleVerseContent, BiblePassageContent,
-  BibleSearchResult, AudioBible, AudioBibleChapter,
+  BibleSearchResult, BibleSectionSummary, BibleSectionContent,
+  AudioBible, AudioBibleDetail, AudioBibleChapter,
 } from '@/types/models';
 
 interface CreateBookmarkInput {
@@ -35,7 +36,6 @@ interface CreateNoteInput {
   object_id?: string;
 }
 
-// Segregated Bible
 export function useSections() {
   return useQuery({
     queryKey: ['bible', 'sections'],
@@ -71,11 +71,7 @@ export function usePageDetail(pageId: string, lang?: string) {
   });
 }
 
-// ---------------------------------------------------------------------------
-// API Bible proxy (generic + dedicated typed hooks)
-// ---------------------------------------------------------------------------
-
-export function useApiBible<T = any>(path: string, params?: Record<string, string>) {
+export function useApiBible<T = unknown>(path: string, params?: Record<string, string>) {
   return useQuery({
     queryKey: ['apiBible', path, params],
     queryFn: () => api.get<T>(ENDPOINTS.bible.apiBibleProxy(path), params),
@@ -84,17 +80,30 @@ export function useApiBible<T = any>(path: string, params?: Record<string, strin
   });
 }
 
-/** List available Bible versions. Defaults to English to keep response fast. */
+export function useBibleDetail(bibleId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'bible', bibleId],
+    queryFn: () => api.get<BibleDetail>(ENDPOINTS.bible.apiBibleProxy(`bibles/${bibleId}`)),
+    ...CACHE_DURATIONS.bibleVersions,
+    enabled: !!bibleId,
+  });
+}
+
 export function useBibleVersions(params?: { language?: string; abbreviation?: string }) {
-  const queryParams = { language: 'eng', ...params };
+  const queryParams: Record<string, string> = {};
+  if (params?.language) queryParams.language = params.language;
+  if (params?.abbreviation) queryParams.abbreviation = params.abbreviation;
+
   return useQuery({
     queryKey: ['apiBible', 'bibles', queryParams],
-    queryFn: () => api.get<BibleVersion[]>(ENDPOINTS.bible.apiBibleProxy('bibles/'), queryParams),
+    queryFn: () => api.get<BibleVersion[]>(
+      ENDPOINTS.bible.apiBibleProxy('bibles/'),
+      Object.keys(queryParams).length > 0 ? queryParams : undefined,
+    ),
     ...CACHE_DURATIONS.bibleVersions,
   });
 }
 
-/** List books for a given Bible version. */
 export function useBibleBooks(bibleId: string) {
   return useQuery({
     queryKey: ['apiBible', 'books', bibleId],
@@ -104,7 +113,52 @@ export function useBibleBooks(bibleId: string) {
   });
 }
 
-/** List chapters for a book within a Bible version. */
+export function useBibleBookDetail(bibleId: string, bookId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'book', bibleId, bookId],
+    queryFn: () => api.get<BibleBook>(
+      ENDPOINTS.bible.apiBibleProxy(`bibles/${bibleId}/books/${bookId}`),
+      { 'include-chapters': 'true' },
+    ),
+    ...CACHE_DURATIONS.bibleContent,
+    enabled: !!bibleId && !!bookId,
+  });
+}
+
+export function useBibleBookSections(bibleId: string, bookId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'bookSections', bibleId, bookId],
+    queryFn: () => api.get<BibleSectionSummary[]>(
+      ENDPOINTS.bible.apiBibleProxy(`bibles/${bibleId}/books/${bookId}/sections`),
+    ),
+    ...CACHE_DURATIONS.bibleContent,
+    enabled: !!bibleId && !!bookId,
+  });
+}
+
+export function useBibleChapterSections(bibleId: string, chapterId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'chapterSections', bibleId, chapterId],
+    queryFn: () => api.get<BibleSectionSummary[]>(
+      ENDPOINTS.bible.apiBibleProxy(`bibles/${bibleId}/chapters/${chapterId}/sections`),
+    ),
+    ...CACHE_DURATIONS.bibleContent,
+    enabled: !!bibleId && !!chapterId,
+  });
+}
+
+export function useBibleSection(bibleId: string, sectionId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'section', bibleId, sectionId],
+    queryFn: () => api.get<BibleSectionContent>(
+      ENDPOINTS.bible.apiBibleProxy(`bibles/${bibleId}/sections/${sectionId}`),
+      { 'content-type': 'text', 'include-verse-numbers': 'true' },
+    ),
+    ...CACHE_DURATIONS.bibleContent,
+    enabled: !!bibleId && !!sectionId,
+  });
+}
+
 export function useBibleChapters(bibleId: string, bookId: string) {
   return useQuery({
     queryKey: ['apiBible', 'chapters', bibleId, bookId],
@@ -116,7 +170,6 @@ export function useBibleChapters(bibleId: string, bookId: string) {
   });
 }
 
-/** Get full chapter content (text) for reading. */
 export function useBibleChapterContent(bibleId: string, chapterId: string) {
   return useQuery({
     queryKey: ['apiBible', 'chapterContent', bibleId, chapterId],
@@ -133,7 +186,6 @@ export function useBibleChapterContent(bibleId: string, chapterId: string) {
   });
 }
 
-/** List verses in a chapter. */
 export function useBibleVerses(bibleId: string, chapterId: string) {
   return useQuery({
     queryKey: ['apiBible', 'verses', bibleId, chapterId],
@@ -145,7 +197,6 @@ export function useBibleVerses(bibleId: string, chapterId: string) {
   });
 }
 
-/** Get a single verse with content. */
 export function useBibleVerse(bibleId: string, verseId: string) {
   return useQuery({
     queryKey: ['apiBible', 'verse', bibleId, verseId],
@@ -158,7 +209,6 @@ export function useBibleVerse(bibleId: string, verseId: string) {
   });
 }
 
-/** Get a passage (range of verses). */
 export function useBiblePassage(bibleId: string, passageId: string) {
   return useQuery({
     queryKey: ['apiBible', 'passage', bibleId, passageId],
@@ -171,19 +221,26 @@ export function useBiblePassage(bibleId: string, passageId: string) {
   });
 }
 
-/** Search within a Bible version. */
-export function useApiBibleSearch(bibleId: string, query: string) {
+export function useApiBibleSearch(
+  bibleId: string,
+  query: string,
+  options?: { limit?: number; offset?: number; sort?: 'relevance' | 'canonical' | 'reverse-canonical'; range?: string },
+) {
+  const params: Record<string, string> = { query, limit: String(options?.limit ?? 25) };
+  if (options?.offset) params.offset = String(options.offset);
+  if (options?.sort) params.sort = options.sort;
+  if (options?.range) params.range = options.range;
+
   return useQuery({
-    queryKey: ['apiBible', 'search', bibleId, query],
+    queryKey: ['apiBible', 'search', bibleId, query, params],
     queryFn: () => api.get<BibleSearchResult>(
       ENDPOINTS.bible.apiBibleProxy(`bibles/${bibleId}/search`),
-      { query, limit: '25' },
+      params,
     ),
     enabled: !!bibleId && query.length >= 2,
   });
 }
 
-/** List available audio Bibles. */
 export function useAudioBibles(params?: { language?: string; bibleId?: string }) {
   return useQuery({
     queryKey: ['apiBible', 'audioBibles', params],
@@ -192,7 +249,35 @@ export function useAudioBibles(params?: { language?: string; bibleId?: string })
   });
 }
 
-/** Get audio chapter with resourceUrl and timecodes. */
+export function useAudioBibleDetail(audioBibleId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'audioBible', audioBibleId],
+    queryFn: () => api.get<AudioBibleDetail>(ENDPOINTS.bible.apiBibleProxy(`audio-bibles/${audioBibleId}`)),
+    ...CACHE_DURATIONS.bibleVersions,
+    enabled: !!audioBibleId,
+  });
+}
+
+export function useAudioBibleBooks(audioBibleId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'audioBooks', audioBibleId],
+    queryFn: () => api.get<BibleBook[]>(ENDPOINTS.bible.apiBibleProxy(`audio-bibles/${audioBibleId}/books`)),
+    ...CACHE_DURATIONS.bibleContent,
+    enabled: !!audioBibleId,
+  });
+}
+
+export function useAudioBibleBookChapters(audioBibleId: string, bookId: string) {
+  return useQuery({
+    queryKey: ['apiBible', 'audioBookChapters', audioBibleId, bookId],
+    queryFn: () => api.get<BibleChapterSummary[]>(
+      ENDPOINTS.bible.apiBibleProxy(`audio-bibles/${audioBibleId}/books/${bookId}/chapters`),
+    ),
+    ...CACHE_DURATIONS.bibleContent,
+    enabled: !!audioBibleId && !!bookId,
+  });
+}
+
 export function useAudioBibleChapter(audioBibleId: string, chapterId: string) {
   return useQuery({
     queryKey: ['apiBible', 'audioChapter', audioBibleId, chapterId],
@@ -204,7 +289,6 @@ export function useAudioBibleChapter(audioBibleId: string, chapterId: string) {
   });
 }
 
-// Bible search
 export function useBibleSearch(query: string) {
   return useQuery({
     queryKey: ['bible', 'search', query],
@@ -213,7 +297,6 @@ export function useBibleSearch(query: string) {
   });
 }
 
-// Bookmarks
 export function useBookmarks() {
   return useInfiniteQuery({
     queryKey: ['bookmarks'],
@@ -240,7 +323,6 @@ export function useDeleteBookmark() {
   });
 }
 
-// Highlights
 export function useHighlights() {
   return useInfiniteQuery({
     queryKey: ['highlights'],
@@ -267,7 +349,6 @@ export function useDeleteHighlight() {
   });
 }
 
-// Notes
 export function useNotes() {
   return useInfiniteQuery({
     queryKey: ['notes'],
@@ -300,5 +381,12 @@ export function useDeleteNote() {
   return useMutation({
     mutationFn: (id: string) => api.delete(ENDPOINTS.bible.noteDetail(id)),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes'] }),
+  });
+}
+
+export function useCreatePageComment() {
+  return useMutation({
+    mutationFn: ({ pageId, content }: { pageId: string; content: string }) =>
+      api.post(ENDPOINTS.bible.pageComments(pageId), { content }),
   });
 }

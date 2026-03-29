@@ -17,7 +17,6 @@ import ScreenHeader from '@/components/layout/ScreenHeader';
 import { QUIZ_LEVELS, type QuizLevel } from '@/constants/quizLevels';
 import { mmkvStorage } from '@/lib/storage';
 
-// ─── Storage ─────────────────────────────────────────────────────
 const STORAGE_UNLOCKED = 'quiz_unlocked_level';
 const STORAGE_COMPLETED = 'quiz_completed_levels';
 const STORAGE_HIGH_SCORES = 'quiz_high_scores';
@@ -45,7 +44,6 @@ function saveHighScores(scores: Record<number, number>) {
   mmkvStorage.setString(STORAGE_HIGH_SCORES, JSON.stringify(scores));
 }
 
-// ─── Level Select ────────────────────────────────────────────────
 function LevelSelect({
   unlockedLevel,
   completedLevels,
@@ -133,7 +131,6 @@ function LevelSelect({
   );
 }
 
-// ─── Main Component ──────────────────────────────────────────────
 export default function BibleQuizScreen() {
   const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
@@ -199,7 +196,6 @@ export default function BibleQuizScreen() {
       setAnswered(false);
       setShowHint(false);
     } else {
-      // Level complete
       const finalCorrect = correctCount;
       setCompletedLevels((p) => {
         const next = new Set([...p, levelId]);
@@ -223,7 +219,6 @@ export default function BibleQuizScreen() {
     }
   }, [questionIdx, level, correctCount, levelId, unlockedLevel]);
 
-  // ── Level Select ──────────────────────────────────────────
   if (screen === 'levels') {
     return (
       <LevelSelect
@@ -235,7 +230,6 @@ export default function BibleQuizScreen() {
     );
   }
 
-  // ── Story Screen ──────────────────────────────────────────
   if (screen === 'story') {
     return (
       <SafeAreaScreen>
@@ -264,7 +258,6 @@ export default function BibleQuizScreen() {
     );
   }
 
-  // ── Result Screen ─────────────────────────────────────────
   if (screen === 'result') {
     const stars = correctCount >= level.questions.length ? 3 : correctCount >= 3 ? 2 : 1;
     const isLastLevel = levelId >= QUIZ_LEVELS.length;
@@ -329,7 +322,6 @@ export default function BibleQuizScreen() {
     );
   }
 
-  // ── Quiz Screen ───────────────────────────────────────────
   const getOptionStyle = (optIdx: number) => {
     if (!answered) {
       return selected === optIdx
@@ -366,7 +358,6 @@ export default function BibleQuizScreen() {
         contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Progress bar */}
         <View className="px-4 py-3">
           <View className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
             <View
@@ -376,7 +367,6 @@ export default function BibleQuizScreen() {
           </View>
         </View>
 
-        {/* Question */}
         <Animated.View
           key={`q-${levelId}-${questionIdx}`}
           entering={FadeInDown.duration(300).springify()}
@@ -387,7 +377,6 @@ export default function BibleQuizScreen() {
           </Text>
         </Animated.View>
 
-        {/* Options */}
         <Animated.View style={shakeStyle} className="px-4">
           {question.options.map((opt, i) => (
             <Animated.View
@@ -426,7 +415,6 @@ export default function BibleQuizScreen() {
           ))}
         </Animated.View>
 
-        {/* Hint */}
         {!answered && !showHint && (
           <Pressable
             onPress={() => {
@@ -451,7 +439,6 @@ export default function BibleQuizScreen() {
           </Animated.View>
         )}
 
-        {/* Next / Continue button */}
         {answered && (
           <Animated.View entering={FadeIn.delay(300)} className="px-4 mt-5">
             <Pressable

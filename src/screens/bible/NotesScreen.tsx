@@ -1,26 +1,22 @@
 import React from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
+import LoadingScreen from '@/components/layout/LoadingScreen';
+import EmptyState from '@/components/ui/EmptyState';
 import { useNotes, useDeleteNote } from '@/hooks/useBible';
+import { flattenPages } from '@/lib/pages';
+import { confirmAction } from '@/lib/confirm';
+import { colors } from '@/theme/colors';
 
 export default function NotesScreen() {
-  const navigation = useNavigation<any>();
   const { data, isLoading } = useNotes();
-  const notes = data?.pages?.flatMap((page: any) => page.results || []) ?? [];
+  const notes = flattenPages(data);
   const deleteMutation = useDeleteNote();
 
   if (isLoading) {
-    return (
-      <SafeAreaScreen>
-        <ScreenHeader title="Notes" />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
-    );
+    return <LoadingScreen title="Notes" />;
   }
 
   return (
@@ -33,27 +29,22 @@ export default function NotesScreen() {
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3">
             <View className="flex-1 mr-3">
-              <Text className="text-base font-semibold text-textPrimary">{item.title || 'Untitled Note'}</Text>
-              <Text className="text-sm text-textSecondary mt-1" numberOfLines={2}>{item.content}</Text>
-              <Text className="text-xs text-textSecondary mt-1">{item.reference || ''}</Text>
+              <Text className="text-base font-semibold text-textPrimary">{item.verse_reference || 'Untitled Note'}</Text>
+              <Text className="text-sm text-textSecondary mt-1" numberOfLines={2}>{item.text}</Text>
+              <Text className="text-xs text-textSecondary mt-1">{item.note_type}</Text>
             </View>
-            <Pressable onPress={() => Alert.alert(
+            <Pressable onPress={() => confirmAction(
               'Delete Note',
-              'Are you sure you want to delete this note?',
-              [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Delete', style: 'destructive', onPress: () => deleteMutation.mutate(item.id) },
-              ],
+              'Are you sure?',
+              () => deleteMutation.mutate(item.id),
+              'Delete',
             )} className="p-2">
-              <Ionicons name="trash-outline" size={20} color="#EF4444" />
+              <Ionicons name="trash-outline" size={20} color={colors.error} />
             </Pressable>
           </View>
         )}
         ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Ionicons name="document-text-outline" size={48} color="#9CA3AF" />
-            <Text className="text-base text-textSecondary mt-4">No notes yet</Text>
-          </View>
+          <EmptyState icon="document-text-outline" title="No notes yet" />
         }
       />
     </SafeAreaScreen>

@@ -13,7 +13,7 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
 
   return (
     <AnimatedPressable

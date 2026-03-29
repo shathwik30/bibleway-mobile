@@ -43,10 +43,6 @@ export function useMediaUpload() {
 
   const clearMedia = () => setMedia([]);
 
-  /**
-   * Upload all selected media to UploadThing via the backend.
-   * Uses fetch (not Axios) because RN Axios has issues with FormData file uploads on Android.
-   */
   const uploadMedia = async (accessToken: string): Promise<{ keys: string[]; types: string[] }> => {
     if (media.length === 0) return { keys: [], types: [] };
 
@@ -60,7 +56,7 @@ export function useMediaUpload() {
           uri: item.uri,
           type: item.type === 'video' ? 'video/mp4' : 'image/jpeg',
           name: `media_${i}.${ext}`,
-        } as any);
+        } as unknown as Blob);
       }
 
       const url = `${API_BASE_URL}${ENDPOINTS.social.mediaUpload}`;
@@ -68,7 +64,7 @@ export function useMediaUpload() {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          'ngrok-skip-browser-warning': 'true',
+          ...(__DEV__ && { 'ngrok-skip-browser-warning': 'true' }),
         },
         body: formData,
       });
@@ -79,7 +75,6 @@ export function useMediaUpload() {
       }
 
       const body = await res.json();
-      // Backend returns { message, data: [{key, url}, ...] }
       const results: { key: string; url: string }[] = body?.data ?? body ?? [];
 
       return {

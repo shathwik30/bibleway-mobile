@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Pressable, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { REACTIONS, REACTION_EMOJI_MAP } from '@/constants/reactions';
 import { selectionHaptic } from '@/lib/haptics';
@@ -25,7 +26,7 @@ function ReactionBar({
   commentCount,
   userReaction,
 }: ReactionBarProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const toggleReaction = useToggleReaction();
   const recordShare = useRecordShare();
   const [showPicker, setShowPicker] = React.useState(false);
@@ -72,7 +73,7 @@ function ReactionBar({
             onPress={() => navigation.navigate('Comments', { contentType, objectId })}
             className="flex-row items-center"
           >
-            <Ionicons name="chatbubble-outline" size={18} color="#6B7280" />
+            <Ionicons name="chatbubble-outline" size={18} color={colors.textSecondary} />
             <Text className="text-sm text-textSecondary ml-1">
               {commentCount > 0 ? commentCount : ''}
             </Text>
@@ -80,7 +81,7 @@ function ReactionBar({
         </View>
 
         <Pressable onPress={handleShare} className="flex-row items-center">
-          <Ionicons name="share-outline" size={18} color="#6B7280" />
+          <Ionicons name="share-outline" size={18} color={colors.textSecondary} />
         </Pressable>
       </View>
 

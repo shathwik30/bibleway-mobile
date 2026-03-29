@@ -10,9 +10,11 @@ import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import KeyboardAvoidingWrapper from '@/components/layout/KeyboardAvoidingWrapper';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
-import { useLogin } from '@/hooks/useAuth';
+import { useLogin, useGoogleAuth } from '@/hooks/useAuth';
 import { showToast } from '@/components/ui/Toast';
 import { successHaptic } from '@/lib/haptics';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import GoogleLogo from '@/components/ui/GoogleLogo';
 import { AuthStackParamList } from '@/types/navigation';
 
 const loginSchema = z.object({
@@ -26,20 +28,57 @@ export default function LoginScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>();
   const loginMutation = useLogin();
+  const googleAuthMutation = useGoogleAuth();
 
   const { control, handleSubmit, formState: { errors } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   });
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      const idToken = response.data?.idToken;
+      if (!idToken) {
+        showToast('error', 'Error', 'Failed to get Google credentials');
+        return;
+      }
+      googleAuthMutation.mutate(
+        { id_token: idToken },
+        {
+          onSuccess: (data) => {
+            if (data.is_new_user && data.google_user) {
+              navigation.navigate('GoogleCompleteProfile', {
+                email: data.google_user.email,
+                fullName: data.google_user.full_name,
+                profilePhoto: data.google_user.profile_photo,
+                idToken,
+              });
+            } else {
+              successHaptic();
+            }
+          },
+          onError: (error) => {
+            showToast('error', 'Error', error.message || 'Google sign-in failed');
+          },
+        },
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Google sign-in failed';
+      if (!message.includes('cancelled') && !message.includes('SIGN_IN_CANCELLED')) {
+        showToast('error', 'Error', message);
+      }
+    }
+  };
+
   const onSubmit = (data: LoginForm) => {
     loginMutation.mutate(data, {
       onSuccess: () => {
         successHaptic();
       },
-      onError: (error: any) => {
-        const message = error?.response?.data?.message || error?.response?.data?.data?.detail || 'Login failed';
-        showToast('error', 'Login Failed', message);
+      onError: (error) => {
+        showToast('error', 'Login Failed', error.message || 'Login failed');
       },
     });
   };
@@ -99,6 +138,23 @@ export default function LoginScreen() {
           fullWidth
           size="lg"
         />
+
+        <View className="flex-row items-center my-6">
+          <View className="flex-1 h-px bg-border" />
+          <Text className="text-sm text-textSecondary mx-4">or</Text>
+          <View className="flex-1 h-px bg-border" />
+        </View>
+
+        <Pressable
+          onPress={handleGoogleSignIn}
+          disabled={googleAuthMutation.isPending}
+          className="flex-row items-center justify-center border border-border rounded-xl py-3.5 bg-white"
+        >
+          <GoogleLogo size={20} />
+          <Text className="text-base font-medium text-textPrimary ml-3">
+            Continue with Google
+          </Text>
+        </Pressable>
 
         <View className="flex-row justify-center mt-6">
           <Text className="text-sm text-textSecondary">{t('auth.noAccount')} </Text>

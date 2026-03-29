@@ -15,7 +15,6 @@ export default function ReadAloudControls({ text, language = 'en' }: ReadAloudCo
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSpeed, setCurrentSpeed] = useState(getSpeed());
 
-  // Stop playback when text or language changes
   useEffect(() => {
     stopSpeaking();
     setIsPlaying(false);

@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Image } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { RootStackParamList } from '@/types/navigation';
 import { useAuthStore } from '@/stores/authStore';
+import { registerForPushNotifications } from '@/lib/pushNotifications';
 import AuthNavigator from './AuthNavigator';
 import MainTabNavigator from './MainTabNavigator';
 
@@ -11,6 +12,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
   const { isAuthenticated, isLoading, bootstrap } = useAuthStore();
+  const pushRegistered = useRef(false);
 
   useEffect(() => {
     bootstrap();
@@ -21,6 +23,16 @@ export default function RootNavigator() {
       SplashScreen.hideAsync();
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    if (isAuthenticated && !pushRegistered.current) {
+      pushRegistered.current = true;
+      registerForPushNotifications();
+    }
+    if (!isAuthenticated) {
+      pushRegistered.current = false;
+    }
+  }, [isAuthenticated]);
 
   if (isLoading) {
     return (

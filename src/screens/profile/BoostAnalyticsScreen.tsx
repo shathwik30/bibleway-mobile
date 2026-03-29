@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import AnalyticsCard from '@/components/profile/AnalyticsCard';
@@ -15,7 +16,6 @@ export default function BoostAnalyticsScreen() {
 
   const snapshots: BoostAnalyticSnapshot[] = analytics?.results ?? [];
 
-  // Compute totals from snapshots
   const totalImpressions = snapshots.reduce((sum, s) => sum + s.impressions, 0);
   const totalClicks = snapshots.reduce((sum, s) => sum + s.link_clicks, 0);
   const totalProfileVisits = snapshots.reduce((sum, s) => sum + s.profile_visits, 0);
@@ -26,7 +26,7 @@ export default function BoostAnalyticsScreen() {
       <SafeAreaScreen>
         <ScreenHeader title="Boost Analytics" />
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
+          <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
         </View>
       </SafeAreaScreen>
     );
@@ -47,7 +47,6 @@ export default function BoostAnalyticsScreen() {
     <SafeAreaScreen>
       <ScreenHeader title="Boost Analytics" />
       <ScrollView className="flex-1 px-4 pt-4">
-        {/* Summary cards */}
         <View className="flex-row flex-wrap gap-3 mb-6">
           <View className="flex-1 min-w-[45%]">
             <AnalyticsCard title="Impressions" value={totalImpressions} icon="eye-outline" />
@@ -63,7 +62,6 @@ export default function BoostAnalyticsScreen() {
           </View>
         </View>
 
-        {/* Snapshots timeline */}
         <Text className="text-lg font-bold text-textPrimary mb-3">Daily Snapshots</Text>
         {snapshots.map((snapshot) => (
           <View key={snapshot.id} className="p-4 bg-surface rounded-xl mb-2">

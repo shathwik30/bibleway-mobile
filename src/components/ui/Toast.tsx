@@ -53,7 +53,6 @@ function CustomToast({ type, props }: { type: 'success' | 'error'; props: ToastP
           elevation: 6,
         }}
       >
-        {/* Icon */}
         <View className={`w-9 h-9 rounded-full items-center justify-center ${style.iconBg}`}>
           <Ionicons
             name={style.iconName}
@@ -62,7 +61,6 @@ function CustomToast({ type, props }: { type: 'success' | 'error'; props: ToastP
           />
         </View>
 
-        {/* Text */}
         <View className="flex-1 ml-3">
           {props.text1 ? (
             <Text className={`text-sm font-semibold ${style.titleColor}`} numberOfLines={1}>
@@ -76,7 +74,6 @@ function CustomToast({ type, props }: { type: 'success' | 'error'; props: ToastP
           ) : null}
         </View>
 
-        {/* Dismiss */}
         <Pressable onPress={props.hide} className="p-1 ml-2" hitSlop={8}>
           <Ionicons
             name="close"

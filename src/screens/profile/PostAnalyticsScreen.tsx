@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import AnalyticsCard from '@/components/profile/AnalyticsCard';
@@ -17,7 +18,7 @@ export default function PostAnalyticsScreen() {
       <SafeAreaScreen>
         <ScreenHeader title="Post Analytics" />
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
+          <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
         </View>
       </SafeAreaScreen>
     );

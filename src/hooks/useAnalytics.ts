@@ -5,10 +5,6 @@ import { ENDPOINTS } from '@/api/endpoints';
 import type { PaginatedResponse } from '@/types/api';
 import type { PostAnalytics, PostBoost, BoostAnalyticSnapshot } from '@/types/models';
 
-// ---------------------------------------------------------------------------
-// View / share recording
-// ---------------------------------------------------------------------------
-
 export function useRecordView(contentType: 'post' | 'prayer', objectId: string) {
   const recorded = useRef(false);
   useEffect(() => {
@@ -18,9 +14,7 @@ export function useRecordView(contentType: 'post' | 'prayer', objectId: string) 
       content_type_model: contentType,
       object_id: objectId,
       view_type: 'view',
-    }).catch(() => {
-      // Fire-and-forget: don't block the UI if view recording fails
-    });
+    }).catch(() => {});
   }, [contentType, objectId]);
 }
 
@@ -35,14 +29,11 @@ export function useRecordShare() {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Post analytics
-// ---------------------------------------------------------------------------
-
 export function usePostAnalytics(postId: string) {
   return useQuery({
     queryKey: ['analytics', 'post', postId],
     queryFn: () => api.get<PostAnalytics>(ENDPOINTS.analytics.postAnalytics(postId)),
+    enabled: !!postId,
   });
 }
 
@@ -52,10 +43,6 @@ export function useUserAnalytics() {
     queryFn: () => api.get(ENDPOINTS.analytics.userAnalytics),
   });
 }
-
-// ---------------------------------------------------------------------------
-// Boosts
-// ---------------------------------------------------------------------------
 
 export function useCreateBoost() {
   const queryClient = useQueryClient();

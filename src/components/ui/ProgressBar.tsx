@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 interface ProgressBarProps {
-  progress: number; // 0-1
+  progress: number;
   color?: string;
 }
 

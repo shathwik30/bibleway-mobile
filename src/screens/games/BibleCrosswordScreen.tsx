@@ -17,7 +17,6 @@ import ScreenHeader from '@/components/layout/ScreenHeader';
 import { LEVELS, type LevelData, type WordData } from '@/constants/crosswordLevels';
 import { mmkvStorage } from '@/lib/storage';
 
-// ─── Types ────────────────────────────────────────────────────────
 interface LetterTile {
   id: string;
   letter: string;
@@ -29,7 +28,6 @@ interface CellInfo {
   wordIndices: number[];
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────
 const DISTRACTOR_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const STORAGE_KEY_UNLOCKED = 'crossword_unlocked_level';
 const STORAGE_KEY_COMPLETED = 'crossword_completed_levels';
@@ -102,7 +100,6 @@ function makeBank(word: string): LetterTile[] {
   }));
 }
 
-// ─── Level Select ────────────────────────────────────────────────
 function LevelSelect({
   unlockedLevel,
   completedLevels,
@@ -138,7 +135,6 @@ function LevelSelect({
                 style={{ opacity: locked ? 0.4 : 1, marginBottom: 10 }}
                 className="flex-row items-center bg-surface rounded-2xl p-4 border border-border"
               >
-                {/* Number / Status */}
                 <View
                   style={{
                     width: 44,
@@ -159,7 +155,6 @@ function LevelSelect({
                   )}
                 </View>
 
-                {/* Info */}
                 <View className="flex-1">
                   <Text className="text-base font-bold text-textPrimary">{level.theme}</Text>
                   <Text className="text-xs text-textSecondary mt-0.5">
@@ -167,7 +162,6 @@ function LevelSelect({
                   </Text>
                 </View>
 
-                {/* Play button */}
                 {!locked && (
                   <View
                     style={{
@@ -194,7 +188,6 @@ function LevelSelect({
   );
 }
 
-// ─── Level Complete ──────────────────────────────────────────────
 function LevelCompleteScreen({
   level,
   score,
@@ -238,7 +231,6 @@ function LevelCompleteScreen({
             ))}
           </View>
 
-          {/* Stats */}
           <View
             className="flex-row items-center bg-surface rounded-2xl border border-border mb-8"
             style={{ width: screenWidth - 80 }}
@@ -258,7 +250,6 @@ function LevelCompleteScreen({
             </View>
           </View>
 
-          {/* Actions */}
           {!isLastLevel && (
             <Pressable
               onPress={onNext}
@@ -288,18 +279,15 @@ function LevelCompleteScreen({
   );
 }
 
-// ─── Main Component ──────────────────────────────────────────────
 export default function BibleCrosswordScreen() {
   const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
 
-  // ── Screen state ──────────────────────────────────────────
   const [screen, setScreen] = useState<'levels' | 'game' | 'complete'>('levels');
   const [levelId, setLevelId] = useState(1);
   const [unlockedLevel, setUnlockedLevel] = useState(() => loadUnlockedLevel());
   const [completedLevels, setCompletedLevels] = useState(() => loadCompletedLevels());
 
-  // ── Game state ────────────────────────────────────────────
   const [solved, setSolved] = useState<Set<number>>(new Set());
   const [wordIdx, setWordIdx] = useState(0);
   const [input, setInput] = useState<string[]>([]);
@@ -337,7 +325,6 @@ export default function BibleCrosswordScreen() {
     transform: [{ scale: popScale.value }],
   }));
 
-  // ── Actions ───────────────────────────────────────────────
   const startLevel = useCallback((id: number) => {
     setLevelId(id);
     setSolved(new Set());
@@ -451,7 +438,6 @@ export default function BibleCrosswordScreen() {
     tap(tile.id, tile.letter);
   }, [input.length, word.word, bank, tap, hints]);
 
-  // ── Screens ───────────────────────────────────────────────
   if (screen === 'levels') {
     return (
       <LevelSelect
@@ -476,7 +462,6 @@ export default function BibleCrosswordScreen() {
     );
   }
 
-  // ── Grid ──────────────────────────────────────────────────
   const renderGrid = () => {
     const rows: React.ReactNode[] = [];
     for (let r = 0; r < level.gridSize; r++) {
@@ -529,7 +514,6 @@ export default function BibleCrosswordScreen() {
     return rows;
   };
 
-  // ── Letter tiles ──────────────────────────────────────────
   const TILE_SIZE = Math.floor((SW - 64 - 4 * 8) / 5);
   const renderLetterBank = () => (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
@@ -557,10 +541,8 @@ export default function BibleCrosswordScreen() {
     </View>
   );
 
-  // ── Input boxes ───────────────────────────────────────────
   const boxW = Math.min(42, (SW - 48 - (word.word.length - 1) * 6) / word.word.length);
 
-  // ── Game screen ───────────────────────────────────────────
   return (
     <SafeAreaScreen>
       <ScreenHeader
@@ -578,7 +560,6 @@ export default function BibleCrosswordScreen() {
         contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Progress bar */}
         <View className="flex-row items-center px-4 py-2" style={{ gap: 8 }}>
           <View className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
             <View
@@ -591,7 +572,6 @@ export default function BibleCrosswordScreen() {
           </Text>
         </View>
 
-        {/* Word selector pills */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -632,7 +612,6 @@ export default function BibleCrosswordScreen() {
           })}
         </ScrollView>
 
-        {/* Crossword grid */}
         <View className="items-center px-4 mb-4">
           <View
             style={{
@@ -647,7 +626,6 @@ export default function BibleCrosswordScreen() {
           </View>
         </View>
 
-        {/* Clue card */}
         <Animated.View
           entering={FadeInDown.duration(300)}
           className="mx-4 mb-5 bg-surface rounded-2xl p-4"
@@ -666,7 +644,6 @@ export default function BibleCrosswordScreen() {
           <Text className="text-base text-textPrimary leading-6">{word.hint}</Text>
         </Animated.View>
 
-        {/* Input display */}
         <Animated.View
           style={[
             {
@@ -730,10 +707,8 @@ export default function BibleCrosswordScreen() {
           })}
         </Animated.View>
 
-        {/* Letter bank */}
         <View className="px-6 mb-5">{renderLetterBank()}</View>
 
-        {/* Action buttons */}
         <View className="flex-row px-4 mb-4" style={{ gap: 10 }}>
           <Pressable
             onPress={del}
@@ -763,7 +738,6 @@ export default function BibleCrosswordScreen() {
           </Pressable>
         </View>
 
-        {/* Submit button */}
         <View className="px-4">
           <Pressable
             onPress={submit}

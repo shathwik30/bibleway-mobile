@@ -2,47 +2,56 @@ import React from 'react';
 import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
+import EmptyState from '@/components/ui/EmptyState';
+import ErrorState from '@/components/ui/ErrorState';
 import { useSections } from '@/hooks/useBible';
+import { colors } from '@/theme/colors';
 
 export default function SegregatedSectionsScreen() {
-  const navigation = useNavigation<any>();
-  const { data: sections, isLoading } = useSections();
+  const navigation = useNavigation();
+  const { data: sections, isLoading, isError, error, refetch } = useSections();
 
   if (isLoading) {
     return (
-      <SafeAreaScreen>
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
+      </View>
     );
   }
 
+  if (isError) {
+    return <ErrorState message={error?.message} onRetry={() => refetch()} />;
+  }
+
   return (
-    <SafeAreaScreen>
-      <FlatList
-        data={sections}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 16 }}
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => navigation.navigate('SegregatedChapters', { sectionId: item.id, sectionTitle: item.title })}
-            className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3"
-          >
-            <View className="flex-1 mr-3">
+    <FlatList
+      data={sections ?? []}
+      keyExtractor={(item) => item.id}
+      contentContainerStyle={{ padding: 16, flexGrow: 1 }}
+      renderItem={({ item }) => (
+        <Pressable
+          onPress={() => navigation.navigate('SegregatedChapters', { sectionId: item.id, sectionTitle: item.title })}
+          className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3"
+        >
+          <View className="flex-1 mr-3">
+            <View className="flex-row items-center">
               <Text className="text-base font-semibold text-textPrimary">{item.title}</Text>
-              <Text className="text-sm text-textSecondary mt-1">Ages {item.age_min}–{item.age_max}</Text>
+              {item.is_prioritized && (
+                <View className="ml-2 px-2 py-0.5 bg-primary/10 rounded-full">
+                  <Text className="text-[10px] font-semibold text-primary">For You</Text>
+                </View>
+              )}
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#6B7280" />
-          </Pressable>
-        )}
-        ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Text className="text-base text-textSecondary">No sections available</Text>
+            <Text className="text-sm text-textSecondary mt-1">
+              Ages {item.age_min}–{item.age_max} · {item.chapter_count} chapters
+            </Text>
           </View>
-        }
-      />
-    </SafeAreaScreen>
+          <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+        </Pressable>
+      )}
+      ListEmptyComponent={
+        <EmptyState icon="book-outline" title="No study sections available" />
+      }
+    />
   );
 }

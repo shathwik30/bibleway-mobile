@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import Avatar from '../ui/Avatar';
 import StatsRow from './StatsRow';
 import type { UserProfile, UserPublicProfile } from '@/types/models';
@@ -27,8 +27,7 @@ export default function ProfileHeader({ user, isOwnProfile = false, onEditPress,
         following={user.following_count}
         posts={user.post_count}
         prayers={user.prayer_count}
-        userId={(user as any).id}
-        hideFollowers={user.hide_followers_list}
+        userId={user.id}
       />
       {children}
     </View>

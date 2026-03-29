@@ -1,30 +1,23 @@
 import React from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { FlatList } from 'react-native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
-import Avatar from '@/components/ui/Avatar';
+import LoadingScreen from '@/components/layout/LoadingScreen';
+import EmptyState from '@/components/ui/EmptyState';
+import UserListItem from '@/components/feed/UserListItem';
 import { useFollowing } from '@/hooks/useProfile';
+import { flattenPages } from '@/lib/pages';
 import type { HomeStackParamList } from '@/types/navigation';
 import type { FollowRelationship } from '@/types/models';
 
 export default function FollowingScreen() {
-  const navigation = useNavigation<any>();
   const route = useRoute<RouteProp<HomeStackParamList, 'Following'>>();
   const { userId } = route.params;
   const { data, isLoading } = useFollowing(userId);
-  const following = data?.pages?.flatMap((page: any) => page.results || []) ?? [];
+  const following = flattenPages(data);
 
-  if (isLoading) {
-    return (
-      <SafeAreaScreen>
-        <ScreenHeader title="Following" />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
-    );
-  }
+  if (isLoading) return <LoadingScreen title="Following" />;
 
   return (
     <SafeAreaScreen>
@@ -33,29 +26,8 @@ export default function FollowingScreen() {
         data={following}
         keyExtractor={(item: FollowRelationship) => item.id}
         contentContainerStyle={{ padding: 16 }}
-        renderItem={({ item }: { item: FollowRelationship }) => {
-          const user = item.following;
-          return (
-            <Pressable
-              onPress={() => navigation.navigate('UserProfile', { userId: user.id })}
-              className="flex-row items-center p-4 bg-surface rounded-xl mb-2"
-            >
-              <Avatar source={user.profile_photo} name={user.full_name} size={40} />
-              <View className="flex-1 ml-3">
-                <View className="flex-row items-center">
-                  <Text className="text-base font-semibold text-textPrimary">{user.full_name}</Text>
-                  {user.age ? <Text className="text-sm text-textTertiary ml-1.5">· {user.age}y</Text> : null}
-                </View>
-                {user.bio ? <Text className="text-sm text-textSecondary mt-0.5" numberOfLines={1}>{user.bio}</Text> : null}
-              </View>
-            </Pressable>
-          );
-        }}
-        ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Text className="text-base text-textSecondary">Not following anyone yet</Text>
-          </View>
-        }
+        renderItem={({ item }) => <UserListItem user={item.following} />}
+        ListEmptyComponent={<EmptyState icon="people-outline" title="Not following anyone yet" />}
       />
     </SafeAreaScreen>
   );

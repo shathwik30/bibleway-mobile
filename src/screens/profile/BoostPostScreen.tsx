@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, ScrollView, Platform } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import Button from '@/components/ui/Button';
@@ -42,10 +43,8 @@ export default function BoostPostScreen() {
 
     setPurchasing(true);
     try {
-      // Step 1: Complete the IAP purchase to get receipt data
       const { receiptData, transactionId } = await purchaseBoost(tier.productId);
 
-      // Step 2: Send receipt to backend for validation + boost activation
       boostMutation.mutate(
         {
           post_id: postId,
@@ -60,18 +59,19 @@ export default function BoostPostScreen() {
             showToast('success', 'Boosted', 'Your post is now being boosted!');
             navigation.goBack();
           },
-          onError: (error: any) => {
-            showToast('error', 'Error', error?.response?.data?.message || 'Failed to activate boost');
+          onError: (error) => {
+            showToast('error', 'Error', error.message || 'Failed to activate boost');
           },
           onSettled: () => setPurchasing(false),
         },
       );
-    } catch (error: any) {
+    } catch (error) {
       setPurchasing(false);
-      if (error?.message?.includes('cancelled')) {
-        return; // User cancelled — don't show error
+      const message = error instanceof Error ? error.message : 'An error occurred';
+      if (message.includes('cancelled')) {
+        return;
       }
-      showToast('error', 'Purchase Failed', error?.message || 'Could not complete purchase');
+      showToast('error', 'Purchase Failed', message);
     }
   };
 
@@ -96,16 +96,16 @@ export default function BoostPostScreen() {
             <View className="flex-row items-center justify-between">
               <Text className="text-lg font-bold text-textPrimary">{tier.name}</Text>
               {selectedTier === tier.productId && (
-                <Ionicons name="checkmark-circle" size={24} color="#4A6FA5" />
+                <Ionicons name="checkmark-circle" size={24} color={colors.primary.DEFAULT} />
               )}
             </View>
             <View className="flex-row mt-2 gap-4">
               <View className="flex-row items-center">
-                <Ionicons name="time-outline" size={16} color="#6B7280" />
+                <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
                 <Text className="text-sm text-textSecondary ml-1">{tier.duration}</Text>
               </View>
               <View className="flex-row items-center">
-                <Ionicons name="people-outline" size={16} color="#6B7280" />
+                <Ionicons name="people-outline" size={16} color={colors.textSecondary} />
                 <Text className="text-sm text-textSecondary ml-1">{tier.reach} reach</Text>
               </View>
             </View>

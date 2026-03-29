@@ -6,13 +6,11 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 
-// ── Types ──────────────────────────────────────────────
 type Player = 'X' | 'O';
 type Cell = Player | null;
 type Board = Cell[];
 type GameMode = '1P' | '2P';
 
-// ── Constants ──────────────────────────────────────────
 const WINNING_LINES = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8],
   [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -33,7 +31,6 @@ const DRAW_VERSES = [
   '"Two are better than one." — Ecclesiastes 4:9',
 ];
 
-// ── AI (minimax) ───────────────────────────────────────
 function getWinner(board: Board): { winner: Player; line: number[] } | null {
   for (const line of WINNING_LINES) {
     const [a, b, c] = line;
@@ -93,7 +90,6 @@ function getRandomVerse(verses: string[]) {
   return verses[Math.floor(Math.random() * verses.length)];
 }
 
-// ── Cell Button ────────────────────────────────────────
 function CellButton({
   value,
   onPress,
@@ -127,7 +123,6 @@ function CellButton({
   );
 }
 
-// ── Mode Toggle ────────────────────────────────────────
 function ModeToggle({
   mode,
   onToggle,
@@ -179,7 +174,6 @@ function ModeToggle({
   );
 }
 
-// ── Main Screen ────────────────────────────────────────
 export default function TicTacToeScreen() {
   const [mode, setMode] = useState<GameMode>('1P');
   const [board, setBoard] = useState<Board>(Array(9).fill(null));
@@ -192,7 +186,6 @@ export default function TicTacToeScreen() {
   const isDraw = !result && board.every((c) => c !== null);
   const gameOver = !!result || isDraw;
 
-  // Computer move (1P mode)
   useEffect(() => {
     if (mode !== '1P' || currentPlayer !== 'O' || gameOver) return;
     computerThinking.current = true;
@@ -320,10 +313,8 @@ export default function TicTacToeScreen() {
       />
 
       <View className="flex-1 items-center justify-center px-4">
-        {/* Mode Toggle */}
         <ModeToggle mode={mode} onToggle={handleModeChange} />
 
-        {/* Scoreboard */}
         <View className="flex-row items-center mb-6 bg-white rounded-xl border border-border overflow-hidden">
           <View className="items-center px-6 py-3">
             <View className="flex-row items-center mb-1">
@@ -356,7 +347,6 @@ export default function TicTacToeScreen() {
           </View>
         </View>
 
-        {/* Status */}
         <View className="mb-4">
           <Text
             className={`text-base font-semibold text-center ${
@@ -373,7 +363,6 @@ export default function TicTacToeScreen() {
           </Text>
         </View>
 
-        {/* Board */}
         <View className="items-center">
           {[0, 1, 2].map((row) => (
             <View key={row} className="flex-row">
@@ -393,7 +382,6 @@ export default function TicTacToeScreen() {
           ))}
         </View>
 
-        {/* Play Again */}
         {gameOver && (
           <Animated.View entering={FadeIn.duration(300)}>
             <Pressable
@@ -407,7 +395,6 @@ export default function TicTacToeScreen() {
           </Animated.View>
         )}
 
-        {/* Scripture Verse */}
         {gameOver && verse !== '' && (
           <Animated.View entering={FadeIn.delay(200).duration(400)} className="mt-5 mx-4">
             <Text className="text-xs text-center text-textSecondary italic leading-5">

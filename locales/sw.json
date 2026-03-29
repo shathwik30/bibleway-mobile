@@ -85,9 +85,10 @@
     "hideReplies": "Ficha majibu",
     "reportContent": "Ripoti maudhui",
     "reportReason": "Chagua sababu",
-    "inappropriate": "Haifai",
     "spam": "Taka taka",
-    "falseTeaching": "Mafundisho ya uongo",
+    "harassment": "Unyanyasaji",
+    "hateSpeech": "Hotuba ya chuki",
+    "misinformation": "Habari za uongo",
     "other": "Nyingine",
     "reportDescription": "Maelezo ya ziada (si lazima)",
     "reportSuccess": "Ripoti imetumwa. Asante.",
@@ -199,14 +200,22 @@
     "expired": "Imeisha"
   },
   "settings": {
+    "title": "Mipangilio",
+    "editProfile": "Hariri wasifu",
     "language": "Lugha",
     "privacy": "Faragha",
     "blockedUsers": "Waliozuiwa",
     "followRequests": "Maombi ya kufuata",
+    "myPurchases": "Manunuzi yangu",
+    "downloads": "Vipakuliwa",
+    "bookmarks": "Alamisho",
+    "notes": "Maelezo",
     "changePassword": "Badilisha nenosiri",
     "about": "Kuhusu",
+    "version": "Toleo",
     "logout": "Ondoka",
     "logoutConfirm": "Una uhakika unataka kuondoka?",
-    "deleteAccount": "Futa akaunti"
+    "deleteAccount": "Futa akaunti",
+    "deleteAccountConfirm": "Una uhakika unataka kufuta akaunti yako? Hatua hii haiwezi kutenduliwa."
   }
 }

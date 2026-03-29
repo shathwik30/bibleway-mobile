@@ -85,9 +85,10 @@
     "hideReplies": "Ocultar respuestas",
     "reportContent": "Reportar contenido",
     "reportReason": "Selecciona una raz\u00f3n",
-    "inappropriate": "Inapropiado",
     "spam": "Spam",
-    "falseTeaching": "Falsa ense\u00f1anza",
+    "harassment": "Acoso",
+    "hateSpeech": "Discurso de odio",
+    "misinformation": "Desinformaci\u00f3n",
     "other": "Otro",
     "reportDescription": "Detalles adicionales (opcional)",
     "reportSuccess": "Reporte enviado. Gracias.",
@@ -199,14 +200,22 @@
     "expired": "Expirado"
   },
   "settings": {
+    "title": "Configuraci\u00f3n",
+    "editProfile": "Editar perfil",
     "language": "Idioma",
     "privacy": "Privacidad",
     "blockedUsers": "Usuarios bloqueados",
     "followRequests": "Solicitudes de seguimiento",
+    "myPurchases": "Mis compras",
+    "downloads": "Descargas",
+    "bookmarks": "Marcadores",
+    "notes": "Notas",
     "changePassword": "Cambiar contrase\u00f1a",
     "about": "Acerca de",
+    "version": "Versi\u00f3n",
     "logout": "Cerrar sesi\u00f3n",
     "logoutConfirm": "\u00bfEst\u00e1s seguro de que quieres cerrar sesi\u00f3n?",
-    "deleteAccount": "Eliminar cuenta"
+    "deleteAccount": "Eliminar cuenta",
+    "deleteAccountConfirm": "\u00bfEst\u00e1s seguro de que quieres eliminar tu cuenta? Esta acci\u00f3n no se puede deshacer."
   }
 }

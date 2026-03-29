@@ -1,10 +1,10 @@
-// Navigation param lists for all stacks
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
   OTPVerification: { email: string; purpose: 'email_verification' | 'password_reset' };
   ForgotPassword: undefined;
   ResetPassword: { email: string };
+  GoogleCompleteProfile: { email: string; fullName: string; profilePhoto: string; idToken: string };
 };
 
 export type HomeStackParamList = {
@@ -55,9 +55,7 @@ export type ProfileStackParamList = {
   EditProfile: undefined;
   Settings: undefined;
   LanguageSettings: undefined;
-  PrivacySettings: undefined;
   BlockedUsers: undefined;
-  FollowRequests: undefined;
   Followers: { userId: string };
   Following: { userId: string };
   PostAnalytics: { postId: string };
@@ -77,3 +75,14 @@ export type RootStackParamList = {
   Auth: undefined;
   Main: undefined;
 };
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList
+      extends HomeStackParamList,
+        BibleStackParamList,
+        ShopStackParamList,
+        GamesStackParamList,
+        ProfileStackParamList {}
+  }
+}

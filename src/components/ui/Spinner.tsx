@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { colors } from '@/theme/colors';
 
 interface SpinnerProps {
   size?: 'small' | 'large';
@@ -10,10 +11,10 @@ export default function Spinner({ size = 'large', fullScreen = false }: SpinnerP
   if (fullScreen) {
     return (
       <View className="flex-1 items-center justify-center bg-white">
-        <ActivityIndicator size={size} color="#4A6FA5" />
+        <ActivityIndicator size={size} color={colors.primary.DEFAULT} />
       </View>
     );
   }
 
-  return <ActivityIndicator size={size} color="#4A6FA5" />;
+  return <ActivityIndicator size={size} color={colors.primary.DEFAULT} />;
 }

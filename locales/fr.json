@@ -85,9 +85,10 @@
     "hideReplies": "Masquer les r\u00e9ponses",
     "reportContent": "Signaler le contenu",
     "reportReason": "S\u00e9lectionnez une raison",
-    "inappropriate": "Inappropri\u00e9",
     "spam": "Spam",
-    "falseTeaching": "Faux enseignement",
+    "harassment": "Harc\u00e8lement",
+    "hateSpeech": "Discours haineux",
+    "misinformation": "D\u00e9sinformation",
     "other": "Autre",
     "reportDescription": "D\u00e9tails suppl\u00e9mentaires (facultatif)",
     "reportSuccess": "Signalement envoy\u00e9. Merci.",
@@ -199,14 +200,22 @@
     "expired": "Expir\u00e9"
   },
   "settings": {
+    "title": "Param\u00e8tres",
+    "editProfile": "Modifier le profil",
     "language": "Langue",
     "privacy": "Confidentialit\u00e9",
     "blockedUsers": "Utilisateurs bloqu\u00e9s",
     "followRequests": "Demandes d'abonnement",
+    "myPurchases": "Mes achats",
+    "downloads": "T\u00e9l\u00e9chargements",
+    "bookmarks": "Signets",
+    "notes": "Notes",
     "changePassword": "Changer le mot de passe",
     "about": "\u00c0 propos",
+    "version": "Version",
     "logout": "D\u00e9connexion",
     "logoutConfirm": "\u00cates-vous s\u00fbr de vouloir vous d\u00e9connecter ?",
-    "deleteAccount": "Supprimer le compte"
+    "deleteAccount": "Supprimer le compte",
+    "deleteAccountConfirm": "\u00cates-vous s\u00fbr de vouloir supprimer votre compte ? Cette action est irr\u00e9versible."
   }
 }

@@ -3,6 +3,8 @@ import { View, Text, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { formatDistanceToNow } from 'date-fns';
 import Avatar from '../ui/Avatar';
+import StickerMessage from './StickerMessage';
+import { isSticker } from '@/constants/stickers';
 import type { Reply } from '@/types/models';
 
 interface ReplyItemProps {
@@ -10,7 +12,8 @@ interface ReplyItemProps {
 }
 
 export default function ReplyItem({ reply }: ReplyItemProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
+  const isStickerReply = isSticker(reply.text);
 
   return (
     <View className="flex-row pl-12 pr-4 py-2">
@@ -21,9 +24,13 @@ export default function ReplyItem({ reply }: ReplyItemProps) {
         <View className="bg-surface rounded-xl px-3 py-2">
           <View className="flex-row items-center">
             <Text className="text-xs font-semibold text-textPrimary">{reply.user.full_name}</Text>
-            {(reply.user as any).age ? <Text className="text-[10px] text-textTertiary ml-1">· {(reply.user as any).age}y</Text> : null}
+            {reply.user.age ? <Text className="text-[10px] text-textTertiary ml-1">· {reply.user.age}y</Text> : null}
           </View>
-          <Text className="text-xs text-textPrimary mt-0.5">{reply.text}</Text>
+          {isStickerReply ? (
+            <StickerMessage text={reply.text} size={80} />
+          ) : (
+            <Text className="text-xs text-textPrimary mt-0.5">{reply.text}</Text>
+          )}
         </View>
         <Text className="text-[10px] text-textSecondary mt-1 ml-1">
           {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true })}

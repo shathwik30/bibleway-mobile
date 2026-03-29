@@ -1,34 +1,26 @@
 import React from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
+import { Text, FlatList, Pressable } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
+import LoadingScreen from '@/components/layout/LoadingScreen';
+import EmptyState from '@/components/ui/EmptyState';
 import { useBibleChapters } from '@/hooks/useBible';
 import type { BibleStackParamList } from '@/types/navigation';
-import type { BibleChapterSummary } from '@/types/models';
 
 export default function BibleChapterListScreen() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const route = useRoute<RouteProp<BibleStackParamList, 'BibleChapterList'>>();
   const { bibleId, bookId } = route.params;
   const { data: chapters, isLoading } = useBibleChapters(bibleId, bookId);
 
-  if (isLoading) {
-    return (
-      <SafeAreaScreen>
-        <ScreenHeader title="Chapters" />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
-    );
-  }
+  if (isLoading) return <LoadingScreen title="Chapters" />;
 
   return (
     <SafeAreaScreen>
       <ScreenHeader title="Chapters" />
       <FlatList
-        data={chapters as BibleChapterSummary[] | undefined}
+        data={chapters ?? []}
         keyExtractor={(item) => item.id}
         numColumns={4}
         contentContainerStyle={{ padding: 16 }}
@@ -42,9 +34,7 @@ export default function BibleChapterListScreen() {
           </Pressable>
         )}
         ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Text className="text-base text-textSecondary">No chapters found</Text>
-          </View>
+          <EmptyState icon="layers-outline" title="No chapters found" />
         }
       />
     </SafeAreaScreen>

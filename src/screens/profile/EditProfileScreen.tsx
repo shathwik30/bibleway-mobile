@@ -3,6 +3,7 @@ import { View, ScrollView, Pressable, Image, Text, Platform } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
@@ -69,8 +70,6 @@ export default function EditProfileScreen() {
 
   const onSubmit = async (data: ProfileForm) => {
     if (selectedPhoto) {
-      // Use fetch (not Axios) for FormData with file uploads —
-      // same pattern as post media uploads (Axios has Android FormData issues).
       setSubmitting(true);
       try {
         const formData = new FormData();
@@ -87,14 +86,14 @@ export default function EditProfileScreen() {
           uri: selectedPhoto,
           name: filename,
           type: 'image/jpeg',
-        } as any);
+        } as unknown as Blob);
 
         const url = `${API_BASE_URL}${ENDPOINTS.profile.me}`;
         const res = await fetch(url, {
           method: 'PATCH',
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'ngrok-skip-browser-warning': 'true',
+            ...(__DEV__ && { 'ngrok-skip-browser-warning': 'true' }),
           },
           body: formData,
         });
@@ -107,13 +106,12 @@ export default function EditProfileScreen() {
 
         showToast('success', 'Updated', 'Profile updated successfully');
         navigation.goBack();
-      } catch (error: any) {
-        showToast('error', 'Error', error?.message || 'Failed to update profile');
+      } catch (error) {
+        showToast('error', 'Error', error instanceof Error ? error.message : 'Failed to update profile');
       } finally {
         setSubmitting(false);
       }
     } else {
-      // Use JSON when no image — simpler and more reliable
       const payload: Record<string, string> = {
         full_name: data.full_name,
         bio: data.bio,
@@ -129,12 +127,8 @@ export default function EditProfileScreen() {
           showToast('success', 'Updated', 'Profile updated successfully');
           navigation.goBack();
         },
-        onError: (error: any) => {
-          const msg = error?.response?.data?.message
-            || error?.response?.data?.detail
-            || error?.message
-            || 'Failed to update profile';
-          showToast('error', 'Error', msg);
+        onError: (error) => {
+          showToast('error', 'Error', error.message || 'Failed to update profile');
         },
       });
     }
@@ -142,15 +136,14 @@ export default function EditProfileScreen() {
 
   const avatarSource = selectedPhoto || profile?.profile_photo || null;
 
-  // Compute age from date_of_birth for display
   const computedAge = dateOfBirth
     ? Math.floor((Date.now() - new Date(dateOfBirth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
     : profile?.age ?? null;
 
-  const handleDateChange = (_event: any, selectedDate?: Date) => {
+  const handleDateChange = (_event: unknown, selectedDate?: Date) => {
     setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate) {
-      const iso = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+      const iso = selectedDate.toISOString().split('T')[0];
       setValue('date_of_birth', iso);
     }
   };
@@ -159,7 +152,6 @@ export default function EditProfileScreen() {
     <SafeAreaScreen>
       <ScreenHeader title="Edit Profile" />
       <ScrollView className="flex-1 px-4 pt-4" keyboardShouldPersistTaps="handled">
-        {/* Avatar with camera overlay */}
         <View className="items-center mb-6">
           <Pressable onPress={pickImage} className="relative">
             {avatarSource ? (
@@ -189,7 +181,6 @@ export default function EditProfileScreen() {
           )}
         />
 
-        {/* Date of Birth / Age */}
         <View className="mb-4">
           <Text className="text-sm font-medium text-textSecondary mb-1.5">Date of Birth</Text>
           <Pressable

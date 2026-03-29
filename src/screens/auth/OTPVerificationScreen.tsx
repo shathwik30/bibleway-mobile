@@ -41,13 +41,12 @@ export default function OTPVerificationScreen() {
           navigation.navigate('Login');
         }
       },
-      onError: (error: any) => {
-        showToast('error', 'Error', error?.response?.data?.message || 'Invalid OTP');
+      onError: (error) => {
+        showToast('error', 'Error', error.message || 'Invalid OTP');
       },
     });
   };
 
-  // Auto-submit when OTP is complete
   useEffect(() => {
     if (otp.length === 6 && !hasAutoSubmitted.current && !verifyMutation.isPending) {
       hasAutoSubmitted.current = true;

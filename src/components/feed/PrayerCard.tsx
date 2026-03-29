@@ -13,13 +13,14 @@ interface PrayerCardProps {
 }
 
 function PrayerCard({ prayer }: PrayerCardProps) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const [expanded, setExpanded] = React.useState(false);
 
-  const shouldTruncate = prayer.description.length > 200;
+  const description = prayer.description ?? '';
+  const shouldTruncate = description.length > 200;
   const displayText = shouldTruncate && !expanded
-    ? prayer.description.slice(0, 200) + '...'
-    : prayer.description;
+    ? description.slice(0, 200) + '...'
+    : description;
 
   return (
     <AnimatedPressable
@@ -27,7 +28,6 @@ function PrayerCard({ prayer }: PrayerCardProps) {
       className="bg-white border-b border-border"
     >
       <View className="px-4 pt-3">
-        {/* Author Row */}
         <View className="flex-row items-center mb-2">
           <Pressable
             onPress={() => navigation.navigate('UserProfile', { userId: prayer.author.id })}
@@ -46,10 +46,8 @@ function PrayerCard({ prayer }: PrayerCardProps) {
           </Pressable>
         </View>
 
-        {/* Title */}
         <Text className="text-base font-bold text-textPrimary mb-1">{prayer.title}</Text>
 
-        {/* Description */}
         {prayer.description ? (
           <View className="mb-2">
             <Text className="text-sm text-textPrimary leading-5">{displayText}</Text>
@@ -62,10 +60,8 @@ function PrayerCard({ prayer }: PrayerCardProps) {
         ) : null}
       </View>
 
-      {/* Media */}
       {prayer.media.length > 0 && <MediaCarousel media={prayer.media} />}
 
-      {/* Reactions & Actions */}
       <View className="px-4 py-2">
         <ReactionBar
           contentType="prayer"

@@ -1,4 +1,10 @@
-export const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'https://bibleway-backend-production.up.railway.app/api/v1';
+const ENV_API_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+
+if (!ENV_API_URL && !__DEV__) {
+  throw new Error('EXPO_PUBLIC_API_BASE_URL is required in production');
+}
+
+export const API_BASE_URL = ENV_API_URL ?? (__DEV__ ? 'http://localhost:8000/api/v1' : '');
 export const API_TIMEOUT = 30000;
 
 export const CACHE_DURATIONS = {

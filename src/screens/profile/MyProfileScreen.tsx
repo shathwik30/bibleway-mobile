@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import AnimatedPressable from '@/components/ui/AnimatedPressable';
@@ -17,7 +18,7 @@ import type { Post, Prayer } from '@/types/models';
 type Tab = 'posts' | 'prayers';
 
 export default function MyProfileScreen() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const { data: profile, isLoading } = useMyProfile();
   const [activeTab, setActiveTab] = useState<Tab>('posts');
 
@@ -67,7 +68,7 @@ export default function MyProfileScreen() {
         title="My Profile"
         rightAction={
           <AnimatedPressable onPress={() => navigation.navigate('Settings')} accessibilityLabel="Settings">
-            <Ionicons name="settings-outline" size={22} color="#4A6FA5" />
+            <Ionicons name="settings-outline" size={22} color={colors.primary.DEFAULT} />
           </AnimatedPressable>
         }
       />

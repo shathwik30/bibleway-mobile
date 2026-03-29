@@ -1,44 +1,29 @@
 import * as Haptics from 'expo-haptics';
-import { Platform } from 'react-native';
 
 export function lightHaptic() {
-  if (Platform.OS !== 'web') {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  }
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 }
 
 export function mediumHaptic() {
-  if (Platform.OS !== 'web') {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-  }
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 }
 
 export function heavyHaptic() {
-  if (Platform.OS !== 'web') {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-  }
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 }
 
 export function selectionHaptic() {
-  if (Platform.OS !== 'web') {
-    Haptics.selectionAsync();
-  }
+  Haptics.selectionAsync();
 }
 
 export function successHaptic() {
-  if (Platform.OS !== 'web') {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  }
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 }
 
 export function errorHaptic() {
-  if (Platform.OS !== 'web') {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-  }
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 }
 
 export function warningHaptic() {
-  if (Platform.OS !== 'web') {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-  }
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
 }

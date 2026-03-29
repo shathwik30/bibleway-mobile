@@ -1,43 +1,30 @@
 import React from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator, Alert } from 'react-native';
+import { FlatList } from 'react-native';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
-import Avatar from '@/components/ui/Avatar';
+import LoadingScreen from '@/components/layout/LoadingScreen';
+import EmptyState from '@/components/ui/EmptyState';
+import UserListItem from '@/components/feed/UserListItem';
 import Button from '@/components/ui/Button';
 import { useBlockedUsers, useUnblockUser } from '@/hooks/useProfile';
 import { showToast } from '@/components/ui/Toast';
+import { confirmAction } from '@/lib/confirm';
+import { flattenPages } from '@/lib/pages';
 
 export default function BlockedUsersScreen() {
   const { data, isLoading } = useBlockedUsers();
-  const blockedUsers = data?.pages?.flatMap((page: any) => page.results || []) ?? [];
+  const blockedUsers = flattenPages(data);
   const unblockMutation = useUnblockUser();
 
   const handleUnblock = (userId: string) => {
-    Alert.alert(
-      'Unblock User',
-      'Are you sure you want to unblock this user?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Unblock',
-          onPress: () => unblockMutation.mutate(userId, {
-            onSuccess: () => showToast('success', 'Unblocked', 'User has been unblocked'),
-          }),
-        },
-      ],
-    );
+    confirmAction('Unblock User', 'Are you sure you want to unblock this user?', () =>
+      unblockMutation.mutate(userId, {
+        onSuccess: () => showToast('success', 'Unblocked', 'User has been unblocked'),
+      }),
+    'Unblock');
   };
 
-  if (isLoading) {
-    return (
-      <SafeAreaScreen>
-        <ScreenHeader title="Blocked Users" />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
-    );
-  }
+  if (isLoading) return <LoadingScreen title="Blocked Users" />;
 
   return (
     <SafeAreaScreen>
@@ -47,22 +34,12 @@ export default function BlockedUsersScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ padding: 16 }}
         renderItem={({ item }) => (
-          <View className="flex-row items-center p-4 bg-surface rounded-xl mb-3">
-            <Avatar source={item.profile_picture} name={item.full_name} size={40} />
-            <View className="flex-1 ml-3">
-              <View className="flex-row items-center">
-                <Text className="text-base text-textPrimary">{item.full_name}</Text>
-                {item.age ? <Text className="text-sm text-textTertiary ml-1.5">· {item.age}y</Text> : null}
-              </View>
-            </View>
-            <Button title="Unblock" variant="outline" size="sm" onPress={() => handleUnblock(item.id)} />
-          </View>
+          <UserListItem
+            user={item.blocked}
+            rightAction={<Button title="Unblock" variant="outline" size="sm" onPress={() => handleUnblock(item.blocked.id)} />}
+          />
         )}
-        ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Text className="text-base text-textSecondary">No blocked users</Text>
-          </View>
-        }
+        ListEmptyComponent={<EmptyState icon="ban-outline" title="No blocked users" />}
       />
     </SafeAreaScreen>
   );

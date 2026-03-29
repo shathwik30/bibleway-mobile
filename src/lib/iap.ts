@@ -9,7 +9,6 @@ import {
   type Product,
 } from 'react-native-iap';
 
-// Boost product IDs — must match App Store Connect / Google Play Console
 export const BOOST_PRODUCT_IDS = [
   'boost_basic',
   'boost_standard',
@@ -17,6 +16,11 @@ export const BOOST_PRODUCT_IDS = [
 ] as const;
 
 export type BoostProductId = (typeof BOOST_PRODUCT_IDS)[number];
+
+export interface PurchaseResult {
+  receiptData: string;
+  transactionId: string;
+}
 
 export async function initIAP(): Promise<void> {
   await initConnection();
@@ -26,21 +30,24 @@ export async function teardownIAP(): Promise<void> {
   await endConnection();
 }
 
-export async function getBoostProducts(): Promise<Product[]> {
-  const products = await fetchProducts({ skus: [...BOOST_PRODUCT_IDS], type: 'in-app' });
+export async function getStoreProducts(skus: string[]): Promise<Product[]> {
+  const products = await fetchProducts({ skus, type: 'in-app' });
   return (products ?? []) as Product[];
 }
 
-export interface PurchaseResult {
-  receiptData: string;
-  transactionId: string;
+export async function getBoostProducts(): Promise<Product[]> {
+  return getStoreProducts([...BOOST_PRODUCT_IDS]);
 }
 
-export async function purchaseBoost(productId: BoostProductId): Promise<PurchaseResult> {
+async function executePurchase(
+  appleProductId: string,
+  googleProductId: string,
+  isConsumable: boolean,
+): Promise<PurchaseResult> {
   const result = await requestPurchase({
     request: {
-      apple: { sku: productId },
-      google: { skus: [productId] },
+      apple: { sku: appleProductId },
+      google: { skus: [googleProductId] },
     },
     type: 'in-app',
   });
@@ -52,15 +59,24 @@ export async function purchaseBoost(productId: BoostProductId): Promise<Purchase
   }
 
   const receiptData = purchase.purchaseToken ?? '';
-
   const transactionId = purchase.transactionId ?? '';
 
   if (!receiptData || !transactionId) {
     throw new Error('Invalid purchase data received.');
   }
 
-  // Finish the transaction so the store doesn't re-deliver it
-  await finishTransaction({ purchase, isConsumable: true });
+  await finishTransaction({ purchase, isConsumable });
 
   return { receiptData, transactionId };
+}
+
+export async function purchaseBoost(productId: BoostProductId): Promise<PurchaseResult> {
+  return executePurchase(productId, productId, true);
+}
+
+export async function purchaseShopProduct(
+  appleProductId: string,
+  googleProductId: string,
+): Promise<PurchaseResult> {
+  return executePurchase(appleProductId, googleProductId, false);
 }

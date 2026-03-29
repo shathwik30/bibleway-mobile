@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, Pressable, TextInputProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 
 interface InputProps extends Omit<TextInputProps, 'className'> {
   label?: string;
@@ -45,7 +46,7 @@ export default function Input({
             <Ionicons
               name={isSecure ? 'eye-off-outline' : 'eye-outline'}
               size={20}
-              color="#6B7280"
+              color={colors.textSecondary}
             />
           </Pressable>
         )}

@@ -11,18 +11,18 @@ import ErrorBoundary from '@/components/ui/ErrorBoundary';
 export default function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryProvider>
-        <I18nProvider>
-          <SafeAreaProvider>
-            <NavigationProvider>
-              <ErrorBoundary>
+      <ErrorBoundary>
+        <QueryProvider>
+          <I18nProvider>
+            <SafeAreaProvider>
+              <NavigationProvider>
                 {children}
-              </ErrorBoundary>
-            </NavigationProvider>
-            <Toast config={toastConfig} />
-          </SafeAreaProvider>
-        </I18nProvider>
-      </QueryProvider>
+              </NavigationProvider>
+              <Toast config={toastConfig} />
+            </SafeAreaProvider>
+          </I18nProvider>
+        </QueryProvider>
+      </ErrorBoundary>
     </GestureHandlerRootView>
   );
 }

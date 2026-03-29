@@ -1,7 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Synchronous in-memory cache backed by AsyncStorage
-// On app start, call `initStorage()` to hydrate the cache
 const cache: Record<string, string> = {};
 let initialized = false;
 
@@ -15,7 +13,9 @@ export async function initStorage(): Promise<void> {
         cache[key] = value;
       }
     }
-  } catch {}
+  } catch (e) {
+    console.warn('[storage] Failed to initialize from AsyncStorage', e);
+  }
   initialized = true;
 }
 
@@ -53,7 +53,6 @@ export const mmkvStorage = {
   },
 };
 
-// React Query persist storage adapter
 export const queryClientStorage = {
   setItem: (key: string, value: string) => {
     cache[key] = value;

@@ -11,8 +11,6 @@ export function speak(
   Speech.stop();
   onDoneCallback = onDone ?? null;
 
-  // expo-speech uses BCP-47 language tags on Android.
-  // Map our short codes to tags the TTS engine recognises.
   const langTag = mapLanguageTag(language);
 
   Speech.speak(text, {
@@ -46,10 +44,6 @@ export async function isSpeaking(): Promise<boolean> {
   return await Speech.isSpeakingAsync();
 }
 
-/**
- * Map our language codes to BCP-47 tags that Android / iOS TTS engines
- * are most likely to have voices for.
- */
 function mapLanguageTag(code: string): string {
   const map: Record<string, string> = {
     en: 'en-US',

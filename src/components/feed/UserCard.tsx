@@ -8,8 +8,8 @@ interface UserCardProps {
   user: UserListItem;
 }
 
-export default function UserCard({ user }: UserCardProps) {
-  const navigation = useNavigation<any>();
+function UserCard({ user }: UserCardProps) {
+  const navigation = useNavigation();
 
   return (
     <Pressable
@@ -23,3 +23,5 @@ export default function UserCard({ user }: UserCardProps) {
     </Pressable>
   );
 }
+
+export default React.memo(UserCard);

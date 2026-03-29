@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Image } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AppProviders from '@/providers/AppProviders';
 import RootNavigator from '@/navigation/RootNavigator';
-import { initSentry } from '@/lib/sentry';
 import { initStorage } from '@/lib/storage';
-// Prevent splash screen from auto-hiding
+
 SplashScreen.preventAutoHideAsync();
 
-// Initialize Sentry
-initSentry();
+GoogleSignin.configure({
+  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+});
 
 function AppContent() {
   return (

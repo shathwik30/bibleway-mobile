@@ -7,6 +7,7 @@ import {
   Image,
   Modal,
   useWindowDimensions,
+  type ImageSourcePropType,
 } from 'react-native';
 import Animated, {
   ZoomIn,
@@ -21,8 +22,6 @@ import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import { FTD_LEVELS } from '@/constants/findDifferenceLevels';
 import { mmkvStorage } from '@/lib/storage';
-
-// ─── Storage ─────────────────────────────────────────────────────
 const STORAGE_UNLOCKED = 'ftd_unlocked_level';
 const STORAGE_COMPLETED = 'ftd_completed_levels';
 
@@ -41,7 +40,6 @@ function saveCompleted(s: Set<number>) {
   mmkvStorage.setString(STORAGE_COMPLETED, JSON.stringify([...s]));
 }
 
-// ─── Shuffle helper ──────────────────────────────────────────────
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -51,8 +49,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-// ─── Image map ───────────────────────────────────────────────────
-const IMG1_MAP: Record<number, any> = {
+const IMG1_MAP: Record<number, ImageSourcePropType> = {
   1: require('../../../assets/find-the-difference/lvl1_img1.png'),
   2: require('../../../assets/find-the-difference/lvl2_img1.png'),
   3: require('../../../assets/find-the-difference/lvl3_img1.png'),
@@ -85,7 +82,7 @@ const IMG1_MAP: Record<number, any> = {
   30: require('../../../assets/find-the-difference/lvl30_img1.png'),
 };
 
-const IMG2_MAP: Record<number, any> = {
+const IMG2_MAP: Record<number, ImageSourcePropType> = {
   1: require('../../../assets/find-the-difference/lvl1_img2.png'),
   2: require('../../../assets/find-the-difference/lvl2_img2.png'),
   3: require('../../../assets/find-the-difference/lvl3_img2.png'),
@@ -118,9 +115,8 @@ const IMG2_MAP: Record<number, any> = {
   30: require('../../../assets/find-the-difference/lvl30_img2.png'),
 };
 
-const IMG_ASPECT = 1024 / 1536; // 2:3 height:width
+const IMG_ASPECT = 1024 / 1536;
 
-// ─── Level Select ────────────────────────────────────────────────
 function LevelSelect({
   unlockedLevel,
   completedLevels,
@@ -190,7 +186,6 @@ function LevelSelect({
   );
 }
 
-// ─── Main Component ──────────────────────────────────────────────
 export default function FindDifferenceScreen() {
   const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
@@ -200,15 +195,13 @@ export default function FindDifferenceScreen() {
   const [unlockedLevel, setUnlockedLevel] = useState(() => loadUnlocked());
   const [completedLevels, setCompletedLevels] = useState(() => loadCompleted());
 
-  // Game state
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [submitted, setSubmitted] = useState(false);
-  const [zoomImg, setZoomImg] = useState<number | null>(null); // 1 or 2 or null
+  const [zoomImg, setZoomImg] = useState<number | null>(null);
 
   const level = FTD_LEVELS[levelId - 1];
   const correctSet = useMemo(() => new Set(level.correct), [levelId]);
 
-  // Shuffled options — memoized per level
   const options = useMemo(
     () => shuffle([...level.correct, ...level.wrong]),
     [levelId],
@@ -246,7 +239,6 @@ export default function FindDifferenceScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setSubmitted(true);
 
-    // Check if all correct selected and no wrong selected
     const allCorrect = level.correct.every((c) => selected.has(c));
     const noWrong = level.wrong.every((w) => !selected.has(w));
 
@@ -274,7 +266,6 @@ export default function FindDifferenceScreen() {
     return count;
   }, [selected, correctSet]);
 
-  // ── Level Select ──────────────────────────────────────────
   if (screen === 'levels') {
     return (
       <LevelSelect
@@ -285,7 +276,6 @@ export default function FindDifferenceScreen() {
     );
   }
 
-  // ── Result ────────────────────────────────────────────────
   if (screen === 'result') {
     const isLastLevel = levelId >= FTD_LEVELS.length;
     return (
@@ -330,7 +320,6 @@ export default function FindDifferenceScreen() {
     );
   }
 
-  // ── Option styling ────────────────────────────────────────
   const getOptionStyle = (option: string) => {
     const isSelected = selected.has(option);
     const isCorrect = correctSet.has(option);
@@ -345,23 +334,18 @@ export default function FindDifferenceScreen() {
       };
     }
 
-    // After submit
     if (isCorrect && isSelected) {
       return { borderColor: '#22C55E', backgroundColor: '#ECFDF5', iconColor: '#22C55E', iconName: 'checkmark-circle' as const, textColor: '#166534' };
     }
     if (isCorrect && !isSelected) {
-      // Missed correct answer
       return { borderColor: '#F59E0B', backgroundColor: '#FEF3C7', iconColor: '#F59E0B', iconName: 'alert-circle' as const, textColor: '#92400E' };
     }
     if (!isCorrect && isSelected) {
-      // Wrong selection
       return { borderColor: '#EF4444', backgroundColor: '#FEF2F2', iconColor: '#EF4444', iconName: 'close-circle' as const, textColor: '#991B1B' };
     }
-    // Not correct, not selected — neutral
     return { borderColor: '#E5E7EB', backgroundColor: '#FFFFFF', iconColor: '#D1D5DB', iconName: 'square-outline' as const, textColor: '#6B7280' };
   };
 
-  // ── Game Screen ───────────────────────────────────────────
   return (
     <SafeAreaScreen>
       <ScreenHeader
@@ -373,7 +357,6 @@ export default function FindDifferenceScreen() {
         }
       />
 
-      {/* Zoom Modal */}
       <Modal visible={zoomImg !== null} transparent animationType="fade" onRequestClose={() => setZoomImg(null)}>
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.92)' }}>
           <View style={{ position: 'absolute', top: 50, right: 16, zIndex: 10 }}>
@@ -410,7 +393,6 @@ export default function FindDifferenceScreen() {
         contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Image 1 — stacked full width */}
         <View className="px-4 mb-3">
           <View className="flex-row items-center justify-between mb-1">
             <Text className="text-xs font-semibold text-textSecondary">Image 1</Text>
@@ -438,7 +420,6 @@ export default function FindDifferenceScreen() {
           </Pressable>
         </View>
 
-        {/* Image 2 — stacked full width */}
         <View className="px-4 mb-4">
           <View className="flex-row items-center justify-between mb-1">
             <Text className="text-xs font-semibold text-textSecondary">Image 2</Text>
@@ -466,14 +447,12 @@ export default function FindDifferenceScreen() {
           </Pressable>
         </View>
 
-        {/* Instructions */}
         <View className="px-4 mb-3">
           <Text className="text-sm text-textSecondary text-center">
             Select the {level.correct.length} items that are different between the images
           </Text>
         </View>
 
-        {/* Options */}
         <View className="px-4" style={{ gap: 8 }}>
           {options.map((option, i) => {
             const style = getOptionStyle(option);
@@ -506,7 +485,6 @@ export default function FindDifferenceScreen() {
           })}
         </View>
 
-        {/* Submit / Retry */}
         <View className="px-4 mt-5">
           {!submitted ? (
             <Pressable
@@ -519,7 +497,6 @@ export default function FindDifferenceScreen() {
             </Pressable>
           ) : (
             <View style={{ gap: 10 }}>
-              {/* Show if wrong */}
               {!(level.correct.every((c) => selected.has(c)) && level.wrong.every((w) => !selected.has(w))) && (
                 <>
                   <View className="bg-red-50 rounded-2xl p-4 border border-red-200">

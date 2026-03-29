@@ -1,38 +1,44 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import SearchBar from '@/components/ui/SearchBar';
+import EmptyState from '@/components/ui/EmptyState';
 import { useBibleSearch, useApiBibleSearch } from '@/hooks/useBible';
 import type { BibleStackParamList } from '@/types/navigation';
-import type { BibleSearchVerse } from '@/types/models';
+
+interface SearchResultItem {
+  id: string;
+  reference: string;
+  text: string;
+  bibleId?: string;
+  chapterId?: string;
+}
 
 export default function BibleSearchScreen() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const route = useRoute<RouteProp<BibleStackParamList, 'BibleSearch'>>();
   const bibleId = route.params?.bibleId;
   const [query, setQuery] = useState('');
 
-  // Use API Bible search when a bibleId is available, otherwise fall back to segregated search
-  const apiBibleSearch = useApiBibleSearch(bibleId ?? '', query);
-  const segregatedSearch = useBibleSearch(bibleId ? '' : query);
-
   const isApiSearch = !!bibleId;
+  const apiBibleSearch = useApiBibleSearch(bibleId ?? '', query);
+  const segregatedSearch = useBibleSearch(isApiSearch ? '' : query);
+
   const isLoading = isApiSearch ? apiBibleSearch.isLoading : segregatedSearch.isLoading;
   const isFetching = isApiSearch ? apiBibleSearch.isFetching : segregatedSearch.isFetching;
 
-  // Normalize results into a consistent shape
-  const searchResult = apiBibleSearch.data as any;
-  const results: Array<{ id: string; reference: string; text: string; bibleId?: string; chapterId?: string }> = isApiSearch
-    ? (searchResult?.verses ?? []).map((v: BibleSearchVerse) => ({
+  const results: SearchResultItem[] = isApiSearch
+    ? (apiBibleSearch.data?.verses ?? []).map((v) => ({
         id: v.id,
         reference: v.reference,
         text: v.text,
         bibleId: v.bibleId,
         chapterId: v.chapterId,
       }))
-    : ((segregatedSearch.data as any[]) ?? []);
+    : ((segregatedSearch.data as SearchResultItem[] | undefined) ?? []);
 
   return (
     <SafeAreaScreen>
@@ -46,12 +52,12 @@ export default function BibleSearchScreen() {
 
       {(isLoading || isFetching) && query.length > 0 ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
+          <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
         </View>
       ) : (
         <FlatList
           data={results}
-          keyExtractor={(item, index) => item.id || String(index)}
+          keyExtractor={(item) => item.id}
           contentContainerStyle={{ padding: 16 }}
           renderItem={({ item }) => (
             <Pressable
@@ -67,15 +73,9 @@ export default function BibleSearchScreen() {
             </Pressable>
           )}
           ListEmptyComponent={
-            query.length > 0 ? (
-              <View className="items-center pt-20">
-                <Text className="text-base text-textSecondary">No results found</Text>
-              </View>
-            ) : (
-              <View className="items-center pt-20">
-                <Text className="text-base text-textSecondary">Start typing to search</Text>
-              </View>
-            )
+            query.length > 0
+              ? <EmptyState icon="search-outline" title="No results found" />
+              : <EmptyState icon="search-outline" title="Start typing to search" />
           }
         />
       )}

@@ -3,11 +3,14 @@ import { View, Text, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
+import EmptyState from '@/components/ui/EmptyState';
 import { usePurchases } from '@/hooks/useShop';
+import { flattenPages } from '@/lib/pages';
+import { colors } from '@/theme/colors';
 
 export default function DownloadsScreen() {
   const { data } = usePurchases();
-  const downloads = data?.pages?.flatMap((page: any) => page?.results || []) || [];
+  const downloads = flattenPages(data);
 
   return (
     <SafeAreaScreen>
@@ -18,19 +21,14 @@ export default function DownloadsScreen() {
         contentContainerStyle={{ padding: 16 }}
         renderItem={({ item }) => (
           <View className="flex-row items-center p-4 bg-surface rounded-xl mb-3">
-            <Ionicons name="document-outline" size={24} color="#4A6FA5" />
+            <Ionicons name="document-outline" size={24} color={colors.primary.DEFAULT} />
             <View className="flex-1 ml-3">
-              <Text className="text-base font-semibold text-textPrimary">{item.title}</Text>
-              <Text className="text-sm text-textSecondary mt-1">{item.file_size || 'Unknown size'}</Text>
+              <Text className="text-base font-semibold text-textPrimary">{item.product.title}</Text>
+              <Text className="text-sm text-textSecondary mt-1">{item.product.category}</Text>
             </View>
           </View>
         )}
-        ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Ionicons name="download-outline" size={48} color="#9CA3AF" />
-            <Text className="text-base text-textSecondary mt-4">No downloads yet</Text>
-          </View>
-        }
+        ListEmptyComponent={<EmptyState icon="download-outline" title="No downloads yet" />}
       />
     </SafeAreaScreen>
   );

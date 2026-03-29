@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, ActivityIndicator, Pressable, Modal, FlatList, TextInput } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import ReadAloudControls from '@/components/bible/ReadAloudControls';
@@ -11,7 +12,7 @@ import { SUPPORTED_LANGUAGES } from '@/constants/languages';
 import type { BibleStackParamList } from '@/types/navigation';
 
 export default function BibleVerseScreen() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const route = useRoute<RouteProp<BibleStackParamList, 'BibleVerse'>>();
   const { bibleId, chapterId } = route.params;
   const { data: chapter, isLoading } = useBibleChapterContent(bibleId, chapterId);
@@ -26,7 +27,6 @@ export default function BibleVerseScreen() {
   const displayContent = translatedContent ?? content;
   const title = chapter?.reference || chapterId;
 
-  // Translate when language changes
   useEffect(() => {
     if (selectedLang === 'en' || !content) {
       setTranslatedContent(null);
@@ -50,7 +50,6 @@ export default function BibleVerseScreen() {
     return () => { cancelled = true; };
   }, [content, selectedLang]);
 
-  // Reset translation when chapter changes
   useEffect(() => {
     setSelectedLang('en');
     setTranslatedContent(null);
@@ -61,7 +60,7 @@ export default function BibleVerseScreen() {
       <SafeAreaScreen>
         <ScreenHeader title={chapterId} />
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
+          <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
         </View>
       </SafeAreaScreen>
     );
@@ -78,7 +77,7 @@ export default function BibleVerseScreen() {
             onPress={() => setShowLangPicker(!showLangPicker)}
             className="flex-row items-center px-3 py-1.5 bg-surface rounded-full"
           >
-            <Ionicons name="language" size={16} color="#4A6FA5" />
+            <Ionicons name="language" size={16} color={colors.primary.DEFAULT} />
             <Text className="text-xs text-primary ml-1 font-medium">
               {currentLang?.code.toUpperCase() || 'EN'}
             </Text>
@@ -86,7 +85,6 @@ export default function BibleVerseScreen() {
         }
       />
 
-      {/* Language picker modal */}
       <LanguagePickerModal
         visible={showLangPicker}
         selectedCode={selectedLang}
@@ -105,7 +103,7 @@ export default function BibleVerseScreen() {
 
       {isTranslating && (
         <View className="flex-row items-center justify-center py-2 bg-primary/5">
-          <ActivityIndicator size="small" color="#4A6FA5" />
+          <ActivityIndicator size="small" color={colors.primary.DEFAULT} />
           <Text className="text-xs text-primary ml-2">
             Translating to {currentLang?.name}...
           </Text>
@@ -124,14 +122,13 @@ export default function BibleVerseScreen() {
           {displayContent || 'No content available'}
         </Text>
 
-        {/* Chapter navigation */}
         <View className="flex-row justify-between items-center mt-6 mb-4">
           {chapter?.previous ? (
             <Pressable
               onPress={() => navigation.setParams({ chapterId: chapter.previous!.id })}
               className="flex-row items-center px-4 py-2 bg-surface rounded-xl"
             >
-              <Ionicons name="chevron-back" size={18} color="#4A6FA5" />
+              <Ionicons name="chevron-back" size={18} color={colors.primary.DEFAULT} />
               <Text className="text-sm text-primary ml-1">Previous</Text>
             </Pressable>
           ) : <View />}
@@ -141,7 +138,7 @@ export default function BibleVerseScreen() {
               className="flex-row items-center px-4 py-2 bg-surface rounded-xl"
             >
               <Text className="text-sm text-primary mr-1">Next</Text>
-              <Ionicons name="chevron-forward" size={18} color="#4A6FA5" />
+              <Ionicons name="chevron-forward" size={18} color={colors.primary.DEFAULT} />
             </Pressable>
           ) : <View />}
         </View>
@@ -149,15 +146,12 @@ export default function BibleVerseScreen() {
         <View className="h-24" />
       </ScrollView>
 
-      {/* Read Aloud bar — white background */}
       <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-border px-4 py-3">
         <ReadAloudControls text={displayContent} language={selectedLang} />
       </View>
     </SafeAreaScreen>
   );
 }
-
-// ── Searchable language picker modal ──
 
 function LanguagePickerModal({
   visible,
@@ -189,15 +183,13 @@ function LanguagePickerModal({
     <Modal visible={visible} animationType="slide" transparent>
       <View className="flex-1 bg-black/40 justify-end">
         <View className="bg-white rounded-t-3xl max-h-[75%]">
-          {/* Header */}
           <View className="flex-row items-center justify-between px-5 pt-5 pb-3">
             <Text className="text-lg font-bold text-textPrimary">Select Language</Text>
             <Pressable onPress={onClose} className="p-1">
-              <Ionicons name="close" size={24} color="#6B7280" />
+              <Ionicons name="close" size={24} color={colors.textSecondary} />
             </Pressable>
           </View>
 
-          {/* Search */}
           <View className="mx-5 mb-3 bg-gray-100 rounded-xl flex-row items-center px-3">
             <Ionicons name="search" size={18} color="#9CA3AF" />
             <TextInput
@@ -210,7 +202,6 @@ function LanguagePickerModal({
             />
           </View>
 
-          {/* Language list */}
           <FlatList
             data={filtered}
             keyExtractor={(item) => item.code}
@@ -227,7 +218,7 @@ function LanguagePickerModal({
                   <Text className="text-xs text-textSecondary">{item.nativeName}</Text>
                 </View>
                 {selectedCode === item.code && (
-                  <Ionicons name="checkmark-circle" size={20} color="#4A6FA5" />
+                  <Ionicons name="checkmark-circle" size={20} color={colors.primary.DEFAULT} />
                 )}
               </Pressable>
             )}

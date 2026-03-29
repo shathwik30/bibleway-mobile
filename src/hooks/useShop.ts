@@ -33,6 +33,7 @@ export function useProductDetail(productId: string) {
     queryKey: ['product', productId],
     queryFn: () => api.get<Product>(ENDPOINTS.shop.productDetail(productId)),
     ...CACHE_DURATIONS.shopProducts,
+    enabled: !!productId,
   });
 }
 
@@ -62,6 +63,6 @@ export function useDownload(productId: string) {
   return useQuery({
     queryKey: ['download', productId],
     queryFn: () => api.get(ENDPOINTS.shop.download(productId)),
-    enabled: false, // Manual trigger
+    enabled: false,
   });
 }

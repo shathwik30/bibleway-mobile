@@ -5,13 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
 import AnimatedPressable from '@/components/ui/AnimatedPressable';
+import { colors } from '@/theme/colors';
 
 interface GameItem {
   id: string;
   title: string;
   description: string;
   icon: keyof typeof Ionicons.glyphMap;
-  screen: string;
+  screen: 'TicTacToe' | 'BibleCrossword' | 'BibleQuiz' | 'FindDifference';
   players: string;
 }
 
@@ -50,8 +51,8 @@ const GAMES: GameItem[] = [
   },
 ];
 
-function GameCard({ game }: { game: GameItem }) {
-  const navigation = useNavigation<any>();
+const GameCard = React.memo(function GameCard({ game }: { game: GameItem }) {
+  const navigation = useNavigation();
 
   return (
     <AnimatedPressable
@@ -59,7 +60,7 @@ function GameCard({ game }: { game: GameItem }) {
       className="mx-4 mb-3 p-4 rounded-xl border border-border bg-white flex-row items-center"
     >
       <View className="w-14 h-14 rounded-xl bg-primary/10 items-center justify-center mr-4">
-        <Ionicons name={game.icon} size={28} color="#4A6FA5" />
+        <Ionicons name={game.icon} size={28} color={colors.primary.DEFAULT} />
       </View>
       <View className="flex-1">
         <Text className="text-base font-bold text-textPrimary">
@@ -69,16 +70,16 @@ function GameCard({ game }: { game: GameItem }) {
           {game.description}
         </Text>
         <View className="flex-row items-center mt-1.5">
-          <Ionicons name="people-outline" size={14} color="#6B7280" />
+          <Ionicons name="people-outline" size={14} color={colors.textSecondary} />
           <Text className="text-xs text-textSecondary ml-1">
             {game.players}
           </Text>
         </View>
       </View>
-      <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+      <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
     </AnimatedPressable>
   );
-}
+});
 
 export default function GamesListScreen() {
   return (

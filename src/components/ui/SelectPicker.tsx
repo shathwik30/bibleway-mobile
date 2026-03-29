@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, FlatList, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 
 export interface SelectOption {
   label: string;
@@ -43,7 +44,7 @@ export default function SelectPicker({
         >
           {selectedOption ? selectedOption.label : placeholder}
         </Text>
-        <Ionicons name="chevron-down" size={18} color="#6B7280" />
+        <Ionicons name="chevron-down" size={18} color={colors.textSecondary} />
       </Pressable>
       {error && <Text className="text-xs text-error mt-1">{error}</Text>}
 
@@ -53,7 +54,7 @@ export default function SelectPicker({
           <View className="flex-row items-center justify-between px-4 py-3 border-b border-border">
             <Text className="text-lg font-bold text-textPrimary">{label || 'Select'}</Text>
             <Pressable onPress={() => setVisible(false)}>
-              <Ionicons name="close" size={24} color="#1A1A2E" />
+              <Ionicons name="close" size={24} color={colors.textPrimary} />
             </Pressable>
           </View>
           <FlatList
@@ -77,7 +78,7 @@ export default function SelectPicker({
                   {item.label}
                 </Text>
                 {value === item.value && (
-                  <Ionicons name="checkmark-circle" size={22} color="#4A6FA5" />
+                  <Ionicons name="checkmark-circle" size={22} color={colors.primary.DEFAULT} />
                 )}
               </Pressable>
             )}

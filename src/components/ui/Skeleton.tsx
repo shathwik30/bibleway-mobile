@@ -30,7 +30,7 @@ export default function Skeleton({ width, height, borderRadius = 4, style }: Ske
     <Animated.View
       style={[
         {
-          width: width as any,
+          width: width as ViewStyle['width'],
           height,
           borderRadius,
           backgroundColor: '#E5E7EB',
@@ -42,11 +42,9 @@ export default function Skeleton({ width, height, borderRadius = 4, style }: Ske
   );
 }
 
-// Pre-built skeleton layouts
 export function PostCardSkeleton() {
   return (
     <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#E5E7EB' }}>
-      {/* Author row */}
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
         <Skeleton width={40} height={40} borderRadius={20} />
         <View style={{ marginLeft: 12 }}>
@@ -54,13 +52,10 @@ export function PostCardSkeleton() {
           <Skeleton width={80} height={10} borderRadius={4} style={{ marginTop: 6 }} />
         </View>
       </View>
-      {/* Text lines */}
       <Skeleton width="100%" height={14} borderRadius={4} style={{ marginBottom: 8 }} />
       <Skeleton width="90%" height={14} borderRadius={4} style={{ marginBottom: 8 }} />
       <Skeleton width="70%" height={14} borderRadius={4} style={{ marginBottom: 16 }} />
-      {/* Image placeholder */}
       <Skeleton width="100%" height={200} borderRadius={12} style={{ marginBottom: 12 }} />
-      {/* Action row */}
       <View style={{ flexDirection: 'row', gap: 24 }}>
         <Skeleton width={60} height={20} borderRadius={10} />
         <Skeleton width={60} height={20} borderRadius={10} />

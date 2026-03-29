@@ -1,8 +1,6 @@
 import {
-  AccountVisibility,
   BookmarkType,
   EmojiType,
-  FollowStatus,
   Gender,
   HighlightColor,
   HighlightType,
@@ -12,7 +10,6 @@ import {
   Platform,
 } from './enums';
 
-// Author (used in posts, prayers, comments, replies)
 export interface Author {
   id: string;
   full_name: string;
@@ -20,7 +17,6 @@ export interface Author {
   age: number;
 }
 
-// UserProfile (own profile - all fields)
 export interface UserProfile {
   id: string;
   email: string;
@@ -32,8 +28,6 @@ export interface UserProfile {
   phone_number: string;
   profile_photo: string | null;
   bio: string;
-  account_visibility: AccountVisibility;
-  hide_followers_list: boolean;
   is_email_verified: boolean;
   date_joined: string;
   age: number;
@@ -43,7 +37,6 @@ export interface UserProfile {
   prayer_count: number;
 }
 
-// UserPublicProfile (other users - PII excluded)
 export interface UserPublicProfile {
   id: string;
   full_name: string;
@@ -52,18 +45,15 @@ export interface UserPublicProfile {
   country: string;
   profile_photo: string | null;
   bio: string;
-  account_visibility: AccountVisibility;
-  hide_followers_list: boolean;
   date_joined: string;
   age: number;
   follower_count: number;
   following_count: number;
   post_count: number;
   prayer_count: number;
-  follow_status: 'none' | 'following' | 'requested' | 'self';
+  follow_status: 'none' | 'following' | 'self';
 }
 
-// UserListItem
 export interface UserListItem {
   id: string;
   full_name: string;
@@ -72,7 +62,6 @@ export interface UserListItem {
   age: number;
 }
 
-// MediaItem (for PostMedia / PrayerMedia)
 export interface MediaItem {
   id: string;
   file: string;
@@ -80,7 +69,6 @@ export interface MediaItem {
   order: number;
 }
 
-// Post (PostListSerializer fields)
 export interface Post {
   id: string;
   author: Author;
@@ -94,12 +82,12 @@ export interface Post {
   updated_at?: string;
 }
 
-// Prayer
 export interface Prayer {
   id: string;
   author: Author;
   title: string;
   description: string;
+  is_boosted: boolean;
   media: MediaItem[];
   reaction_count: number;
   comment_count: number;
@@ -108,7 +96,6 @@ export interface Prayer {
   updated_at?: string;
 }
 
-// Comment
 export interface Comment {
   id: string;
   user: Author;
@@ -118,7 +105,6 @@ export interface Comment {
   updated_at: string;
 }
 
-// Reply
 export interface Reply {
   id: string;
   user: Author;
@@ -127,37 +113,29 @@ export interface Reply {
   updated_at: string;
 }
 
-// FollowRelationship
 export interface FollowRelationship {
   id: string;
   follower: UserListItem;
   following: UserListItem;
-  status: FollowStatus;
   created_at: string;
 }
 
-// BlockRelationship
 export interface BlockRelationship {
   id: string;
   blocked: UserListItem;
   created_at: string;
 }
 
-// Notification
 export interface Notification {
   id: string;
   sender: Author | null;
   notification_type: NotificationType;
   title: string;
   body?: string;
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   is_read: boolean;
   created_at: string;
 }
-
-// ---------------------------------------------------------------------------
-// API Bible types (from api.bible/v1)
-// ---------------------------------------------------------------------------
 
 export interface ApiBibleLanguage {
   id: string;
@@ -188,12 +166,44 @@ export interface BibleVersion {
   updatedAt: string;
 }
 
+export interface BibleDetail extends BibleVersion {
+  copyright: string;
+  info: string;
+}
+
 export interface BibleBook {
   id: string;
   bibleId: string;
   abbreviation: string;
   name: string;
   nameLong: string;
+  chapters?: BibleChapterSummary[];
+}
+
+export interface BibleSectionSummary {
+  id: string;
+  bibleId: string;
+  bookId: string;
+  title: string;
+  firstVerseId: string;
+  lastVerseId: string;
+  firstVerseOrgId: string;
+  lastVerseOrgId: string;
+}
+
+export interface BibleSectionContent {
+  id: string;
+  bibleId: string;
+  bookId: string;
+  chapterId: string;
+  title: string;
+  content: string;
+  verseCount: number;
+  firstVerseId: string;
+  lastVerseId: string;
+  copyright: string;
+  next: { id: string; title: string } | null;
+  previous: { id: string; title: string } | null;
 }
 
 export interface BibleChapterSummary {
@@ -281,6 +291,11 @@ export interface AudioBible {
   updatedAt: string;
 }
 
+export interface AudioBibleDetail extends AudioBible {
+  copyright: string;
+  info: string;
+}
+
 export interface AudioBibleChapter {
   id: string;
   bibleId: string;
@@ -291,11 +306,6 @@ export interface AudioBibleChapter {
   timecodes: Array<{ end: string; start: string; verseId: string }>;
 }
 
-// ---------------------------------------------------------------------------
-// Segregated Bible types
-// ---------------------------------------------------------------------------
-
-// SegregatedSection
 export interface SegregatedSection {
   id: string;
   title: string;
@@ -305,11 +315,8 @@ export interface SegregatedSection {
   is_active: boolean;
   chapter_count: number;
   is_prioritized: boolean;
-  created_at: string;
-  updated_at: string;
 }
 
-// SegregatedChapter
 export interface SegregatedChapter {
   id: string;
   section: string;
@@ -317,11 +324,8 @@ export interface SegregatedChapter {
   order: number;
   is_active: boolean;
   page_count: number;
-  created_at: string;
-  updated_at: string;
 }
 
-// SegregatedPage (list)
 export interface SegregatedPage {
   id: string;
   chapter: string;
@@ -329,29 +333,24 @@ export interface SegregatedPage {
   youtube_url: string;
   order: number;
   is_active: boolean;
-  created_at: string;
-  updated_at: string;
 }
 
-// SegregatedPageDetail
 export interface SegregatedPageDetail extends SegregatedPage {
   content: string;
   section_title: string;
   chapter_title: string;
 }
 
-// Bookmark
 export interface Bookmark {
   id: string;
   bookmark_type: BookmarkType;
   verse_reference: string;
   content_type: number | null;
   object_id: string | null;
-  content_object: any;
+  content_object: unknown;
   created_at: string;
 }
 
-// Highlight
 export interface Highlight {
   id: string;
   highlight_type: HighlightType;
@@ -359,13 +358,12 @@ export interface Highlight {
   verse_reference: string;
   content_type: number | null;
   object_id: string | null;
-  content_object: any;
+  content_object: unknown;
   selection_start: number | null;
   selection_end: number | null;
   created_at: string;
 }
 
-// Note
 export interface Note {
   id: string;
   note_type: NoteType;
@@ -373,12 +371,11 @@ export interface Note {
   verse_reference: string;
   content_type: number | null;
   object_id: string | null;
-  content_object: any;
+  content_object: unknown;
   created_at: string;
   updated_at: string;
 }
 
-// Product (list)
 export interface ProductListItem {
   id: string;
   title: string;
@@ -391,7 +388,6 @@ export interface ProductListItem {
   created_at: string;
 }
 
-// Product (detail)
 export interface Product extends ProductListItem {
   description: string;
   download_count: number;
@@ -399,7 +395,6 @@ export interface Product extends ProductListItem {
   updated_at: string;
 }
 
-// ProductInline (in purchases)
 export interface ProductInline {
   id: string;
   title: string;
@@ -408,7 +403,6 @@ export interface ProductInline {
   is_free: boolean;
 }
 
-// Purchase
 export interface Purchase {
   id: string;
   product: ProductInline;
@@ -418,7 +412,6 @@ export interface Purchase {
   created_at: string;
 }
 
-// VerseOfDay (UnifiedVerseResponse)
 export interface VerseOfDay {
   id: string;
   bible_reference: string;
@@ -428,7 +421,6 @@ export interface VerseOfDay {
   source: string;
 }
 
-// PostAnalytics
 export interface PostAnalytics {
   views: number;
   reactions: number;
@@ -436,7 +428,6 @@ export interface PostAnalytics {
   shares: number;
 }
 
-// PostBoost
 export interface PostBoost {
   id: string;
   post: string;
@@ -450,13 +441,12 @@ export interface PostBoost {
   created_at: string;
 }
 
-// BoostAnalyticSnapshot
 export interface BoostAnalyticSnapshot {
   id: string;
   boost: string;
   impressions: number;
   reach: number;
-  engagement_rate: string;
+  engagement_rate: number;
   link_clicks: number;
   profile_visits: number;
   snapshot_date: string;

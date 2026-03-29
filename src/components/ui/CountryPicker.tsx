@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable, FlatList, Modal, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 
 interface Country {
   name: string;
@@ -9,7 +10,6 @@ interface Country {
   dial_code: string;
 }
 
-// Comprehensive country list with flags
 const COUNTRIES: Country[] = [
   { name: "Afghanistan", code: "AF", flag: "\u{1F1E6}\u{1F1EB}", dial_code: "+93" },
   { name: "Albania", code: "AL", flag: "\u{1F1E6}\u{1F1F1}", dial_code: "+355" },
@@ -176,7 +176,7 @@ export default function CountryPicker({ label, value, onChange, error }: Country
         <Text className={`text-base ${value ? 'text-textPrimary' : 'text-gray-400'}`}>
           {selectedCountry ? `${selectedCountry.flag}  ${selectedCountry.name}` : 'Select country...'}
         </Text>
-        <Ionicons name="chevron-down" size={18} color="#6B7280" />
+        <Ionicons name="chevron-down" size={18} color={colors.textSecondary} />
       </Pressable>
       {error && <Text className="text-xs text-error mt-1">{error}</Text>}
 
@@ -187,11 +187,11 @@ export default function CountryPicker({ label, value, onChange, error }: Country
             <View className="flex-row items-center justify-between mb-3">
               <Text className="text-lg font-bold text-textPrimary">Select Country</Text>
               <Pressable onPress={() => setVisible(false)}>
-                <Ionicons name="close" size={24} color="#1A1A2E" />
+                <Ionicons name="close" size={24} color={colors.textPrimary} />
               </Pressable>
             </View>
             <View className="flex-row items-center bg-surface border border-border rounded-lg px-3 py-2">
-              <Ionicons name="search-outline" size={18} color="#6B7280" />
+              <Ionicons name="search-outline" size={18} color={colors.textSecondary} />
               <TextInput
                 value={search}
                 onChangeText={setSearch}
@@ -228,7 +228,7 @@ export default function CountryPicker({ label, value, onChange, error }: Country
                   </Text>
                 </View>
                 {value === item.name && (
-                  <Ionicons name="checkmark-circle" size={22} color="#4A6FA5" />
+                  <Ionicons name="checkmark-circle" size={22} color={colors.primary.DEFAULT} />
                 )}
               </Pressable>
             )}

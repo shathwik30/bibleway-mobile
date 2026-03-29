@@ -1,46 +1,43 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type InfiniteData, type QueryKey } from '@tanstack/react-query';
 import { api } from '@/api/client';
 import { ENDPOINTS } from '@/api/endpoints';
 import { CACHE_DURATIONS } from '@/constants/api';
 import { cursorNextPage, pageNumberNextPage } from '@/api/pagination';
 import type { CursorPaginatedResponse, PaginatedResponse } from '@/types/api';
 import type { Post, Prayer, Comment, Reply } from '@/types/models';
+import type { EmojiType } from '@/types/enums';
 
-// ---------------------------------------------------------------------------
-// Helpers for optimistic updates on infinite query data
-// ---------------------------------------------------------------------------
-
-function prependToFirstPage<T>(old: any, item: T): any {
-  if (!old?.pages?.length) return old;
-  const firstPage = { ...old.pages[0], results: [item, ...(old.pages[0].results || [])] };
-  return { ...old, pages: [firstPage, ...old.pages.slice(1)] };
+function prependToFirstPage<TPage extends { results: unknown[] }>(
+  old: InfiniteData<TPage>,
+  item: TPage['results'][number],
+): InfiniteData<TPage> {
+  if (!old.pages.length) return old;
+  return { ...old, pages: [{ ...old.pages[0], results: [item, ...old.pages[0].results] } as TPage, ...old.pages.slice(1)] };
 }
 
-function removeFromPages<T extends { id: string }>(old: any, id: string): any {
-  if (!old?.pages) return old;
+function removeFromPages<TPage extends { results: Array<{ id: string }> }>(
+  old: InfiniteData<TPage>,
+  id: string,
+): InfiniteData<TPage> {
   return {
     ...old,
-    pages: old.pages.map((page: any) => ({
-      ...page,
-      results: (page.results || []).filter((item: T) => item.id !== id),
-    })),
+    pages: old.pages.map((page) => ({ ...page, results: page.results.filter((item) => item.id !== id) }) as TPage),
   };
 }
 
-function updateInPages<T extends { id: string }>(old: any, id: string, updater: (item: T) => T): any {
-  if (!old?.pages) return old;
+function updateInPages<TPage extends { results: Array<{ id: string }> }>(
+  old: InfiniteData<TPage>,
+  id: string,
+  updater: (item: TPage['results'][number]) => TPage['results'][number],
+): InfiniteData<TPage> {
   return {
     ...old,
-    pages: old.pages.map((page: any) => ({
-      ...page,
-      results: (page.results || []).map((item: T) => (item.id === id ? updater(item) : item)),
-    })),
+    pages: old.pages.map((page) => ({ ...page, results: page.results.map((item) => (item.id === id ? updater(item) : item)) }) as TPage),
   };
 }
 
-// ---------------------------------------------------------------------------
-// Feed queries
-// ---------------------------------------------------------------------------
+type CursorFeedData<T> = InfiniteData<CursorPaginatedResponse<T>>;
+type PagedData<T> = InfiniteData<PaginatedResponse<T>>;
 
 export function usePosts() {
   return useInfiniteQuery({
@@ -64,6 +61,7 @@ export function useUserPosts(userId: string) {
     },
     initialPageParam: undefined as string | undefined,
     getNextPageParam: cursorNextPage,
+    enabled: !!userId,
     ...CACHE_DURATIONS.feed,
   });
 }
@@ -77,6 +75,7 @@ export function useUserPrayers(userId: string) {
     },
     initialPageParam: undefined as string | undefined,
     getNextPageParam: cursorNextPage,
+    enabled: !!userId,
     ...CACHE_DURATIONS.feed,
   });
 }
@@ -94,10 +93,6 @@ export function usePrayers() {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Detail queries
-// ---------------------------------------------------------------------------
-
 export function usePostDetail(postId: string) {
   return useQuery({
     queryKey: ['post', postId],
@@ -112,10 +107,6 @@ export function usePrayerDetail(prayerId: string) {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Create mutations (optimistic prepend to feed)
-// ---------------------------------------------------------------------------
-
 export function useCreatePost() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -125,9 +116,9 @@ export function useCreatePost() {
       media_types?: string[];
     }) => api.post<Post>(ENDPOINTS.social.posts, data),
     onSuccess: (newPost) => {
-      // Optimistically prepend the new post to the feed
-      queryClient.setQueriesData({ queryKey: ['posts'] }, (old: any) =>
-        old ? prependToFirstPage(old, newPost) : old,
+      queryClient.setQueriesData<CursorFeedData<Post>>(
+        { queryKey: ['posts'] },
+        (old) => (old ? prependToFirstPage(old, newPost) : old),
       );
     },
   });
@@ -143,16 +134,13 @@ export function useCreatePrayer() {
       media_types?: string[];
     }) => api.post<Prayer>(ENDPOINTS.social.prayers, data),
     onSuccess: (newPrayer) => {
-      queryClient.setQueriesData({ queryKey: ['prayers'] }, (old: any) =>
-        old ? prependToFirstPage(old, newPrayer) : old,
+      queryClient.setQueriesData<CursorFeedData<Prayer>>(
+        { queryKey: ['prayers'] },
+        (old) => (old ? prependToFirstPage(old, newPrayer) : old),
       );
     },
   });
 }
-
-// ---------------------------------------------------------------------------
-// Delete mutations (optimistic remove from feed)
-// ---------------------------------------------------------------------------
 
 export function useDeletePost() {
   const queryClient = useQueryClient();
@@ -160,15 +148,17 @@ export function useDeletePost() {
     mutationFn: (postId: string) => api.delete(ENDPOINTS.social.postDetail(postId)),
     onMutate: async (postId) => {
       await queryClient.cancelQueries({ queryKey: ['posts'] });
-      const previous = queryClient.getQueriesData({ queryKey: ['posts'] });
-      queryClient.setQueriesData({ queryKey: ['posts'] }, (old: any) =>
-        old ? removeFromPages(old, postId) : old,
+      const previous = queryClient.getQueriesData<CursorFeedData<Post>>({ queryKey: ['posts'] });
+      queryClient.setQueriesData<CursorFeedData<Post>>(
+        { queryKey: ['posts'] },
+        (old) => (old ? removeFromPages(old, postId) : old),
       );
       return { previous };
     },
     onError: (_err, _postId, context) => {
-      // Rollback on error
-      context?.previous?.forEach(([key, data]: any) => queryClient.setQueryData(key, data));
+      context?.previous?.forEach(([key, data]: [QueryKey, CursorFeedData<Post> | undefined]) =>
+        queryClient.setQueryData(key, data),
+      );
     },
   });
 }
@@ -179,21 +169,20 @@ export function useDeletePrayer() {
     mutationFn: (prayerId: string) => api.delete(ENDPOINTS.social.prayerDetail(prayerId)),
     onMutate: async (prayerId) => {
       await queryClient.cancelQueries({ queryKey: ['prayers'] });
-      const previous = queryClient.getQueriesData({ queryKey: ['prayers'] });
-      queryClient.setQueriesData({ queryKey: ['prayers'] }, (old: any) =>
-        old ? removeFromPages(old, prayerId) : old,
+      const previous = queryClient.getQueriesData<CursorFeedData<Prayer>>({ queryKey: ['prayers'] });
+      queryClient.setQueriesData<CursorFeedData<Prayer>>(
+        { queryKey: ['prayers'] },
+        (old) => (old ? removeFromPages(old, prayerId) : old),
       );
       return { previous };
     },
     onError: (_err, _prayerId, context) => {
-      context?.previous?.forEach(([key, data]: any) => queryClient.setQueryData(key, data));
+      context?.previous?.forEach(([key, data]: [QueryKey, CursorFeedData<Prayer> | undefined]) =>
+        queryClient.setQueryData(key, data),
+      );
     },
   });
 }
-
-// ---------------------------------------------------------------------------
-// Reactions (optimistic toggle)
-// ---------------------------------------------------------------------------
 
 export function useToggleReaction() {
   const queryClient = useQueryClient();
@@ -201,7 +190,7 @@ export function useToggleReaction() {
     mutationFn: ({ contentType, objectId, emojiType }: {
       contentType: 'post' | 'prayer';
       objectId: string;
-      emojiType: string;
+      emojiType: EmojiType;
     }) => {
       const endpoint = contentType === 'post'
         ? ENDPOINTS.social.postReact(objectId)
@@ -211,31 +200,27 @@ export function useToggleReaction() {
     onMutate: async ({ contentType, objectId, emojiType }) => {
       const queryKey = [contentType === 'post' ? 'posts' : 'prayers'];
       await queryClient.cancelQueries({ queryKey });
-      const previous = queryClient.getQueriesData({ queryKey });
+      const previous = queryClient.getQueriesData<CursorFeedData<Post | Prayer>>({ queryKey });
 
-      queryClient.setQueriesData({ queryKey }, (old: any) =>
-        old
-          ? updateInPages(old, objectId, (item: any) => {
-              const isRemoving = item.user_reaction === emojiType;
-              return {
+      type FeedItem = Post | Prayer;
+      queryClient.setQueriesData<CursorFeedData<FeedItem>>(
+        { queryKey },
+        (old) =>
+          old
+            ? updateInPages(old, objectId, (item) => ({
                 ...item,
-                user_reaction: isRemoving ? null : emojiType,
-                reaction_count: item.reaction_count + (isRemoving ? -1 : item.user_reaction ? 0 : 1),
-              };
-            })
-          : old,
+                user_reaction: item.user_reaction === emojiType ? null : emojiType,
+                reaction_count: item.reaction_count + (item.user_reaction === emojiType ? -1 : item.user_reaction ? 0 : 1),
+              }))
+            : old,
       );
       return { previous };
     },
     onError: (_err, _vars, context) => {
-      context?.previous?.forEach(([key, data]: any) => queryClient.setQueryData(key, data));
+      context?.previous?.forEach(([key, data]) => queryClient.setQueryData(key, data));
     },
   });
 }
-
-// ---------------------------------------------------------------------------
-// Comments (optimistic add)
-// ---------------------------------------------------------------------------
 
 export function useComments(contentType: 'post' | 'prayer', objectId: string) {
   const endpoint = contentType === 'post'
@@ -261,28 +246,25 @@ export function useCreateComment() {
       return api.post<Comment>(endpoint, { text, content_type_model: contentType, object_id: objectId });
     },
     onSuccess: (newComment, variables) => {
-      // Prepend new comment optimistically
-      queryClient.setQueriesData(
+      queryClient.setQueriesData<PagedData<Comment>>(
         { queryKey: ['comments', variables.contentType, variables.objectId] },
-        (old: any) => (old ? prependToFirstPage(old, newComment) : old),
+        (old) => (old ? prependToFirstPage(old, newComment) : old),
       );
-      // Update comment count in the feed
+      type FeedItem = Post | Prayer;
       const feedKey = [variables.contentType === 'post' ? 'posts' : 'prayers'];
-      queryClient.setQueriesData({ queryKey: feedKey }, (old: any) =>
-        old
-          ? updateInPages(old, variables.objectId, (item: any) => ({
-              ...item,
-              comment_count: (item.comment_count || 0) + 1,
-            }))
-          : old,
+      queryClient.setQueriesData<CursorFeedData<FeedItem>>(
+        { queryKey: feedKey },
+        (old) =>
+          old
+            ? updateInPages(old, variables.objectId, (item) => ({
+                ...item,
+                comment_count: (item.comment_count || 0) + 1,
+              }))
+            : old,
       );
     },
   });
 }
-
-// ---------------------------------------------------------------------------
-// Replies (optimistic add)
-// ---------------------------------------------------------------------------
 
 export function useReplies(commentId: string) {
   return useInfiniteQuery({
@@ -300,27 +282,23 @@ export function useCreateReply() {
     mutationFn: ({ commentId, text }: { commentId: string; text: string }) =>
       api.post<Reply>(ENDPOINTS.social.replies(commentId), { text }),
     onSuccess: (newReply, variables) => {
-      // Prepend new reply
-      queryClient.setQueriesData(
+      queryClient.setQueriesData<PagedData<Reply>>(
         { queryKey: ['replies', variables.commentId] },
-        (old: any) => (old ? prependToFirstPage(old, newReply) : old),
+        (old) => (old ? prependToFirstPage(old, newReply) : old),
       );
-      // Update reply_count on the comment in all comment lists
-      queryClient.setQueriesData({ queryKey: ['comments'] }, (old: any) =>
-        old
-          ? updateInPages(old, variables.commentId, (c: any) => ({
-              ...c,
-              reply_count: (c.reply_count || 0) + 1,
-            }))
-          : old,
+      queryClient.setQueriesData<PagedData<Comment>>(
+        { queryKey: ['comments'] },
+        (old) =>
+          old
+            ? updateInPages(old, variables.commentId, (c) => ({
+                ...c,
+                reply_count: (c.reply_count || 0) + 1,
+              }))
+            : old,
       );
     },
   });
 }
-
-// ---------------------------------------------------------------------------
-// Share & Report
-// ---------------------------------------------------------------------------
 
 export function useShareContent() {
   return useMutation({

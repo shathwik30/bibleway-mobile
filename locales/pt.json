@@ -85,9 +85,10 @@
     "hideReplies": "Ocultar respostas",
     "reportContent": "Denunciar conte\u00fado",
     "reportReason": "Selecione um motivo",
-    "inappropriate": "Inapropriado",
     "spam": "Spam",
-    "falseTeaching": "Falso ensinamento",
+    "harassment": "Assédio",
+    "hateSpeech": "Discurso de ódio",
+    "misinformation": "Desinformação",
     "other": "Outro",
     "reportDescription": "Detalhes adicionais (opcional)",
     "reportSuccess": "Den\u00fancia enviada. Obrigado.",
@@ -199,14 +200,22 @@
     "expired": "Expirado"
   },
   "settings": {
+    "title": "Configura\u00e7\u00f5es",
+    "editProfile": "Editar perfil",
     "language": "Idioma",
     "privacy": "Privacidade",
     "blockedUsers": "Usu\u00e1rios bloqueados",
     "followRequests": "Solicita\u00e7\u00f5es",
+    "myPurchases": "Minhas compras",
+    "downloads": "Downloads",
+    "bookmarks": "Favoritos",
+    "notes": "Notas",
     "changePassword": "Alterar senha",
     "about": "Sobre",
+    "version": "Vers\u00e3o",
     "logout": "Sair",
     "logoutConfirm": "Tem certeza que deseja sair?",
-    "deleteAccount": "Excluir conta"
+    "deleteAccount": "Excluir conta",
+    "deleteAccountConfirm": "Tem certeza que deseja excluir sua conta? Esta a\u00e7\u00e3o n\u00e3o pode ser desfeita."
   }
 }

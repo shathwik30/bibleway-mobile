@@ -6,7 +6,6 @@ export interface Language {
 }
 
 export const SUPPORTED_LANGUAGES: Language[] = [
-  // ── Global / Major ──
   { code: 'en', name: 'English', nativeName: 'English', rtl: false },
   { code: 'es', name: 'Spanish', nativeName: 'Español', rtl: false },
   { code: 'fr', name: 'French', nativeName: 'Français', rtl: false },
@@ -21,7 +20,6 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: 'el', name: 'Greek', nativeName: 'Ελληνικά', rtl: false },
   { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', rtl: false },
 
-  // ── Indian Languages ──
   { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', rtl: false },
   { code: 'bn', name: 'Bengali', nativeName: 'বাংলা', rtl: false },
   { code: 'te', name: 'Telugu', nativeName: 'తెలుగు', rtl: false },
@@ -44,7 +42,6 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: 'mni-Mtei', name: 'Manipuri (Meitei)', nativeName: 'ꯃꯩꯇꯩꯂꯣꯟ', rtl: false },
   { code: 'lus', name: 'Mizo', nativeName: 'Mizo ṭawng', rtl: false },
 
-  // ── East & Southeast Asian ──
   { code: 'zh', name: 'Chinese (Simplified)', nativeName: '简体中文', rtl: false },
   { code: 'zh-TW', name: 'Chinese (Traditional)', nativeName: '繁體中文', rtl: false },
   { code: 'ja', name: 'Japanese', nativeName: '日本語', rtl: false },
@@ -57,13 +54,11 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: 'my', name: 'Myanmar (Burmese)', nativeName: 'ဗမာစာ', rtl: false },
   { code: 'km', name: 'Khmer', nativeName: 'ភាសាខ្មែរ', rtl: false },
 
-  // ── Middle East & North Africa ──
   { code: 'ar', name: 'Arabic', nativeName: 'العربية', rtl: true },
   { code: 'fa', name: 'Persian', nativeName: 'فارسی', rtl: true },
   { code: 'he', name: 'Hebrew', nativeName: 'עברית', rtl: true },
   { code: 'ku', name: 'Kurdish', nativeName: 'Kurdî', rtl: false },
 
-  // ── African ──
   { code: 'sw', name: 'Swahili', nativeName: 'Kiswahili', rtl: false },
   { code: 'am', name: 'Amharic', nativeName: 'አማርኛ', rtl: false },
   { code: 'yo', name: 'Yoruba', nativeName: 'Yorùbá', rtl: false },
@@ -75,7 +70,6 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   { code: 'so', name: 'Somali', nativeName: 'Soomaali', rtl: false },
   { code: 'mg', name: 'Malagasy', nativeName: 'Malagasy', rtl: false },
 
-  // ── Other ──
   { code: 'sv', name: 'Swedish', nativeName: 'Svenska', rtl: false },
   { code: 'no', name: 'Norwegian', nativeName: 'Norsk', rtl: false },
   { code: 'da', name: 'Danish', nativeName: 'Dansk', rtl: false },

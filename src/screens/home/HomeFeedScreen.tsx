@@ -20,7 +20,7 @@ import type { Post, Prayer } from '@/types/models';
 
 export default function HomeFeedScreen() {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('posts');
   const postsQuery = usePosts();
   const prayersQuery = usePrayers();
@@ -35,7 +35,6 @@ export default function HomeFeedScreen() {
 
   return (
     <SafeAreaScreen>
-      {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-3">
         <Image
           source={require('../../../assets/logo.png')}
@@ -75,7 +74,6 @@ export default function HomeFeedScreen() {
         />
       )}
 
-      {/* FAB */}
       <Pressable
         onPress={() => {
           lightHaptic();

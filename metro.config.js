@@ -5,7 +5,6 @@ const config = getDefaultConfig(__dirname);
 
 config.resolver.unstable_enablePackageExports = false;
 
-// Allow 'punycode' to resolve from node_modules instead of being blocked as a Node built-in
 config.resolver.extraNodeModules = {
   ...config.resolver.extraNodeModules,
   punycode: require.resolve("punycode/"),

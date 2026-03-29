@@ -1,28 +1,22 @@
 import React from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
 import ScreenHeader from '@/components/layout/ScreenHeader';
+import LoadingScreen from '@/components/layout/LoadingScreen';
+import EmptyState from '@/components/ui/EmptyState';
 import { useChapters } from '@/hooks/useBible';
+import { colors } from '@/theme/colors';
 import type { BibleStackParamList } from '@/types/navigation';
 
 export default function SegregatedChaptersScreen() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const route = useRoute<RouteProp<BibleStackParamList, 'SegregatedChapters'>>();
   const { sectionId, sectionTitle } = route.params;
   const { data: chapters, isLoading } = useChapters(sectionId);
 
-  if (isLoading) {
-    return (
-      <SafeAreaScreen>
-        <ScreenHeader title={sectionTitle} />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4A6FA5" />
-        </View>
-      </SafeAreaScreen>
-    );
-  }
+  if (isLoading) return <LoadingScreen title={sectionTitle} />;
 
   return (
     <SafeAreaScreen>
@@ -40,13 +34,11 @@ export default function SegregatedChaptersScreen() {
               <Text className="text-base font-semibold text-textPrimary">{item.title}</Text>
               <Text className="text-sm text-textSecondary mt-1">{item.page_count} {item.page_count === 1 ? 'page' : 'pages'}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
           </Pressable>
         )}
         ListEmptyComponent={
-          <View className="items-center pt-20">
-            <Text className="text-base text-textSecondary">No chapters available</Text>
-          </View>
+          <EmptyState icon="layers-outline" title="No chapters available" />
         }
       />
     </SafeAreaScreen>

@@ -85,9 +85,10 @@
     "hideReplies": "Hide replies",
     "reportContent": "Report Content",
     "reportReason": "Select a reason",
-    "inappropriate": "Inappropriate",
     "spam": "Spam",
-    "falseTeaching": "False Teaching",
+    "harassment": "Harassment",
+    "hateSpeech": "Hate Speech",
+    "misinformation": "Misinformation",
     "other": "Other",
     "reportDescription": "Additional details (optional)",
     "reportSuccess": "Report submitted. Thank you.",
@@ -199,14 +200,22 @@
     "expired": "Expired"
   },
   "settings": {
+    "title": "Settings",
+    "editProfile": "Edit Profile",
     "language": "Language",
     "privacy": "Privacy",
     "blockedUsers": "Blocked Users",
     "followRequests": "Follow Requests",
+    "myPurchases": "My Purchases",
+    "downloads": "Downloads",
+    "bookmarks": "Bookmarks",
+    "notes": "Notes",
     "changePassword": "Change Password",
     "about": "About",
+    "version": "Version",
     "logout": "Log Out",
     "logoutConfirm": "Are you sure you want to log out?",
-    "deleteAccount": "Delete Account"
+    "deleteAccount": "Delete Account",
+    "deleteAccountConfirm": "Are you sure you want to delete your account? This action cannot be undone."
   }
 }

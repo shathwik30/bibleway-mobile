@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, Pressable, Platform, Modal } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@/theme/colors';
 import { format } from 'date-fns';
 
 interface DatePickerProps {
   label?: string;
-  value: string; // YYYY-MM-DD string
+  value: string;
   onChange: (dateString: string) => void;
   error?: string;
   maximumDate?: Date;
@@ -51,7 +52,7 @@ export default function DatePicker({
           <Text className={`text-base ${value ? 'text-textPrimary' : 'text-gray-400'}`}>
             {displayText || 'Select date...'}
           </Text>
-          <Ionicons name="calendar-outline" size={18} color="#6B7280" />
+          <Ionicons name="calendar-outline" size={18} color={colors.textSecondary} />
         </Pressable>
         {error && <Text className="text-xs text-error mt-1">{error}</Text>}
 
@@ -79,7 +80,6 @@ export default function DatePicker({
     );
   }
 
-  // Android
   return (
     <View className="mb-4">
       {label && (
@@ -94,7 +94,7 @@ export default function DatePicker({
         <Text className={`text-base ${value ? 'text-textPrimary' : 'text-gray-400'}`}>
           {displayText || 'Select date...'}
         </Text>
-        <Ionicons name="calendar-outline" size={18} color="#6B7280" />
+        <Ionicons name="calendar-outline" size={18} color={colors.textSecondary} />
       </Pressable>
       {error && <Text className="text-xs text-error mt-1">{error}</Text>}
 

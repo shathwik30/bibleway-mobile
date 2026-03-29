@@ -9,6 +9,7 @@ export const ENDPOINTS = {
     passwordReset: '/accounts/password-reset/',
     passwordResetConfirm: '/accounts/password-reset/confirm/',
     changePassword: '/accounts/change-password/',
+    googleAuth: '/accounts/google-auth/',
   },
   profile: {
     me: '/accounts/profile/',
@@ -17,11 +18,8 @@ export const ENDPOINTS = {
     follow: (userId: string) => `/accounts/users/${userId}/follow/`,
     followers: (userId: string) => `/accounts/users/${userId}/followers/`,
     following: (userId: string) => `/accounts/users/${userId}/following/`,
-    followRequests: '/accounts/follow-requests/',
-    followRequestRespond: (userId: string) => `/accounts/follow-requests/${userId}/`,
     block: (userId: string) => `/accounts/users/${userId}/block/`,
     blockedUsers: '/accounts/blocked-users/',
-    privacy: '/accounts/privacy/',
   },
   social: {
     posts: '/social/posts/',
@@ -54,6 +52,7 @@ export const ENDPOINTS = {
     highlightDetail: (id: string) => `/bible/highlights/${id}/`,
     notes: '/bible/notes/',
     noteDetail: (id: string) => `/bible/notes/${id}/`,
+    pageComments: (pageId: string) => `/bible/pages/${pageId}/comments/`,
   },
   shop: {
     products: '/shop/products/',

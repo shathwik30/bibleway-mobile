@@ -2,9 +2,6 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { API_BASE_URL, API_TIMEOUT } from '@/constants/api';
 import { ENDPOINTS } from './endpoints';
 
-console.log('[API] Base URL:', API_BASE_URL);
-
-// Retry config for network errors (e.g. Railway cold starts)
 const MAX_NETWORK_RETRIES = 3;
 const RETRY_DELAY_MS = 1500;
 
@@ -13,43 +10,66 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const isNetworkError = (error: AxiosError) =>
   !error.response && (error.code === 'ERR_NETWORK' || error.code === 'ECONNABORTED' || error.message === 'Network Error');
 
-// Module-level refresh state for race condition handling
 let refreshPromise: Promise<string> | null = null;
 let failedQueue: Array<{
   resolve: (token: string) => void;
-  reject: (error: any) => void;
+  reject: (error: unknown) => void;
 }> = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((promise) => {
     if (error) {
       promise.reject(error);
     } else {
-      promise.resolve(token!);
+      promise.resolve(token ?? '');
     }
   });
   failedQueue = [];
 };
+
+// Lazy-loaded store/lib references to avoid circular imports
+let _getAuthStore: (() => { accessToken: string | null; setAccessToken: (t: string) => void; logout: () => Promise<void> }) | null = null;
+let _getSecureValue: ((key: string) => Promise<string | null>) | null = null;
+let _saveSecureValue: ((key: string, value: string) => Promise<void>) | null = null;
+
+function getAuthStore() {
+  if (!_getAuthStore) {
+    const { useAuthStore } = require('@/stores/authStore');
+    _getAuthStore = () => useAuthStore.getState();
+  }
+  return _getAuthStore();
+}
+
+async function getSecureValue(key: string): Promise<string | null> {
+  if (!_getSecureValue) {
+    const mod = require('@/lib/secureStorage');
+    _getSecureValue = mod.getSecureValue;
+  }
+  return _getSecureValue!(key);
+}
+
+async function saveSecureValue(key: string, value: string): Promise<void> {
+  if (!_saveSecureValue) {
+    const mod = require('@/lib/secureStorage');
+    _saveSecureValue = mod.saveSecureValue;
+  }
+  return _saveSecureValue!(key, value);
+}
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: API_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',
   },
 });
 
-// Request interceptor - attach access token
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Import dynamically to avoid circular deps
-    const { useAuthStore } = require('@/stores/authStore');
-    const token = useAuthStore.getState().accessToken;
+    const token = getAuthStore().accessToken;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    // Let Axios auto-set Content-Type for FormData
     if (config.data instanceof FormData) {
       delete config.headers['Content-Type'];
     }
@@ -58,26 +78,21 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor - retry on network errors (handles Railway cold starts)
 apiClient.interceptors.response.use(undefined, async (error: AxiosError) => {
   const config = error.config as InternalAxiosRequestConfig & { _networkRetry?: number };
   if (!config || !isNetworkError(error)) return Promise.reject(error);
 
   config._networkRetry = (config._networkRetry || 0) + 1;
   if (config._networkRetry > MAX_NETWORK_RETRIES) {
-    console.warn(`[API] Network error after ${MAX_NETWORK_RETRIES} retries:`, error.code, error.message, config.url);
     return Promise.reject(error);
   }
 
-  console.log(`[API] Network error (${error.code}), retry ${config._networkRetry}/${MAX_NETWORK_RETRIES} for ${config.url}`);
   await sleep(RETRY_DELAY_MS * config._networkRetry);
   return apiClient(config);
 });
 
-// Response interceptor - unwrap { message, data } envelope
 apiClient.interceptors.response.use(
   (response) => {
-    // If the response body has a `data` key from our API envelope, unwrap it
     const body = response.data;
     if (body && typeof body === 'object' && 'data' in body && 'message' in body) {
       response.data = body.data;
@@ -91,7 +106,6 @@ apiClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Don't try to refresh if this IS the refresh request
     if (originalRequest.url?.includes('token/refresh')) {
       return Promise.reject(error);
     }
@@ -99,7 +113,6 @@ apiClient.interceptors.response.use(
     originalRequest._retry = true;
 
     if (refreshPromise) {
-      // Another refresh is already in progress - queue this request
       return new Promise<string>((resolve, reject) => {
         failedQueue.push({ resolve, reject });
       })
@@ -110,10 +123,8 @@ apiClient.interceptors.response.use(
         .catch((err) => Promise.reject(err));
     }
 
-    // Start refresh
     refreshPromise = (async () => {
       try {
-        const { getSecureValue } = require('@/lib/secureStorage');
         const refreshToken = await getSecureValue('refresh_token');
 
         if (!refreshToken) {
@@ -127,10 +138,8 @@ apiClient.interceptors.response.use(
 
         const body = response.data;
         const { access, refresh } = body && 'data' in body ? body.data : body;
-        const { useAuthStore } = require('@/stores/authStore');
-        const { saveSecureValue } = require('@/lib/secureStorage');
 
-        useAuthStore.getState().setAccessToken(access);
+        getAuthStore().setAccessToken(access);
         if (refresh) {
           await saveSecureValue('refresh_token', refresh);
         }
@@ -139,9 +148,7 @@ apiClient.interceptors.response.use(
         return access;
       } catch (refreshError) {
         processQueue(refreshError, null);
-        // Clear auth state and navigate to login
-        const { useAuthStore } = require('@/stores/authStore');
-        useAuthStore.getState().logout();
+        getAuthStore().logout();
         throw refreshError;
       } finally {
         refreshPromise = null;
@@ -156,15 +163,14 @@ apiClient.interceptors.response.use(
 
 export default apiClient;
 
-// Typed helpers
 export const api = {
-  get: <T>(url: string, params?: any) =>
+  get: <T>(url: string, params?: Record<string, unknown>) =>
     apiClient.get<T>(url, { params }).then((res) => res.data),
-  post: <T>(url: string, data?: any) =>
+  post: <T>(url: string, data?: unknown) =>
     apiClient.post<T>(url, data).then((res) => res.data),
-  put: <T>(url: string, data?: any) =>
+  put: <T>(url: string, data?: unknown) =>
     apiClient.put<T>(url, data).then((res) => res.data),
-  patch: <T>(url: string, data?: any) =>
+  patch: <T>(url: string, data?: unknown) =>
     apiClient.patch<T>(url, data).then((res) => res.data),
   delete: <T>(url: string) =>
     apiClient.delete<T>(url).then((res) => res.data),
