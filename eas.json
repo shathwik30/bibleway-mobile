@@ -12,16 +12,16 @@
       },
       "env": {
         "EXPO_PUBLIC_API_BASE_URL": "https://bibleway-backend-production.up.railway.app/api/v1",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": ""
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "500854478377-cnukjqhlt56c7mbgmcp8l61jg27spde1.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "500854478377-3e6vk35ifk7emfo4hft7g7p48m0gpv45.apps.googleusercontent.com"
       }
     },
     "preview": {
       "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_API_BASE_URL": "https://staging-api.bibleway.io/api/v1",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": ""
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "500854478377-cnukjqhlt56c7mbgmcp8l61jg27spde1.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "500854478377-3e6vk35ifk7emfo4hft7g7p48m0gpv45.apps.googleusercontent.com"
       }
     },
     "apk": {
@@ -31,29 +31,16 @@
       },
       "env": {
         "EXPO_PUBLIC_API_BASE_URL": "https://bibleway-backend-production.up.railway.app/api/v1",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": ""
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "500854478377-cnukjqhlt56c7mbgmcp8l61jg27spde1.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "500854478377-3e6vk35ifk7emfo4hft7g7p48m0gpv45.apps.googleusercontent.com"
       }
     },
     "production": {
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_API_BASE_URL": "https://bibleway-backend-production.up.railway.app/api/v1",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": ""
-      }
-    }
-  },
-  "submit": {
-    "production": {
-      "ios": {
-        "appleId": "",
-        "ascAppId": "",
-        "appleTeamId": ""
-      },
-      "android": {
-        "serviceAccountKeyPath": "",
-        "track": "internal"
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "500854478377-cnukjqhlt56c7mbgmcp8l61jg27spde1.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "500854478377-3e6vk35ifk7emfo4hft7g7p48m0gpv45.apps.googleusercontent.com"
       }
     }
   }
