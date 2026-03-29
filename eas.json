@@ -19,7 +19,7 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_BASE_URL": "https://staging-api.bibleway.app/api/v1",
+        "EXPO_PUBLIC_API_BASE_URL": "https://staging-api.bibleway.io/api/v1",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
         "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": ""
       }

@@ -20,7 +20,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.bibleway.app",
+      "bundleIdentifier": "com.bibleway.io",
       "infoPlist": {
         "NSCameraUsageDescription": "BibleWay needs access to your camera to take photos for posts and your profile.",
         "NSPhotoLibraryUsageDescription": "BibleWay needs access to your photo library to share photos in posts and prayers.",
@@ -36,7 +36,7 @@
       },
       "navigationBarColor": "#FFFFFF",
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.bibleway.app",
+      "package": "com.bibleway.io",
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.USE_BIOMETRIC",

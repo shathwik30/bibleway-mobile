@@ -1,6 +1,6 @@
 export const APP_NAME = 'BibleWay';
 export const DEEP_LINK_SCHEME = 'bibleway';
-export const UNIVERSAL_LINK_PREFIX = 'https://bibleway.app';
+export const UNIVERSAL_LINK_PREFIX = 'https://bibleway.io';
 export const NOTIFICATION_POLL_INTERVAL = 30000;
 export const SEARCH_DEBOUNCE_MS = 300;
 export const MAX_POST_LENGTH = 2000;
