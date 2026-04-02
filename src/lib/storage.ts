@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const cache: Record<string, string> = {};
 let initialized = false;
@@ -14,7 +14,7 @@ export async function initStorage(): Promise<void> {
       }
     }
   } catch (e) {
-    console.warn('[storage] Failed to initialize from AsyncStorage', e);
+    console.warn("[storage] Failed to initialize from AsyncStorage", e);
   }
   initialized = true;
 }
@@ -28,7 +28,7 @@ export const mmkvStorage = {
   getBoolean: (key: string): boolean | undefined => {
     const v = cache[key];
     if (v === undefined) return undefined;
-    return v === 'true';
+    return v === "true";
   },
   setBoolean: (key: string, value: boolean): void => {
     cache[key] = String(value);
@@ -54,14 +54,14 @@ export const mmkvStorage = {
 };
 
 export const queryClientStorage = {
-  setItem: (key: string, value: string) => {
+  setItem: (key: string, value: string): void => {
     cache[key] = value;
     AsyncStorage.setItem(key, value).catch(() => {});
   },
-  getItem: (key: string) => {
+  getItem: (key: string): string | null => {
     return cache[key] ?? null;
   },
-  removeItem: (key: string) => {
+  removeItem: (key: string): void => {
     delete cache[key];
     AsyncStorage.removeItem(key).catch(() => {});
   },

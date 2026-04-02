@@ -1,19 +1,26 @@
-import React, { useState, useMemo } from 'react';
-import { View, Text, FlatList, Pressable, TextInput, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import { SUPPORTED_LANGUAGES } from '@/constants/languages';
-import { useAppStore } from '@/stores/appStore';
-import { showToast } from '@/components/ui/Toast';
+import React, { useState, useMemo } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import { SUPPORTED_LANGUAGES } from "@/constants/languages";
+import { useAppStore } from "@/stores/appStore";
+import { showToast } from "@/components/ui/Toast";
 
-const BUNDLED_CODES = new Set(['en', 'es', 'fr', 'pt', 'hi', 'ar', 'sw']);
+const BUNDLED_CODES = new Set(["en", "es", "fr", "pt", "hi", "ar", "sw"]);
 
 export default function LanguageSettingsScreen() {
   const currentLanguage = useAppStore((s) => s.language);
   const setLanguage = useAppStore((s) => s.setLanguage);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loadingLang, setLoadingLang] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
@@ -28,7 +35,8 @@ export default function LanguageSettingsScreen() {
   }, [search]);
 
   const handleSelectLanguage = (langCode: string) => {
-    const langName = SUPPORTED_LANGUAGES.find((l) => l.code === langCode)?.name || langCode;
+    const langName =
+      SUPPORTED_LANGUAGES.find((l) => l.code === langCode)?.name || langCode;
 
     if (!BUNDLED_CODES.has(langCode)) {
       setLoadingLang(langCode);
@@ -38,7 +46,7 @@ export default function LanguageSettingsScreen() {
       setLanguage(langCode);
     }
 
-    showToast('success', 'Language Changed', `Language set to ${langName}`);
+    showToast("success", "Language Changed", `Language set to ${langName}`);
   };
 
   return (
@@ -50,12 +58,12 @@ export default function LanguageSettingsScreen() {
         <TextInput
           className="flex-1 py-2.5 px-2 text-sm text-textPrimary"
           placeholder="Search languages..."
-          placeholderTextColor="#9CA3AF"
+          placeholderTextColor={colors.textTertiary}
           value={search}
           onChangeText={setSearch}
         />
         {search.length > 0 && (
-          <Pressable onPress={() => setSearch('')}>
+          <Pressable onPress={() => setSearch("")}>
             <Ionicons name="close-circle" size={18} color="#9CA3AF" />
           </Pressable>
         )}
@@ -69,23 +77,33 @@ export default function LanguageSettingsScreen() {
           <Pressable
             onPress={() => handleSelectLanguage(item.code)}
             className={`flex-row items-center justify-between p-4 bg-surface rounded-xl mb-2 ${
-              currentLanguage === item.code ? 'border border-primary/30' : ''
+              currentLanguage === item.code ? "border border-primary/30" : ""
             }`}
           >
             <View className="flex-1 mr-3">
-              <Text className="text-base text-textPrimary font-medium">{item.name}</Text>
-              <Text className="text-xs text-textSecondary">{item.nativeName}</Text>
+              <Text className="text-base text-textPrimary font-medium">
+                {item.name}
+              </Text>
+              <Text className="text-xs text-textSecondary">
+                {item.nativeName}
+              </Text>
             </View>
             {loadingLang === item.code ? (
               <ActivityIndicator size="small" color={colors.primary.DEFAULT} />
             ) : currentLanguage === item.code ? (
-              <Ionicons name="checkmark-circle" size={24} color={colors.primary.DEFAULT} />
+              <Ionicons
+                name="checkmark-circle"
+                size={24}
+                color={colors.primary.DEFAULT}
+              />
             ) : null}
           </Pressable>
         )}
         ListEmptyComponent={
           <View className="items-center pt-10">
-            <Text className="text-sm text-textSecondary">No languages found</Text>
+            <Text className="text-sm text-textSecondary">
+              No languages found
+            </Text>
           </View>
         }
       />

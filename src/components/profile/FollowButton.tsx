@@ -1,15 +1,20 @@
-import React from 'react';
-import Button from '../ui/Button';
+import React from "react";
+import Button from "../ui/Button";
 
 interface FollowButtonProps {
-  status: 'none' | 'following';
+  status: "none" | "following";
   onFollow: () => void;
   onUnfollow: () => void;
   loading?: boolean;
 }
 
-export default function FollowButton({ status, onFollow, onUnfollow, loading = false }: FollowButtonProps) {
-  if (status === 'following') {
+export default function FollowButton({
+  status,
+  onFollow,
+  onUnfollow,
+  loading = false,
+}: FollowButtonProps) {
+  if (status === "following") {
     return (
       <Button
         title="Following"
@@ -21,11 +26,6 @@ export default function FollowButton({ status, onFollow, onUnfollow, loading = f
     );
   }
   return (
-    <Button
-      title="Follow"
-      onPress={onFollow}
-      size="sm"
-      loading={loading}
-    />
+    <Button title="Follow" onPress={onFollow} size="sm" loading={loading} />
   );
 }

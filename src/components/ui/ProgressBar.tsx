@@ -1,12 +1,15 @@
-import React from 'react';
-import { View } from 'react-native';
+import React from "react";
+import { View } from "react-native";
 
 interface ProgressBarProps {
   progress: number;
   color?: string;
 }
 
-export default function ProgressBar({ progress, color = '#4A6FA5' }: ProgressBarProps) {
+export default function ProgressBar({
+  progress,
+  color = "#4A6FA5",
+}: ProgressBarProps) {
   const clampedProgress = Math.min(Math.max(progress, 0), 1);
 
   return (

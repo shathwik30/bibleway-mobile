@@ -1,11 +1,15 @@
-import { create } from 'zustand';
-import { UserProfile } from '@/types/models';
-import { api } from '@/api/client';
-import { ENDPOINTS } from '@/api/endpoints';
-import { getSecureValue, saveSecureValue, deleteSecureValue } from '@/lib/secureStorage';
-import { mmkvStorage } from '@/lib/storage';
-import { deregisterPushNotifications } from '@/lib/pushNotifications';
-import { AuthTokens } from '@/types/api';
+import { create } from "zustand";
+import { UserProfile } from "@/types/models";
+import { api } from "@/api/client";
+import { ENDPOINTS } from "@/api/endpoints";
+import {
+  getSecureValue,
+  saveSecureValue,
+  deleteSecureValue,
+} from "@/lib/secureStorage";
+import { mmkvStorage } from "@/lib/storage";
+import { deregisterPushNotifications } from "@/lib/pushNotifications";
+import { AuthTokens } from "@/types/api";
 
 interface AuthState {
   accessToken: string | null;
@@ -27,7 +31,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isAuthenticated: false,
   isLoading: true,
-  biometricEnabled: mmkvStorage.getBoolean('biometric_enabled') ?? false,
+  biometricEnabled: mmkvStorage.getBoolean("biometric_enabled") ?? false,
 
   setAccessToken: (token) => set({ accessToken: token }),
 
@@ -35,29 +39,29 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   setTokens: async (tokens) => {
     set({ accessToken: tokens.access, isAuthenticated: true });
-    await saveSecureValue('refresh_token', tokens.refresh);
+    await saveSecureValue("refresh_token", tokens.refresh);
   },
 
   logout: async () => {
     const token = get().accessToken;
     if (token) {
       try {
-        const pushToken = mmkvStorage.getString('push_token');
+        const pushToken = mmkvStorage.getString("push_token");
         if (pushToken) {
           await deregisterPushNotifications(pushToken).catch(() => {});
-          mmkvStorage.delete('push_token');
+          mmkvStorage.delete("push_token");
         }
       } catch {}
       try {
-        const refreshToken = await getSecureValue('refresh_token');
+        const refreshToken = await getSecureValue("refresh_token");
         if (refreshToken) {
           await api.post(ENDPOINTS.auth.logout, { refresh: refreshToken });
         }
       } catch (e) {
-        console.warn('[auth] Server-side logout failed', e);
+        console.warn("[auth] Server-side logout failed", e);
       }
     }
-    await deleteSecureValue('refresh_token');
+    await deleteSecureValue("refresh_token");
     set({
       accessToken: null,
       user: null,
@@ -68,27 +72,26 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   bootstrap: async () => {
     try {
-      const refreshToken = await getSecureValue('refresh_token');
+      const refreshToken = await getSecureValue("refresh_token");
       if (!refreshToken) {
         set({ isLoading: false });
         return;
       }
 
-      const tokens = await api.post<AuthTokens>(
-        ENDPOINTS.auth.refreshToken,
-        { refresh: refreshToken }
-      );
+      const tokens = await api.post<AuthTokens>(ENDPOINTS.auth.refreshToken, {
+        refresh: refreshToken,
+      });
 
       set({ accessToken: tokens.access, isAuthenticated: true });
 
       if (tokens.refresh) {
-        await saveSecureValue('refresh_token', tokens.refresh);
+        await saveSecureValue("refresh_token", tokens.refresh);
       }
 
       const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
       set({ user: profile, isLoading: false });
     } catch {
-      await deleteSecureValue('refresh_token');
+      await deleteSecureValue("refresh_token");
       set({
         accessToken: null,
         user: null,
@@ -99,7 +102,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   setBiometricEnabled: (enabled) => {
-    mmkvStorage.setBoolean('biometric_enabled', enabled);
+    mmkvStorage.setBoolean("biometric_enabled", enabled);
     set({ biometricEnabled: enabled });
   },
 }));

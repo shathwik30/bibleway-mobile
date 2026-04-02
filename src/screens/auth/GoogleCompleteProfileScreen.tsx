@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useTranslation } from 'react-i18next';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import KeyboardAvoidingWrapper from '@/components/layout/KeyboardAvoidingWrapper';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import Avatar from '@/components/ui/Avatar';
-import Button from '@/components/ui/Button';
-import DatePicker from '@/components/ui/DatePicker';
-import SelectPicker from '@/components/ui/SelectPicker';
-import CountryPicker from '@/components/ui/CountryPicker';
-import { useGoogleAuth } from '@/hooks/useAuth';
-import { showToast } from '@/components/ui/Toast';
-import { successHaptic } from '@/lib/haptics';
-import type { AuthStackParamList } from '@/types/navigation';
+import React from "react";
+import { View, Text, ScrollView } from "react-native";
+import { useRoute, RouteProp } from "@react-navigation/native";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useTranslation } from "react-i18next";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import KeyboardAvoidingWrapper from "@/components/layout/KeyboardAvoidingWrapper";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import Avatar from "@/components/ui/Avatar";
+import Button from "@/components/ui/Button";
+import DatePicker from "@/components/ui/DatePicker";
+import SelectPicker from "@/components/ui/SelectPicker";
+import CountryPicker from "@/components/ui/CountryPicker";
+import { useGoogleAuth } from "@/hooks/useAuth";
+import { showToast } from "@/components/ui/Toast";
+import { successHaptic } from "@/lib/haptics";
+import { SUPPORTED_LANGUAGES } from "@/constants/languages";
+import type { AuthStackParamList } from "@/types/navigation";
 
 const maxDate = new Date();
 maxDate.setFullYear(maxDate.getFullYear() - 13);
@@ -25,28 +26,39 @@ const minDate = new Date();
 minDate.setFullYear(minDate.getFullYear() - 120);
 
 const schema = z.object({
-  date_of_birth: z.string().min(1, 'Date of birth is required'),
-  gender: z.string().min(1, 'Gender is required'),
-  country: z.string().min(1, 'Country is required'),
+  date_of_birth: z.string().min(1, "Date of birth is required"),
+  gender: z.string().min(1, "Gender is required"),
+  country: z.string().min(1, "Country is required"),
+  preferred_language: z.string().min(1),
 });
+
+const LANGUAGE_OPTIONS = SUPPORTED_LANGUAGES.map((lang) => ({
+  label: `${lang.nativeName} (${lang.name})`,
+  value: lang.code,
+}));
 
 type FormData = z.infer<typeof schema>;
 
 const GENDER_OPTIONS = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Prefer not to say', value: 'prefer_not_to_say' },
+  { label: "Male", value: "male" },
+  { label: "Female", value: "female" },
+  { label: "Prefer not to say", value: "prefer_not_to_say" },
 ];
 
 export default function GoogleCompleteProfileScreen() {
   const { t } = useTranslation();
-  const route = useRoute<RouteProp<AuthStackParamList, 'GoogleCompleteProfile'>>();
+  const route =
+    useRoute<RouteProp<AuthStackParamList, "GoogleCompleteProfile">>();
   const { email, fullName, profilePhoto, idToken } = route.params;
   const googleAuth = useGoogleAuth();
 
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { date_of_birth: '', gender: '', country: '' },
+    defaultValues: { date_of_birth: "", gender: "", country: "", preferred_language: "en" },
   });
 
   const onSubmit = (data: FormData) => {
@@ -56,6 +68,7 @@ export default function GoogleCompleteProfileScreen() {
         date_of_birth: data.date_of_birth,
         gender: data.gender,
         country: data.country,
+        preferred_language: data.preferred_language,
       },
       {
         onSuccess: (result) => {
@@ -64,7 +77,7 @@ export default function GoogleCompleteProfileScreen() {
           }
         },
         onError: (error) => {
-          showToast('error', 'Error', error.message || 'Something went wrong');
+          showToast("error", "Error", error.message || "Something went wrong");
         },
       },
     );
@@ -74,10 +87,15 @@ export default function GoogleCompleteProfileScreen() {
     <SafeAreaScreen>
       <ScreenHeader title="Complete Profile" showBack={false} />
       <KeyboardAvoidingWrapper>
-        <ScrollView contentContainerStyle={{ padding: 24 }} keyboardShouldPersistTaps="handled">
+        <ScrollView
+          contentContainerStyle={{ padding: 24 }}
+          keyboardShouldPersistTaps="handled"
+        >
           <View className="items-center mb-6">
             <Avatar source={profilePhoto || null} name={fullName} size={80} />
-            <Text className="text-lg font-bold text-textPrimary mt-3">{fullName}</Text>
+            <Text className="text-lg font-bold text-textPrimary mt-3">
+              {fullName}
+            </Text>
             <Text className="text-sm text-textSecondary">{email}</Text>
           </View>
 
@@ -90,7 +108,7 @@ export default function GoogleCompleteProfileScreen() {
             name="date_of_birth"
             render={({ field: { onChange, value } }) => (
               <DatePicker
-                label={t('auth.dateOfBirth')}
+                label={t("auth.dateOfBirth")}
                 value={value}
                 onChange={onChange}
                 maximumDate={maxDate}
@@ -105,7 +123,7 @@ export default function GoogleCompleteProfileScreen() {
             name="gender"
             render={({ field: { onChange, value } }) => (
               <SelectPicker
-                label={t('auth.gender')}
+                label={t("auth.gender")}
                 value={value}
                 onChange={onChange}
                 options={GENDER_OPTIONS}
@@ -119,10 +137,25 @@ export default function GoogleCompleteProfileScreen() {
             name="country"
             render={({ field: { onChange, value } }) => (
               <CountryPicker
-                label={t('auth.country')}
+                label={t("auth.country")}
                 value={value}
                 onChange={onChange}
                 error={errors.country?.message}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="preferred_language"
+            render={({ field: { onChange, value } }) => (
+              <SelectPicker
+                label={t("auth.language")}
+                placeholder="Select language..."
+                options={LANGUAGE_OPTIONS}
+                value={value}
+                onChange={onChange}
+                error={errors.preferred_language?.message}
               />
             )}
           />

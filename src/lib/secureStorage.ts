@@ -1,6 +1,9 @@
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
-export async function saveSecureValue(key: string, value: string): Promise<void> {
+export async function saveSecureValue(
+  key: string,
+  value: string,
+): Promise<void> {
   await SecureStore.setItemAsync(key, value);
 }
 

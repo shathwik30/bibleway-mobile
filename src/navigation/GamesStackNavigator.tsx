@@ -1,12 +1,12 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { GamesStackParamList } from '@/types/navigation';
-import ErrorBoundary from '@/components/ui/ErrorBoundary';
-import GamesListScreen from '@/screens/games/GamesListScreen';
-import TicTacToeScreen from '@/screens/games/TicTacToeScreen';
-import BibleCrosswordScreen from '@/screens/games/BibleCrosswordScreen';
-import BibleQuizScreen from '@/screens/games/BibleQuizScreen';
-import FindDifferenceScreen from '@/screens/games/FindDifferenceScreen';
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { GamesStackParamList } from "@/types/navigation";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import GamesListScreen from "@/screens/games/GamesListScreen";
+import TicTacToeScreen from "@/screens/games/TicTacToeScreen";
+import BibleCrosswordScreen from "@/screens/games/BibleCrosswordScreen";
+import BibleQuizScreen from "@/screens/games/BibleQuizScreen";
+import FindDifferenceScreen from "@/screens/games/FindDifferenceScreen";
 
 const Stack = createNativeStackNavigator<GamesStackParamList>();
 
@@ -16,7 +16,7 @@ export default function GamesStackNavigator() {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: 'slide_from_right',
+          animation: "slide_from_right",
         }}
       >
         <Stack.Screen name="GamesList" component={GamesListScreen} />

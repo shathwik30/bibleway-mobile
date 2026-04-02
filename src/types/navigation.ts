@@ -1,10 +1,18 @@
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
-  OTPVerification: { email: string; purpose: 'email_verification' | 'password_reset' };
+  OTPVerification: {
+    email: string;
+    purpose: "email_verification" | "password_reset";
+  };
   ForgotPassword: undefined;
   ResetPassword: { email: string };
-  GoogleCompleteProfile: { email: string; fullName: string; profilePhoto: string; idToken: string };
+  GoogleCompleteProfile: {
+    email: string;
+    fullName: string;
+    profilePhoto: string;
+    idToken: string;
+  };
 };
 
 export type HomeStackParamList = {
@@ -13,7 +21,7 @@ export type HomeStackParamList = {
   CreatePrayer: undefined;
   PostDetail: { postId: string };
   PrayerDetail: { prayerId: string };
-  Comments: { contentType: 'post' | 'prayer'; objectId: string };
+  Comments: { contentType: "post" | "prayer"; objectId: string };
   Notifications: undefined;
   UserProfile: { userId: string };
   Followers: { userId: string };
@@ -79,7 +87,8 @@ export type RootStackParamList = {
 declare global {
   namespace ReactNavigation {
     interface RootParamList
-      extends HomeStackParamList,
+      extends
+        HomeStackParamList,
         BibleStackParamList,
         ShopStackParamList,
         GamesStackParamList,

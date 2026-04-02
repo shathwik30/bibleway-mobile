@@ -1,15 +1,26 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
-import { api } from '@/api/client';
-import { ENDPOINTS } from '@/api/endpoints';
-import { useAuthStore } from '@/stores/authStore';
-import { CACHE_DURATIONS } from '@/constants/api';
-import { pageNumberNextPage } from '@/api/pagination';
-import type { PaginatedResponse } from '@/types/api';
-import type { UserProfile, UserPublicProfile, UserListItem, FollowRelationship, BlockRelationship } from '@/types/models';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
+import { api } from "@/api/client";
+import { ENDPOINTS } from "@/api/endpoints";
+import { useAuthStore } from "@/stores/authStore";
+import { CACHE_DURATIONS } from "@/constants/api";
+import { pageNumberNextPage } from "@/api/pagination";
+import type { PaginatedResponse } from "@/types/api";
+import type {
+  UserProfile,
+  UserPublicProfile,
+  UserListItem,
+  FollowRelationship,
+  BlockRelationship,
+} from "@/types/models";
 
 export function useMyProfile() {
   return useQuery({
-    queryKey: ['profile', 'me'],
+    queryKey: ["profile", "me"],
     queryFn: () => api.get<UserProfile>(ENDPOINTS.profile.me),
     ...CACHE_DURATIONS.profile,
   });
@@ -17,8 +28,9 @@ export function useMyProfile() {
 
 export function useUserProfile(userId: string) {
   return useQuery({
-    queryKey: ['profile', userId],
-    queryFn: () => api.get<UserPublicProfile>(ENDPOINTS.profile.userDetail(userId)),
+    queryKey: ["profile", userId],
+    queryFn: () =>
+      api.get<UserPublicProfile>(ENDPOINTS.profile.userDetail(userId)),
     ...CACHE_DURATIONS.profile,
   });
 }
@@ -32,15 +44,16 @@ export function useUpdateProfile() {
       api.patch<UserProfile>(ENDPOINTS.profile.me, data),
     onSuccess: (data) => {
       setUser(data as UserProfile);
-      queryClient.invalidateQueries({ queryKey: ['profile', 'me'] });
+      queryClient.invalidateQueries({ queryKey: ["profile", "me"] });
     },
   });
 }
 
 export function useSearchUsers(query: string) {
   return useQuery({
-    queryKey: ['users', 'search', query],
-    queryFn: () => api.get<UserListItem[]>(ENDPOINTS.profile.userSearch, { q: query }),
+    queryKey: ["users", "search", query],
+    queryFn: () =>
+      api.get<UserListItem[]>(ENDPOINTS.profile.userSearch, { q: query }),
     enabled: query.length >= 2,
   });
 }
@@ -50,9 +63,10 @@ export function useFollowUser() {
   return useMutation({
     mutationFn: (userId: string) => api.post(ENDPOINTS.profile.follow(userId)),
     onSuccess: (_data, userId) => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-      queryClient.invalidateQueries({ queryKey: ['followers', userId] });
-      queryClient.invalidateQueries({ queryKey: ['following'] });
+      queryClient.invalidateQueries({ queryKey: ["profile", userId] });
+      queryClient.invalidateQueries({ queryKey: ["profile", "me"] });
+      queryClient.invalidateQueries({ queryKey: ["followers", userId] });
+      queryClient.invalidateQueries({ queryKey: ["following"] });
     },
   });
 }
@@ -60,20 +74,25 @@ export function useFollowUser() {
 export function useUnfollowUser() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (userId: string) => api.delete(ENDPOINTS.profile.follow(userId)),
+    mutationFn: (userId: string) =>
+      api.delete(ENDPOINTS.profile.follow(userId)),
     onSuccess: (_data, userId) => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-      queryClient.invalidateQueries({ queryKey: ['followers', userId] });
-      queryClient.invalidateQueries({ queryKey: ['following'] });
+      queryClient.invalidateQueries({ queryKey: ["profile", userId] });
+      queryClient.invalidateQueries({ queryKey: ["profile", "me"] });
+      queryClient.invalidateQueries({ queryKey: ["followers", userId] });
+      queryClient.invalidateQueries({ queryKey: ["following"] });
     },
   });
 }
 
 export function useFollowers(userId: string) {
   return useInfiniteQuery({
-    queryKey: ['followers', userId],
+    queryKey: ["followers", userId],
     queryFn: ({ pageParam = 1 }) =>
-      api.get<PaginatedResponse<FollowRelationship>>(ENDPOINTS.profile.followers(userId), { page: pageParam }),
+      api.get<PaginatedResponse<FollowRelationship>>(
+        ENDPOINTS.profile.followers(userId),
+        { page: pageParam },
+      ),
     initialPageParam: 1,
     getNextPageParam: pageNumberNextPage,
   });
@@ -81,9 +100,12 @@ export function useFollowers(userId: string) {
 
 export function useFollowing(userId: string) {
   return useInfiniteQuery({
-    queryKey: ['following', userId],
+    queryKey: ["following", userId],
     queryFn: ({ pageParam = 1 }) =>
-      api.get<PaginatedResponse<FollowRelationship>>(ENDPOINTS.profile.following(userId), { page: pageParam }),
+      api.get<PaginatedResponse<FollowRelationship>>(
+        ENDPOINTS.profile.following(userId),
+        { page: pageParam },
+      ),
     initialPageParam: 1,
     getNextPageParam: pageNumberNextPage,
   });
@@ -94,10 +116,10 @@ export function useBlockUser() {
   return useMutation({
     mutationFn: (userId: string) => api.post(ENDPOINTS.profile.block(userId)),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['blockedUsers'] });
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
-      queryClient.invalidateQueries({ queryKey: ['prayers'] });
+      queryClient.invalidateQueries({ queryKey: ["blockedUsers"] });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["prayers"] });
     },
   });
 }
@@ -107,17 +129,20 @@ export function useUnblockUser() {
   return useMutation({
     mutationFn: (userId: string) => api.delete(ENDPOINTS.profile.block(userId)),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['blockedUsers'] });
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ["blockedUsers"] });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
     },
   });
 }
 
 export function useBlockedUsers() {
   return useInfiniteQuery({
-    queryKey: ['blockedUsers'],
+    queryKey: ["blockedUsers"],
     queryFn: ({ pageParam = 1 }) =>
-      api.get<PaginatedResponse<BlockRelationship>>(ENDPOINTS.profile.blockedUsers, { page: pageParam }),
+      api.get<PaginatedResponse<BlockRelationship>>(
+        ENDPOINTS.profile.blockedUsers,
+        { page: pageParam },
+      ),
     initialPageParam: 1,
     getNextPageParam: pageNumberNextPage,
   });

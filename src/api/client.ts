@@ -1,6 +1,6 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { API_BASE_URL, API_TIMEOUT } from '@/constants/api';
-import { ENDPOINTS } from './endpoints';
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import { API_BASE_URL, API_TIMEOUT } from "@/constants/api";
+import { ENDPOINTS } from "./endpoints";
 
 const MAX_NETWORK_RETRIES = 3;
 const RETRY_DELAY_MS = 1500;
@@ -8,7 +8,10 @@ const RETRY_DELAY_MS = 1500;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const isNetworkError = (error: AxiosError) =>
-  !error.response && (error.code === 'ERR_NETWORK' || error.code === 'ECONNABORTED' || error.message === 'Network Error');
+  !error.response &&
+  (error.code === "ERR_NETWORK" ||
+    error.code === "ECONNABORTED" ||
+    error.message === "Network Error");
 
 let refreshPromise: Promise<string> | null = null;
 let failedQueue: Array<{
@@ -21,20 +24,25 @@ const processQueue = (error: unknown, token: string | null = null) => {
     if (error) {
       promise.reject(error);
     } else {
-      promise.resolve(token ?? '');
+      promise.resolve(token ?? "");
     }
   });
   failedQueue = [];
 };
-
-// Lazy-loaded store/lib references to avoid circular imports
-let _getAuthStore: (() => { accessToken: string | null; setAccessToken: (t: string) => void; logout: () => Promise<void> }) | null = null;
+let _getAuthStore:
+  | (() => {
+      accessToken: string | null;
+      setAccessToken: (t: string) => void;
+      logout: () => Promise<void>;
+    })
+  | null = null;
 let _getSecureValue: ((key: string) => Promise<string | null>) | null = null;
-let _saveSecureValue: ((key: string, value: string) => Promise<void>) | null = null;
+let _saveSecureValue: ((key: string, value: string) => Promise<void>) | null =
+  null;
 
 function getAuthStore() {
   if (!_getAuthStore) {
-    const { useAuthStore } = require('@/stores/authStore');
+    const { useAuthStore } = require("@/stores/authStore");
     _getAuthStore = () => useAuthStore.getState();
   }
   return _getAuthStore();
@@ -42,7 +50,7 @@ function getAuthStore() {
 
 async function getSecureValue(key: string): Promise<string | null> {
   if (!_getSecureValue) {
-    const mod = require('@/lib/secureStorage');
+    const mod = require("@/lib/secureStorage");
     _getSecureValue = mod.getSecureValue;
   }
   return _getSecureValue!(key);
@@ -50,7 +58,7 @@ async function getSecureValue(key: string): Promise<string | null> {
 
 async function saveSecureValue(key: string, value: string): Promise<void> {
   if (!_saveSecureValue) {
-    const mod = require('@/lib/secureStorage');
+    const mod = require("@/lib/secureStorage");
     _saveSecureValue = mod.saveSecureValue;
   }
   return _saveSecureValue!(key, value);
@@ -60,9 +68,16 @@ const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: API_TIMEOUT,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
+const pendingRequests = new Map<string, AbortController>();
+
+function getRequestKey(config: InternalAxiosRequestConfig): string | null {
+  if (config.method?.toLowerCase() !== "get") return null;
+  const params = config.params ? JSON.stringify(config.params) : "";
+  return `GET:${config.url}:${params}`;
+}
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -71,15 +86,42 @@ apiClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     if (config.data instanceof FormData) {
-      delete config.headers['Content-Type'];
+      delete config.headers["Content-Type"];
     }
+    const key = getRequestKey(config);
+    if (key) {
+      const existing = pendingRequests.get(key);
+      if (existing) {
+        existing.abort();
+      }
+      const controller = new AbortController();
+      config.signal = controller.signal;
+      pendingRequests.set(key, controller);
+    }
+
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
+);
+apiClient.interceptors.response.use(
+  (response) => {
+    const key = getRequestKey(response.config as InternalAxiosRequestConfig);
+    if (key) pendingRequests.delete(key);
+    return response;
+  },
+  (error) => {
+    if (error.config) {
+      const key = getRequestKey(error.config as InternalAxiosRequestConfig);
+      if (key) pendingRequests.delete(key);
+    }
+    return Promise.reject(error);
+  },
 );
 
 apiClient.interceptors.response.use(undefined, async (error: AxiosError) => {
-  const config = error.config as InternalAxiosRequestConfig & { _networkRetry?: number };
+  const config = error.config as InternalAxiosRequestConfig & {
+    _networkRetry?: number;
+  };
   if (!config || !isNetworkError(error)) return Promise.reject(error);
 
   config._networkRetry = (config._networkRetry || 0) + 1;
@@ -87,26 +129,34 @@ apiClient.interceptors.response.use(undefined, async (error: AxiosError) => {
     return Promise.reject(error);
   }
 
-  await sleep(RETRY_DELAY_MS * config._networkRetry);
+  const jitter = Math.random() * 500;
+  await sleep(RETRY_DELAY_MS * config._networkRetry + jitter);
   return apiClient(config);
 });
 
 apiClient.interceptors.response.use(
   (response) => {
     const body = response.data;
-    if (body && typeof body === 'object' && 'data' in body && 'message' in body) {
+    if (
+      body &&
+      typeof body === "object" &&
+      "data" in body &&
+      "message" in body
+    ) {
       response.data = body.data;
     }
     return response;
   },
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     if (error.response?.status !== 401 || originalRequest._retry) {
       return Promise.reject(error);
     }
 
-    if (originalRequest.url?.includes('token/refresh')) {
+    if (originalRequest.url?.includes("token/refresh")) {
       return Promise.reject(error);
     }
 
@@ -125,23 +175,23 @@ apiClient.interceptors.response.use(
 
     refreshPromise = (async () => {
       try {
-        const refreshToken = await getSecureValue('refresh_token');
+        const refreshToken = await getSecureValue("refresh_token");
 
         if (!refreshToken) {
-          throw new Error('No refresh token');
+          throw new Error("No refresh token");
         }
 
         const response = await axios.post(
           `${API_BASE_URL}${ENDPOINTS.auth.refreshToken}`,
-          { refresh: refreshToken }
+          { refresh: refreshToken },
         );
 
         const body = response.data;
-        const { access, refresh } = body && 'data' in body ? body.data : body;
+        const { access, refresh } = body && "data" in body ? body.data : body;
 
         getAuthStore().setAccessToken(access);
         if (refresh) {
-          await saveSecureValue('refresh_token', refresh);
+          await saveSecureValue("refresh_token", refresh);
         }
 
         processQueue(null, access);
@@ -158,7 +208,7 @@ apiClient.interceptors.response.use(
     const newToken = await refreshPromise;
     originalRequest.headers.Authorization = `Bearer ${newToken}`;
     return apiClient(originalRequest);
-  }
+  },
 );
 
 export default apiClient;
@@ -172,6 +222,5 @@ export const api = {
     apiClient.put<T>(url, data).then((res) => res.data),
   patch: <T>(url: string, data?: unknown) =>
     apiClient.patch<T>(url, data).then((res) => res.data),
-  delete: <T>(url: string) =>
-    apiClient.delete<T>(url).then((res) => res.data),
+  delete: <T>(url: string) => apiClient.delete<T>(url).then((res) => res.data),
 };

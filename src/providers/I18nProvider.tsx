@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import { I18nManager } from 'react-native';
-import { useAppStore } from '@/stores/appStore';
-import { SUPPORTED_LANGUAGES } from '@/constants/languages';
-import { translateLocale, getCachedLocale } from '@/lib/i18nTranslate';
+import React, { useEffect, useState } from "react";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import { I18nManager } from "react-native";
+import { useAppStore } from "@/stores/appStore";
+import { SUPPORTED_LANGUAGES } from "@/constants/languages";
+import { translateLocale, getCachedLocale } from "@/lib/i18nTranslate";
 
-import en from '../../locales/en.json';
-import es from '../../locales/es.json';
-import fr from '../../locales/fr.json';
-import pt from '../../locales/pt.json';
-import hi from '../../locales/hi.json';
-import ar from '../../locales/ar.json';
-import sw from '../../locales/sw.json';
+import en from "../../locales/en.json";
+import es from "../../locales/es.json";
+import fr from "../../locales/fr.json";
+import pt from "../../locales/pt.json";
+import hi from "../../locales/hi.json";
+import ar from "../../locales/ar.json";
+import sw from "../../locales/sw.json";
 
 const BUNDLED_LOCALES: Record<string, object> = { en, es, fr, pt, hi, ar, sw };
 
@@ -26,8 +26,8 @@ i18n.use(initReactI18next).init({
     ar: { translation: ar },
     sw: { translation: sw },
   },
-  lng: 'en',
-  fallbackLng: 'en',
+  lng: "en",
+  fallbackLng: "en",
   interpolation: {
     escapeValue: false,
   },
@@ -39,30 +39,34 @@ i18n.use(initReactI18next).init({
 export { i18n };
 
 async function loadLanguage(langCode: string): Promise<void> {
-  if (i18n.hasResourceBundle(langCode, 'translation')) {
+  if (i18n.hasResourceBundle(langCode, "translation")) {
     i18n.changeLanguage(langCode);
     return;
   }
 
   const cached = await getCachedLocale(langCode);
   if (cached) {
-    i18n.addResourceBundle(langCode, 'translation', cached, true, true);
+    i18n.addResourceBundle(langCode, "translation", cached, true, true);
     i18n.changeLanguage(langCode);
     return;
   }
 
-  i18n.changeLanguage('en');
+  i18n.changeLanguage("en");
 
   try {
-    const translated = await translateLocale(en, langCode, 'en');
-    i18n.addResourceBundle(langCode, 'translation', translated, true, true);
+    const translated = await translateLocale(en, langCode, "en");
+    i18n.addResourceBundle(langCode, "translation", translated, true, true);
     i18n.changeLanguage(langCode);
   } catch {
-    i18n.changeLanguage('en');
+    i18n.changeLanguage("en");
   }
 }
 
-export default function I18nProvider({ children }: { children: React.ReactNode }) {
+export default function I18nProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const language = useAppStore((s) => s.language);
   const [isReady, setIsReady] = useState(false);
 

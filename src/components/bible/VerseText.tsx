@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from "react";
+import { Text } from "react-native";
 
 interface VerseTextProps {
   text: string;
@@ -7,7 +7,11 @@ interface VerseTextProps {
   highlightColor?: string;
 }
 
-export default function VerseText({ text, highlighted = false, highlightColor = '#FEF3C7' }: VerseTextProps) {
+export default function VerseText({
+  text,
+  highlighted = false,
+  highlightColor = "#FEF3C7",
+}: VerseTextProps) {
   return (
     <Text
       className="text-base text-textPrimary leading-7"

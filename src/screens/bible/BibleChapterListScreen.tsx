@@ -1,16 +1,16 @@
-import React from 'react';
-import { Text, FlatList, Pressable } from 'react-native';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import LoadingScreen from '@/components/layout/LoadingScreen';
-import EmptyState from '@/components/ui/EmptyState';
-import { useBibleChapters } from '@/hooks/useBible';
-import type { BibleStackParamList } from '@/types/navigation';
+import React from "react";
+import { Text, FlatList, Pressable } from "react-native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import LoadingScreen from "@/components/layout/LoadingScreen";
+import EmptyState from "@/components/ui/EmptyState";
+import { useBibleChapters } from "@/hooks/useBible";
+import type { BibleStackParamList } from "@/types/navigation";
 
 export default function BibleChapterListScreen() {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<BibleStackParamList, 'BibleChapterList'>>();
+  const route = useRoute<RouteProp<BibleStackParamList, "BibleChapterList">>();
   const { bibleId, bookId } = route.params;
   const { data: chapters, isLoading } = useBibleChapters(bibleId, bookId);
 
@@ -27,10 +27,14 @@ export default function BibleChapterListScreen() {
         columnWrapperStyle={{ gap: 12 }}
         renderItem={({ item }) => (
           <Pressable
-            onPress={() => navigation.navigate('BibleVerse', { bibleId, chapterId: item.id })}
+            onPress={() =>
+              navigation.navigate("BibleVerse", { bibleId, chapterId: item.id })
+            }
             className="flex-1 items-center justify-center p-4 bg-surface rounded-xl mb-3"
           >
-            <Text className="text-lg font-semibold text-textPrimary">{item.number}</Text>
+            <Text className="text-lg font-semibold text-textPrimary">
+              {item.number}
+            </Text>
           </Pressable>
         )}
         ListEmptyComponent={

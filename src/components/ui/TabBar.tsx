@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Pressable, Text } from 'react-native';
+import React from "react";
+import { View, Pressable, Text } from "react-native";
 
 interface Tab {
   key: string;
@@ -20,12 +20,12 @@ export default function TabBar({ tabs, activeTab, onTabChange }: TabBarProps) {
           key={tab.key}
           onPress={() => onTabChange(tab.key)}
           className={`flex-1 items-center py-3 ${
-            activeTab === tab.key ? 'border-b-2 border-primary' : ''
+            activeTab === tab.key ? "border-b-2 border-primary" : ""
           }`}
         >
           <Text
             className={`text-sm font-semibold ${
-              activeTab === tab.key ? 'text-primary' : 'text-textSecondary'
+              activeTab === tab.key ? "text-primary" : "text-textSecondary"
             }`}
           >
             {tab.label}

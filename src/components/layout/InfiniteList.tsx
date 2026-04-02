@@ -1,15 +1,21 @@
-import React, { useCallback } from 'react';
-import { FlatList, RefreshControl, ActivityIndicator, View, FlatListProps } from 'react-native';
-import { colors } from '@/theme/colors';
-import { UseInfiniteQueryResult, InfiniteData } from '@tanstack/react-query';
-import EmptyState from '../ui/EmptyState';
-import ErrorState from '../ui/ErrorState';
-import { FeedSkeleton } from '../ui/Skeleton';
-import { flattenPages } from '@/lib/pages';
+import React, { useCallback } from "react";
+import {
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  View,
+  FlatListProps,
+} from "react-native";
+import { colors } from "@/theme/colors";
+import { UseInfiniteQueryResult, InfiniteData } from "@tanstack/react-query";
+import EmptyState from "../ui/EmptyState";
+import ErrorState from "../ui/ErrorState";
+import { FeedSkeleton } from "../ui/Skeleton";
+import { flattenPages } from "@/lib/pages";
 
 interface InfiniteListProps<T> {
   queryResult: UseInfiniteQueryResult<InfiniteData<{ results: T[] }>, Error>;
-  renderItem: FlatListProps<T>['renderItem'];
+  renderItem: FlatListProps<T>["renderItem"];
   keyExtractor: (item: T) => string;
   emptyTitle?: string;
   emptyMessage?: string;
@@ -23,9 +29,10 @@ export default function InfiniteList<T>({
   queryResult,
   renderItem,
   keyExtractor,
-  emptyTitle = 'Nothing here yet',
+  emptyTitle = "Nothing here yet",
   emptyMessage,
   headerComponent,
+  estimatedItemSize,
   loadingComponent,
   bottomInset = 0,
 }: InfiniteListProps<T>) {
@@ -72,7 +79,9 @@ export default function InfiniteList<T>({
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       ListHeaderComponent={headerComponent}
-      ListEmptyComponent={<EmptyState title={emptyTitle} message={emptyMessage} />}
+      ListEmptyComponent={
+        <EmptyState title={emptyTitle} message={emptyMessage} />
+      }
       ListFooterComponent={renderFooter}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.5}
@@ -88,6 +97,15 @@ export default function InfiniteList<T>({
       maxToRenderPerBatch={10}
       windowSize={7}
       removeClippedSubviews
+      {...(estimatedItemSize
+        ? {
+            getItemLayout: (_data, index) => ({
+              length: estimatedItemSize,
+              offset: estimatedItemSize * index,
+              index,
+            }),
+          }
+        : {})}
       contentContainerStyle={{ flexGrow: 1, paddingBottom: bottomInset + 24 }}
     />
   );

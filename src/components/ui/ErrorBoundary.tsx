@@ -1,5 +1,5 @@
-import React, { Component, type ErrorInfo, type ReactNode } from 'react';
-import ErrorState from './ErrorState';
+import React, { Component, type ErrorInfo, type ReactNode } from "react";
+import ErrorState from "./ErrorState";
 
 interface Props {
   children: ReactNode;
@@ -18,7 +18,7 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('[ErrorBoundary]', error.message, info.componentStack);
+    console.error("[ErrorBoundary]", error.message, info.componentStack);
   }
 
   handleRetry = () => {
@@ -27,7 +27,14 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback ?? <ErrorState message="Something went wrong" onRetry={this.handleRetry} />;
+      return (
+        this.props.fallback ?? (
+          <ErrorState
+            message="Something went wrong"
+            onRetry={this.handleRetry}
+          />
+        )
+      );
     }
     return this.props.children;
   }

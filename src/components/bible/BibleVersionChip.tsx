@@ -1,13 +1,16 @@
-import React from 'react';
-import { Pressable, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import { Pressable, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 interface BibleVersionChipProps {
   version: string;
   onPress: () => void;
 }
 
-export default function BibleVersionChip({ version, onPress }: BibleVersionChipProps) {
+export default function BibleVersionChip({
+  version,
+  onPress,
+}: BibleVersionChipProps) {
   return (
     <Pressable
       onPress={onPress}

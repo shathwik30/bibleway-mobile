@@ -4,47 +4,19 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@screens/*": [
-        "src/screens/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ],
-      "@stores/*": [
-        "src/stores/*"
-      ],
-      "@api/*": [
-        "src/api/*"
-      ],
-      "@lib/*": [
-        "src/lib/*"
-      ],
-      "@theme/*": [
-        "src/theme/*"
-      ],
-      "@types/*": [
-        "src/types/*"
-      ],
-      "@constants/*": [
-        "src/constants/*"
-      ],
-      "@navigation/*": [
-        "src/navigation/*"
-      ],
-      "@providers/*": [
-        "src/providers/*"
-      ]
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@screens/*": ["src/screens/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@stores/*": ["src/stores/*"],
+      "@api/*": ["src/api/*"],
+      "@lib/*": ["src/lib/*"],
+      "@theme/*": ["src/theme/*"],
+      "@types/*": ["src/types/*"],
+      "@constants/*": ["src/constants/*"],
+      "@navigation/*": ["src/navigation/*"],
+      "@providers/*": ["src/providers/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "nativewind-env.d.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"]
 }

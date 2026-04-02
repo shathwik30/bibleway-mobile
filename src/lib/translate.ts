@@ -1,4 +1,4 @@
-const TRANSLATE_URL = 'https://translate.googleapis.com/translate_a/single';
+const TRANSLATE_URL = "https://translate.googleapis.com/translate_a/single";
 
 const cache = new Map<string, string>();
 
@@ -9,7 +9,7 @@ function cacheKey(text: string, from: string, to: string): string {
 export async function translateText(
   text: string,
   targetLang: string,
-  sourceLang: string = 'en',
+  sourceLang: string = "en",
 ): Promise<string> {
   if (!text.trim() || targetLang === sourceLang) return text;
 
@@ -18,19 +18,19 @@ export async function translateText(
   if (cached) return cached;
 
   const chunks = splitText(text, 4000);
-  const translated: string[] = [];
+  const translated = await Promise.all(
+    chunks.map((chunk) => translateChunk(chunk, targetLang, sourceLang)),
+  );
 
-  for (const chunk of chunks) {
-    const result = await translateChunk(chunk, targetLang, sourceLang);
-    translated.push(result);
-  }
-
-  const fullResult = translated.join('');
+  const fullResult = translated.join("");
   cache.set(key, fullResult);
-
   if (cache.size > 200) {
-    const firstKey = cache.keys().next().value;
-    if (firstKey) cache.delete(firstKey);
+    const toDelete = Math.ceil(cache.size * 0.1);
+    const keys = cache.keys();
+    for (let i = 0; i < toDelete; i++) {
+      const k = keys.next().value;
+      if (k) cache.delete(k);
+    }
   }
 
   return fullResult;
@@ -42,10 +42,10 @@ async function translateChunk(
   sourceLang: string,
 ): Promise<string> {
   const params = new URLSearchParams({
-    client: 'gtx',
+    client: "gtx",
     sl: sourceLang,
     tl: targetLang,
-    dt: 't',
+    dt: "t",
     q: text,
   });
 
@@ -60,7 +60,7 @@ async function translateChunk(
     return (data[0] as Array<[string, ...unknown[]] | null>)
       .filter((segment): segment is [string, ...unknown[]] => !!segment?.[0])
       .map((segment) => segment[0])
-      .join('');
+      .join("");
   }
 
   return text;
@@ -78,12 +78,12 @@ function splitText(text: string, maxLength: number): string[] {
       break;
     }
 
-    let breakAt = remaining.lastIndexOf('. ', maxLength);
+    let breakAt = remaining.lastIndexOf(". ", maxLength);
     if (breakAt === -1 || breakAt < maxLength * 0.5) {
-      breakAt = remaining.lastIndexOf('\n', maxLength);
+      breakAt = remaining.lastIndexOf("\n", maxLength);
     }
     if (breakAt === -1 || breakAt < maxLength * 0.5) {
-      breakAt = remaining.lastIndexOf(' ', maxLength);
+      breakAt = remaining.lastIndexOf(" ", maxLength);
     }
     if (breakAt === -1) {
       breakAt = maxLength;

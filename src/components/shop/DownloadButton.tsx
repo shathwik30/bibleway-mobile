@@ -1,13 +1,16 @@
-import React from 'react';
-import { Pressable, Text, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import { Pressable, Text, ActivityIndicator } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 interface DownloadButtonProps {
   onPress: () => void;
   loading?: boolean;
 }
 
-export default function DownloadButton({ onPress, loading = false }: DownloadButtonProps) {
+export default function DownloadButton({
+  onPress,
+  loading = false,
+}: DownloadButtonProps) {
   return (
     <Pressable
       onPress={onPress}

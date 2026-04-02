@@ -1,12 +1,13 @@
-import { useMutation } from '@tanstack/react-query';
-import { api } from '@/api/client';
-import { ENDPOINTS } from '@/api/endpoints';
-import { useAuthStore } from '@/stores/authStore';
-import { AuthTokens } from '@/types/api';
-import { UserProfile } from '@/types/models';
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/api/client";
+import { ENDPOINTS } from "@/api/endpoints";
+import { useAuthStore } from "@/stores/authStore";
+import { AuthTokens } from "@/types/api";
+import { UserProfile } from "@/types/models";
 
 interface GoogleAuthInput {
   id_token: string;
+  full_name?: string;
   date_of_birth?: string;
   gender?: string;
   country?: string;
@@ -54,9 +55,7 @@ export function useLogin() {
       try {
         const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
         setUser(profile);
-      } catch {
-        // Tokens are valid; profile will load on next navigation
-      }
+      } catch {}
     },
   });
 }
@@ -74,9 +73,7 @@ export function useGoogleAuth() {
         try {
           const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
           setUser(profile);
-        } catch {
-          // Tokens are valid; profile will load on next navigation
-        }
+        } catch {}
       }
     },
   });
@@ -112,8 +109,11 @@ export function usePasswordReset() {
 
 export function usePasswordResetConfirm() {
   return useMutation({
-    mutationFn: (input: { email: string; otp_code: string; new_password: string }) =>
-      api.post(ENDPOINTS.auth.passwordResetConfirm, input),
+    mutationFn: (input: {
+      email: string;
+      otp_code: string;
+      new_password: string;
+    }) => api.post(ENDPOINTS.auth.passwordResetConfirm, input),
   });
 }
 

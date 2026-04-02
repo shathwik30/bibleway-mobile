@@ -1,5 +1,11 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, Pressable, ScrollView, useWindowDimensions } from 'react-native';
+import React, { useState, useCallback } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import Animated, {
   ZoomIn,
   FadeInDown,
@@ -8,18 +14,18 @@ import Animated, {
   useAnimatedStyle,
   withSequence,
   withTiming,
-} from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import * as Haptics from 'expo-haptics';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import { QUIZ_LEVELS, type QuizLevel } from '@/constants/quizLevels';
-import { mmkvStorage } from '@/lib/storage';
+} from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import * as Haptics from "expo-haptics";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import { QUIZ_LEVELS, type QuizLevel } from "@/constants/quizLevels";
+import { mmkvStorage } from "@/lib/storage";
 
-const STORAGE_UNLOCKED = 'quiz_unlocked_level';
-const STORAGE_COMPLETED = 'quiz_completed_levels';
-const STORAGE_HIGH_SCORES = 'quiz_high_scores';
+const STORAGE_UNLOCKED = "quiz_unlocked_level";
+const STORAGE_COMPLETED = "quiz_completed_levels";
+const STORAGE_HIGH_SCORES = "quiz_high_scores";
 
 function loadUnlocked(): number {
   return mmkvStorage.getNumber(STORAGE_UNLOCKED) ?? 1;
@@ -30,7 +36,11 @@ function saveUnlocked(n: number) {
 function loadCompleted(): Set<number> {
   const raw = mmkvStorage.getString(STORAGE_COMPLETED);
   if (!raw) return new Set();
-  try { return new Set(JSON.parse(raw) as number[]); } catch { return new Set(); }
+  try {
+    return new Set(JSON.parse(raw) as number[]);
+  } catch {
+    return new Set();
+  }
 }
 function saveCompleted(s: Set<number>) {
   mmkvStorage.setString(STORAGE_COMPLETED, JSON.stringify([...s]));
@@ -38,7 +48,11 @@ function saveCompleted(s: Set<number>) {
 function loadHighScores(): Record<number, number> {
   const raw = mmkvStorage.getString(STORAGE_HIGH_SCORES);
   if (!raw) return {};
-  try { return JSON.parse(raw); } catch { return {}; }
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
 }
 function saveHighScores(scores: Record<number, number>) {
   mmkvStorage.setString(STORAGE_HIGH_SCORES, JSON.stringify(scores));
@@ -73,7 +87,10 @@ function LevelSelect({
           const best = highScores[level.id];
 
           return (
-            <Animated.View key={level.id} entering={FadeInDown.delay(i * 50).springify()}>
+            <Animated.View
+              key={level.id}
+              entering={FadeInDown.delay(i * 50).springify()}
+            >
               <Pressable
                 onPress={() => !locked && onSelectLevel(level.id)}
                 disabled={locked}
@@ -86,8 +103,12 @@ function LevelSelect({
                     height: 44,
                     borderRadius: 22,
                     borderWidth: 2,
-                    borderColor: completed ? '#22C55E' : locked ? '#D1D5DB' : '#4A6FA5',
-                    backgroundColor: completed ? '#ECFDF5' : '#FFFFFF',
+                    borderColor: completed
+                      ? "#22C55E"
+                      : locked
+                        ? "#D1D5DB"
+                        : "#4A6FA5",
+                    backgroundColor: completed ? "#ECFDF5" : "#FFFFFF",
                   }}
                   className="items-center justify-center mr-3"
                 >
@@ -96,12 +117,16 @@ function LevelSelect({
                   ) : locked ? (
                     <Ionicons name="lock-closed" size={16} color="#9CA3AF" />
                   ) : (
-                    <Text className="text-base font-bold text-primary">{level.id}</Text>
+                    <Text className="text-base font-bold text-primary">
+                      {level.id}
+                    </Text>
                   )}
                 </View>
 
                 <View className="flex-1">
-                  <Text className="text-base font-bold text-textPrimary">{level.theme}</Text>
+                  <Text className="text-base font-bold text-textPrimary">
+                    {level.theme}
+                  </Text>
                   <Text className="text-xs text-textSecondary mt-0.5">
                     {level.title} · {level.questions.length} questions
                   </Text>
@@ -110,16 +135,27 @@ function LevelSelect({
                 {best !== undefined && (
                   <View className="flex-row items-center mr-2">
                     <Ionicons name="star" size={12} color="#F59E0B" />
-                    <Text className="text-xs font-bold text-textSecondary ml-1">{best}/{level.questions.length}</Text>
+                    <Text className="text-xs font-bold text-textSecondary ml-1">
+                      {best}/{level.questions.length}
+                    </Text>
                   </View>
                 )}
 
                 {!locked && (
                   <View
-                    style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: completed ? '#ECFDF5' : '#EFF6FF' }}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 18,
+                      backgroundColor: completed ? "#ECFDF5" : "#EFF6FF",
+                    }}
                     className="items-center justify-center"
                   >
-                    <Ionicons name={completed ? 'refresh' : 'play'} size={16} color={completed ? '#22C55E' : '#4A6FA5'} />
+                    <Ionicons
+                      name={completed ? "refresh" : "play"}
+                      size={16}
+                      color={completed ? "#22C55E" : "#4A6FA5"}
+                    />
                   </View>
                 )}
               </Pressable>
@@ -135,7 +171,9 @@ export default function BibleQuizScreen() {
   const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
 
-  const [screen, setScreen] = useState<'levels' | 'story' | 'quiz' | 'result'>('levels');
+  const [screen, setScreen] = useState<"levels" | "story" | "quiz" | "result">(
+    "levels",
+  );
   const [levelId, setLevelId] = useState(1);
   const [unlockedLevel, setUnlockedLevel] = useState(() => loadUnlocked());
   const [completedLevels, setCompletedLevels] = useState(() => loadCompleted());
@@ -162,7 +200,7 @@ export default function BibleQuizScreen() {
     setAnswered(false);
     setCorrectCount(0);
     setShowHint(false);
-    setScreen('story');
+    setScreen("story");
   }, []);
 
   const selectAnswer = useCallback(
@@ -215,11 +253,11 @@ export default function BibleQuizScreen() {
         saveHighScores(next);
         return next;
       });
-      setScreen('result');
+      setScreen("result");
     }
   }, [questionIdx, level, correctCount, levelId, unlockedLevel]);
 
-  if (screen === 'levels') {
+  if (screen === "levels") {
     return (
       <LevelSelect
         unlockedLevel={unlockedLevel}
@@ -230,7 +268,7 @@ export default function BibleQuizScreen() {
     );
   }
 
-  if (screen === 'story') {
+  if (screen === "story") {
     return (
       <SafeAreaScreen>
         <ScreenHeader title={level.theme} />
@@ -244,11 +282,13 @@ export default function BibleQuizScreen() {
               <Ionicons name="book-outline" size={18} color="#4A6FA5" />
               <Text className="text-sm font-bold text-primary ml-2">Story</Text>
             </View>
-            <Text className="text-base text-textPrimary leading-7">{level.story}</Text>
+            <Text className="text-base text-textPrimary leading-7">
+              {level.story}
+            </Text>
           </View>
 
           <Pressable
-            onPress={() => setScreen('quiz')}
+            onPress={() => setScreen("quiz")}
             className="bg-primary rounded-2xl py-4 items-center"
           >
             <Text className="text-white font-bold text-base">Start Quiz</Text>
@@ -258,8 +298,9 @@ export default function BibleQuizScreen() {
     );
   }
 
-  if (screen === 'result') {
-    const stars = correctCount >= level.questions.length ? 3 : correctCount >= 3 ? 2 : 1;
+  if (screen === "result") {
+    const stars =
+      correctCount >= level.questions.length ? 3 : correctCount >= 3 ? 2 : 1;
     const isLastLevel = levelId >= QUIZ_LEVELS.length;
 
     return (
@@ -271,14 +312,18 @@ export default function BibleQuizScreen() {
               <Ionicons name="ribbon" size={40} color="#22C55E" />
             </View>
 
-            <Text className="text-xl font-bold text-textPrimary mb-1">Quiz Complete!</Text>
-            <Text className="text-sm text-textSecondary mb-5">{level.theme}</Text>
+            <Text className="text-xl font-bold text-textPrimary mb-1">
+              Quiz Complete!
+            </Text>
+            <Text className="text-sm text-textSecondary mb-5">
+              {level.theme}
+            </Text>
 
             <View className="flex-row items-center mb-5">
               {[1, 2, 3].map((n) => (
                 <Ionicons
                   key={n}
-                  name={n <= stars ? 'star' : 'star-outline'}
+                  name={n <= stars ? "star" : "star-outline"}
                   size={34}
                   color="#F59E0B"
                   style={{ marginHorizontal: 4 }}
@@ -290,7 +335,9 @@ export default function BibleQuizScreen() {
               <Text className="text-4xl font-bold text-primary">
                 {correctCount}/{level.questions.length}
               </Text>
-              <Text className="text-xs text-textSecondary font-semibold mt-1">Correct Answers</Text>
+              <Text className="text-xs text-textSecondary font-semibold mt-1">
+                Correct Answers
+              </Text>
             </View>
 
             {!isLastLevel && (
@@ -300,7 +347,9 @@ export default function BibleQuizScreen() {
                 style={{ width: SW - 80, gap: 8 }}
               >
                 <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
-                <Text className="text-white font-bold text-base">Next Level</Text>
+                <Text className="text-white font-bold text-base">
+                  Next Level
+                </Text>
               </Pressable>
             )}
 
@@ -310,10 +359,12 @@ export default function BibleQuizScreen() {
               style={{ width: SW - 80, gap: 8 }}
             >
               <Ionicons name="refresh-outline" size={18} color="#6B7280" />
-              <Text className="text-textSecondary font-semibold">Play Again</Text>
+              <Text className="text-textSecondary font-semibold">
+                Play Again
+              </Text>
             </Pressable>
 
-            <Pressable onPress={() => setScreen('levels')} className="py-3">
+            <Pressable onPress={() => setScreen("levels")} className="py-3">
               <Text className="text-primary font-semibold">All Levels</Text>
             </Pressable>
           </Animated.View>
@@ -325,12 +376,13 @@ export default function BibleQuizScreen() {
   const getOptionStyle = (optIdx: number) => {
     if (!answered) {
       return selected === optIdx
-        ? 'border-primary bg-primary/5'
-        : 'border-border bg-white';
+        ? "border-primary bg-primary/5"
+        : "border-border bg-white";
     }
-    if (optIdx === question.correctIndex) return 'border-success bg-highlight-green';
-    if (optIdx === selected) return 'border-error bg-red-50';
-    return 'border-border bg-white';
+    if (optIdx === question.correctIndex)
+      return "border-success bg-highlight-green";
+    if (optIdx === selected) return "border-error bg-red-50";
+    return "border-border bg-white";
   };
 
   const getOptionIcon = (optIdx: number) => {
@@ -362,7 +414,9 @@ export default function BibleQuizScreen() {
           <View className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
             <View
               className="h-full bg-primary rounded-full"
-              style={{ width: `${((questionIdx + (answered ? 1 : 0)) / level.questions.length) * 100}%` }}
+              style={{
+                width: `${((questionIdx + (answered ? 1 : 0)) / level.questions.length) * 100}%`,
+              }}
             />
           </View>
         </View>
@@ -394,21 +448,38 @@ export default function BibleQuizScreen() {
                     height: 28,
                     borderRadius: 14,
                     borderWidth: 2,
-                    borderColor: answered && i === question.correctIndex ? '#22C55E' : answered && i === selected ? '#EF4444' : '#D1D5DB',
-                    backgroundColor: answered && i === question.correctIndex ? '#ECFDF5' : answered && i === selected ? '#FEF2F2' : '#FFFFFF',
+                    borderColor:
+                      answered && i === question.correctIndex
+                        ? "#22C55E"
+                        : answered && i === selected
+                          ? "#EF4444"
+                          : "#D1D5DB",
+                    backgroundColor:
+                      answered && i === question.correctIndex
+                        ? "#ECFDF5"
+                        : answered && i === selected
+                          ? "#FEF2F2"
+                          : "#FFFFFF",
                   }}
                   className="items-center justify-center mr-3"
                 >
                   <Text
                     className="text-xs font-bold"
                     style={{
-                      color: answered && i === question.correctIndex ? '#22C55E' : answered && i === selected ? '#EF4444' : '#6B7280',
+                      color:
+                        answered && i === question.correctIndex
+                          ? "#22C55E"
+                          : answered && i === selected
+                            ? "#EF4444"
+                            : "#6B7280",
                     }}
                   >
                     {String.fromCharCode(65 + i)}
                   </Text>
                 </View>
-                <Text className="flex-1 text-sm text-textPrimary leading-5">{opt}</Text>
+                <Text className="flex-1 text-sm text-textPrimary leading-5">
+                  {opt}
+                </Text>
                 {getOptionIcon(i)}
               </Pressable>
             </Animated.View>
@@ -425,12 +496,17 @@ export default function BibleQuizScreen() {
             style={{ gap: 6 }}
           >
             <Ionicons name="bulb-outline" size={18} color="#D97706" />
-            <Text className="text-sm font-semibold text-yellow-700">Show Hint</Text>
+            <Text className="text-sm font-semibold text-yellow-700">
+              Show Hint
+            </Text>
           </Pressable>
         )}
 
         {showHint && !answered && (
-          <Animated.View entering={FadeIn.duration(200)} className="mx-4 mt-2 bg-highlight-yellow/50 rounded-2xl p-4">
+          <Animated.View
+            entering={FadeIn.duration(200)}
+            className="mx-4 mt-2 bg-highlight-yellow/50 rounded-2xl p-4"
+          >
             <View className="flex-row items-center mb-1" style={{ gap: 6 }}>
               <Ionicons name="bulb" size={16} color="#D97706" />
               <Text className="text-xs font-bold text-yellow-700">HINT</Text>
@@ -446,7 +522,9 @@ export default function BibleQuizScreen() {
               className="bg-primary rounded-2xl py-4 items-center"
             >
               <Text className="text-white font-bold text-base">
-                {questionIdx + 1 < level.questions.length ? 'Next Question' : 'See Results'}
+                {questionIdx + 1 < level.questions.length
+                  ? "Next Question"
+                  : "See Results"}
               </Text>
             </Pressable>
           </Animated.View>

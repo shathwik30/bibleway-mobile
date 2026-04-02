@@ -1,21 +1,27 @@
-import React from 'react';
-import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import PostCard from '@/components/feed/PostCard';
-import { usePostDetail } from '@/hooks/useSocial';
-import { useRecordView } from '@/hooks/useAnalytics';
-import type { HomeStackParamList } from '@/types/navigation';
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import PostCard from "@/components/feed/PostCard";
+import { usePostDetail } from "@/hooks/useSocial";
+import { useRecordView } from "@/hooks/useAnalytics";
+import type { HomeStackParamList } from "@/types/navigation";
 
 export default function PostDetailScreen() {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<HomeStackParamList, 'PostDetail'>>();
+  const route = useRoute<RouteProp<HomeStackParamList, "PostDetail">>();
   const { postId } = route.params;
   const { data: post, isLoading, isError } = usePostDetail(postId);
-  useRecordView('post', postId);
+  useRecordView("post", postId);
 
   if (isLoading) {
     return (
@@ -46,16 +52,29 @@ export default function PostDetailScreen() {
         <PostCard post={post} />
 
         <Pressable
-          onPress={() => navigation.navigate('Comments', { contentType: 'post', objectId: post.id })}
+          onPress={() =>
+            navigation.navigate("Comments", {
+              contentType: "post",
+              objectId: post.id,
+            })
+          }
           className="flex-row items-center justify-between mx-4 mt-2 p-4 bg-surface rounded-xl"
         >
           <View className="flex-row items-center">
-            <Ionicons name="chatbubble-outline" size={20} color={colors.textSecondary} />
+            <Ionicons
+              name="chatbubble-outline"
+              size={20}
+              color={colors.textSecondary}
+            />
             <Text className="text-base text-textSecondary ml-2">
               {post.comment_count ?? 0} Comments
             </Text>
           </View>
-          <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color={colors.textSecondary}
+          />
         </Pressable>
       </ScrollView>
     </SafeAreaScreen>

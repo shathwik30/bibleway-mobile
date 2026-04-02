@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from "react";
+import { View, Text, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 interface StatsRowProps {
   followers: number;
@@ -10,7 +10,13 @@ interface StatsRowProps {
   userId: string;
 }
 
-export default function StatsRow({ followers, following, posts, prayers, userId }: StatsRowProps) {
+export default function StatsRow({
+  followers,
+  following,
+  posts,
+  prayers,
+  userId,
+}: StatsRowProps) {
   const navigation = useNavigation();
 
   return (
@@ -24,14 +30,14 @@ export default function StatsRow({ followers, following, posts, prayers, userId 
         <Text className="text-xs text-textSecondary">Prayers</Text>
       </View>
       <Pressable
-        onPress={() => navigation.navigate('Followers', { userId })}
+        onPress={() => navigation.navigate("Followers", { userId })}
         className="items-center"
       >
         <Text className="text-lg font-bold text-textPrimary">{followers}</Text>
         <Text className="text-xs text-textSecondary">Followers</Text>
       </Pressable>
       <Pressable
-        onPress={() => navigation.navigate('Following', { userId })}
+        onPress={() => navigation.navigate("Following", { userId })}
         className="items-center"
       >
         <Text className="text-lg font-bold text-textPrimary">{following}</Text>

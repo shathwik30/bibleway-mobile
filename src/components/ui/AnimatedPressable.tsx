@@ -1,12 +1,12 @@
-import React, { useCallback } from 'react';
-import { ViewStyle } from 'react-native';
+import React, { useCallback } from "react";
+import { ViewStyle } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-} from 'react-native-reanimated';
-import { Pressable } from 'react-native';
-import * as Haptics from 'expo-haptics';
+} from "react-native-reanimated";
+import { Pressable } from "react-native";
+import * as Haptics from "expo-haptics";
 
 interface AnimatedPressableProps {
   onPress?: () => void;
@@ -19,7 +19,7 @@ interface AnimatedPressableProps {
   className?: string;
   children: React.ReactNode;
   accessibilityLabel?: string;
-  accessibilityRole?: 'button' | 'link' | 'tab' | 'none';
+  accessibilityRole?: "button" | "link" | "tab" | "none";
 }
 
 export default function AnimatedPressable({
@@ -33,7 +33,7 @@ export default function AnimatedPressable({
   className,
   children,
   accessibilityLabel,
-  accessibilityRole = 'button',
+  accessibilityRole = "button",
 }: AnimatedPressableProps) {
   const scale = useSharedValue(1);
 

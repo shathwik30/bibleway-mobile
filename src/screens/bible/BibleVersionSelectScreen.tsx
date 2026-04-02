@@ -1,18 +1,29 @@
-import React, { useState, useMemo } from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import SearchBar from '@/components/ui/SearchBar';
-import EmptyState from '@/components/ui/EmptyState';
-import ErrorState from '@/components/ui/ErrorState';
-import { useBibleVersions } from '@/hooks/useBible';
-import { colors } from '@/theme/colors';
-import type { BibleVersion } from '@/types/models';
+import React, { useState, useMemo } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import SearchBar from "@/components/ui/SearchBar";
+import EmptyState from "@/components/ui/EmptyState";
+import ErrorState from "@/components/ui/ErrorState";
+import { useBibleVersions } from "@/hooks/useBible";
+import { colors } from "@/theme/colors";
+import type { BibleVersion } from "@/types/models";
 
 export default function BibleVersionSelectScreen() {
   const navigation = useNavigation();
-  const { data: versions, isLoading, error, refetch } = useBibleVersions({ language: '' });
-  const [search, setSearch] = useState('');
+  const {
+    data: versions,
+    isLoading,
+    error,
+    refetch,
+  } = useBibleVersions({ language: "" });
+  const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
     if (!versions) return [];
@@ -43,10 +54,13 @@ export default function BibleVersionSelectScreen() {
     <View className="flex-1">
       <View className="flex-row items-center px-4 pt-2 pb-1 gap-2">
         <View className="flex-1">
-          <SearchBar onSearch={setSearch} placeholder="Search versions, languages..." />
+          <SearchBar
+            onSearch={setSearch}
+            placeholder="Search versions, languages..."
+          />
         </View>
         <Pressable
-          onPress={() => navigation.navigate('BibleSearch')}
+          onPress={() => navigation.navigate("BibleSearch")}
           className="p-2.5 bg-surface rounded-xl"
         >
           <Ionicons name="search" size={22} color={colors.primary.DEFAULT} />
@@ -59,25 +73,43 @@ export default function BibleVersionSelectScreen() {
         contentContainerStyle={{ padding: 16, paddingTop: 8, flexGrow: 1 }}
         renderItem={({ item }) => (
           <Pressable
-            onPress={() => navigation.navigate('BibleBookList', { bibleId: item.id })}
+            onPress={() =>
+              navigation.navigate("BibleBookList", { bibleId: item.id })
+            }
             className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3"
           >
             <View className="flex-1 mr-3">
-              <Text className="text-base font-semibold text-textPrimary">{item.name}</Text>
+              <Text className="text-base font-semibold text-textPrimary">
+                {item.name}
+              </Text>
               {item.nameLocal && item.nameLocal !== item.name ? (
-                <Text className="text-sm text-textSecondary mt-0.5">{item.nameLocal}</Text>
+                <Text className="text-sm text-textSecondary mt-0.5">
+                  {item.nameLocal}
+                </Text>
               ) : null}
               <Text className="text-xs text-textTertiary mt-0.5">
                 {item.language?.name} — {item.abbreviationLocal}
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={colors.textSecondary}
+            />
           </Pressable>
         )}
         ListEmptyComponent={
-          search.trim()
-            ? <EmptyState icon="search-outline" title="No versions match your search" />
-            : <EmptyState icon="book-outline" title="No Bible versions available" />
+          search.trim() ? (
+            <EmptyState
+              icon="search-outline"
+              title="No versions match your search"
+            />
+          ) : (
+            <EmptyState
+              icon="book-outline"
+              title="No Bible versions available"
+            />
+          )
         }
       />
     </View>

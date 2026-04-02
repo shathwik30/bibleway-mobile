@@ -1,17 +1,23 @@
-import React from 'react';
-import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { formatDistanceToNow } from 'date-fns';
-import { colors } from '@/theme/colors';
-import { useTranslation } from 'react-i18next';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import Avatar from '@/components/ui/Avatar';
-import EmptyState from '@/components/ui/EmptyState';
-import ErrorState from '@/components/ui/ErrorState';
-import { useNotifications, useMarkRead } from '@/hooks/useNotifications';
-import { flattenPages } from '@/lib/pages';
-import type { Notification } from '@/types/models';
+import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { formatDistanceToNow } from "date-fns";
+import { colors } from "@/theme/colors";
+import { useTranslation } from "react-i18next";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import Avatar from "@/components/ui/Avatar";
+import EmptyState from "@/components/ui/EmptyState";
+import ErrorState from "@/components/ui/ErrorState";
+import { useNotifications, useMarkRead } from "@/hooks/useNotifications";
+import { flattenPages } from "@/lib/pages";
+import type { Notification } from "@/types/models";
 
 export default function NotificationsScreen() {
   const { t } = useTranslation();
@@ -27,21 +33,34 @@ export default function NotificationsScreen() {
     }
     const data = notification.data;
     switch (notification.notification_type) {
-      case 'follow':
-        if (data.user_id) navigation.navigate('UserProfile', { userId: String(data.user_id) });
+      case "follow":
+        if (data.user_id)
+          navigation.navigate("UserProfile", { userId: String(data.user_id) });
         break;
-      case 'reaction':
-      case 'comment':
-      case 'prayer_comment':
-      case 'share':
-      case 'boost_live':
-      case 'boost_digest':
-        if (data.post_id) navigation.navigate('PostDetail', { postId: String(data.post_id) });
-        else if (data.prayer_id) navigation.navigate('PrayerDetail', { prayerId: String(data.prayer_id) });
+      case "reaction":
+      case "comment":
+      case "prayer_comment":
+      case "share":
+      case "boost_live":
+      case "boost_digest":
+        if (data.post_id)
+          navigation.navigate("PostDetail", { postId: String(data.post_id) });
+        else if (data.prayer_id)
+          navigation.navigate("PrayerDetail", {
+            prayerId: String(data.prayer_id),
+          });
         break;
-      case 'reply':
-        if (data.post_id) navigation.navigate('Comments', { contentType: 'post', objectId: String(data.post_id) });
-        else if (data.prayer_id) navigation.navigate('Comments', { contentType: 'prayer', objectId: String(data.prayer_id) });
+      case "reply":
+        if (data.post_id)
+          navigation.navigate("Comments", {
+            contentType: "post",
+            objectId: String(data.post_id),
+          });
+        else if (data.prayer_id)
+          navigation.navigate("Comments", {
+            contentType: "prayer",
+            objectId: String(data.prayer_id),
+          });
         break;
     }
   };
@@ -49,17 +68,19 @@ export default function NotificationsScreen() {
   const renderItem = ({ item }: { item: Notification }) => (
     <Pressable
       onPress={() => handlePress(item)}
-      className={`flex-row items-center px-4 py-3 border-b border-border ${!item.is_read ? 'bg-primary/5' : ''}`}
+      className={`flex-row items-center px-4 py-3 border-b border-border ${!item.is_read ? "bg-primary/5" : ""}`}
     >
       <Avatar
         source={item.sender?.profile_photo ?? null}
-        name={item.sender?.full_name ?? 'System'}
+        name={item.sender?.full_name ?? "System"}
         size={40}
       />
       <View className="flex-1 ml-3">
         <Text className="text-sm text-textPrimary">
-          <Text className="font-semibold">{item.sender?.full_name ?? 'System'}</Text>
-          {' '}{item.title}
+          <Text className="font-semibold">
+            {item.sender?.full_name ?? "System"}
+          </Text>{" "}
+          {item.title}
         </Text>
         <Text className="text-xs text-textSecondary mt-0.5">
           {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}
@@ -72,10 +93,12 @@ export default function NotificationsScreen() {
   return (
     <SafeAreaScreen>
       <ScreenHeader
-        title={t('notifications.notifications')}
+        title={t("notifications.notifications")}
         rightAction={
           <Pressable onPress={() => markRead.mutate(undefined)}>
-            <Text className="text-sm text-primary font-medium">{t('notifications.markAllRead')}</Text>
+            <Text className="text-sm text-primary font-medium">
+              {t("notifications.markAllRead")}
+            </Text>
           </Pressable>
         }
       />
@@ -85,15 +108,24 @@ export default function NotificationsScreen() {
         renderItem={renderItem}
         ListEmptyComponent={
           notificationsQuery.isLoading ? (
-            <View className="py-8"><ActivityIndicator color={colors.primary.DEFAULT} /></View>
+            <View className="py-8">
+              <ActivityIndicator color={colors.primary.DEFAULT} />
+            </View>
           ) : notificationsQuery.isError ? (
-            <ErrorState message={notificationsQuery.error?.message} onRetry={() => notificationsQuery.refetch()} />
+            <ErrorState
+              message={notificationsQuery.error?.message}
+              onRetry={() => notificationsQuery.refetch()}
+            />
           ) : (
-            <EmptyState icon="notifications-outline" title={t('notifications.noNotifications')} />
+            <EmptyState
+              icon="notifications-outline"
+              title={t("notifications.noNotifications")}
+            />
           )
         }
         onEndReached={() => {
-          if (notificationsQuery.hasNextPage) notificationsQuery.fetchNextPage();
+          if (notificationsQuery.hasNextPage)
+            notificationsQuery.fetchNextPage();
         }}
         onEndReachedThreshold={0.5}
       />

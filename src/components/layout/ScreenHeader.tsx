@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
+import React from "react";
+import { View, Text, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
 
 interface ScreenHeaderProps {
   title: string;
@@ -10,7 +10,11 @@ interface ScreenHeaderProps {
   rightAction?: React.ReactNode;
 }
 
-export default function ScreenHeader({ title, showBack = true, rightAction }: ScreenHeaderProps) {
+export default function ScreenHeader({
+  title,
+  showBack = true,
+  rightAction,
+}: ScreenHeaderProps) {
   const navigation = useNavigation();
 
   return (
@@ -21,7 +25,9 @@ export default function ScreenHeader({ title, showBack = true, rightAction }: Sc
             <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
           </Pressable>
         )}
-        <Text className="text-xl font-bold text-textPrimary" numberOfLines={1}>{title}</Text>
+        <Text className="text-xl font-bold text-textPrimary" numberOfLines={1}>
+          {title}
+        </Text>
       </View>
       {rightAction && <View>{rightAction}</View>}
     </View>

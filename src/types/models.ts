@@ -8,7 +8,7 @@ import {
   NoteType,
   NotificationType,
   Platform,
-} from './enums';
+} from "./enums";
 
 export interface Author {
   id: string;
@@ -51,7 +51,7 @@ export interface UserPublicProfile {
   following_count: number;
   post_count: number;
   prayer_count: number;
-  follow_status: 'none' | 'following' | 'self';
+  follow_status: "none" | "following" | "self";
 }
 
 export interface UserListItem {
@@ -87,7 +87,6 @@ export interface Prayer {
   author: Author;
   title: string;
   description: string;
-  is_boosted: boolean;
   media: MediaItem[];
   reaction_count: number;
   comment_count: number;

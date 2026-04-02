@@ -1,6 +1,6 @@
-export const APP_NAME = 'BibleWay';
-export const DEEP_LINK_SCHEME = 'bibleway';
-export const UNIVERSAL_LINK_PREFIX = 'https://bibleway.io';
+export const APP_NAME = "BibleWay";
+export const DEEP_LINK_SCHEME = "bibleway";
+export const UNIVERSAL_LINK_PREFIX = "https://bibleway.io";
 export const NOTIFICATION_POLL_INTERVAL = 30000;
 export const SEARCH_DEBOUNCE_MS = 300;
 export const MAX_POST_LENGTH = 2000;
@@ -10,3 +10,5 @@ export const MAX_IMAGES_PER_POST = 10;
 export const IMAGE_MAX_WIDTH = 1920;
 export const IMAGE_MAX_HEIGHT = 1080;
 export const IMAGE_QUALITY = 0.8;
+export const FEED_TEXT_TRUNCATE_LENGTH = 200;
+export const DEFAULT_BLURHASH = "L6PZfSi_.AyE_3t7t7R**0o#DgR4";

@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { translateText } from './translate';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { translateText } from "./translate";
 
-const CACHE_PREFIX = 'i18n_locale_';
+const CACHE_PREFIX = "i18n_locale_";
 const CACHE_VERSION = 1;
 
 type LocaleObject = Record<string, string | Record<string, string>>;
@@ -9,7 +9,7 @@ type LocaleObject = Record<string, string | Record<string, string>>;
 export async function translateLocale(
   source: LocaleObject,
   targetLang: string,
-  sourceLang: string = 'en',
+  sourceLang: string = "en",
 ): Promise<LocaleObject> {
   if (targetLang === sourceLang) return source;
 
@@ -23,7 +23,7 @@ export async function translateLocale(
   const keys = Object.keys(flat);
   const values = Object.values(flat);
 
-  const DELIMITER = '\n||||\n';
+  const DELIMITER = "\n||||\n";
   const joined = values.join(DELIMITER);
 
   let translatedJoined: string;
@@ -49,7 +49,9 @@ export async function translateLocale(
   return result;
 }
 
-export async function getCachedLocale(lang: string): Promise<LocaleObject | null> {
+export async function getCachedLocale(
+  lang: string,
+): Promise<LocaleObject | null> {
   try {
     const cacheKey = `${CACHE_PREFIX}v${CACHE_VERSION}_${lang}`;
     const cached = await AsyncStorage.getItem(cacheKey);
@@ -59,12 +61,12 @@ export async function getCachedLocale(lang: string): Promise<LocaleObject | null
   }
 }
 
-function flatten(obj: LocaleObject, prefix = ''): Record<string, string> {
+function flatten(obj: LocaleObject, prefix = ""): Record<string, string> {
   const result: Record<string, string> = {};
   for (const key of Object.keys(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
     const value = obj[key];
-    if (typeof value === 'object' && value !== null) {
+    if (typeof value === "object" && value !== null) {
       Object.assign(result, flatten(value as LocaleObject, fullKey));
     } else {
       result[fullKey] = String(value);
@@ -76,7 +78,7 @@ function flatten(obj: LocaleObject, prefix = ''): Record<string, string> {
 function unflatten(obj: Record<string, string>): LocaleObject {
   const result: Record<string, string | Record<string, string>> = {};
   for (const key of Object.keys(obj)) {
-    const parts = key.split('.');
+    const parts = key.split(".");
     let current: Record<string, unknown> = result;
     for (let i = 0; i < parts.length - 1; i++) {
       if (!current[parts[i]]) current[parts[i]] = {};

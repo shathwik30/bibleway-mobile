@@ -1,16 +1,16 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useTranslation } from 'react-i18next';
-import * as Haptics from 'expo-haptics';
-import { MainTabParamList } from '@/types/navigation';
-import HomeStackNavigator from './HomeStackNavigator';
-import BibleStackNavigator from './BibleStackNavigator';
-import ShopStackNavigator from './ShopStackNavigator';
-import GamesStackNavigator from './GamesStackNavigator';
-import ProfileStackNavigator from './ProfileStackNavigator';
-import { useNotificationStore } from '@/stores/notificationStore';
-import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useTranslation } from "react-i18next";
+import * as Haptics from "expo-haptics";
+import { MainTabParamList } from "@/types/navigation";
+import HomeStackNavigator from "./HomeStackNavigator";
+import BibleStackNavigator from "./BibleStackNavigator";
+import ShopStackNavigator from "./ShopStackNavigator";
+import GamesStackNavigator from "./GamesStackNavigator";
+import ProfileStackNavigator from "./ProfileStackNavigator";
+import { useNotificationStore } from "@/stores/notificationStore";
+import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -31,11 +31,11 @@ export default function MainTabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#4A6FA5',
-        tabBarInactiveTintColor: '#6B7280',
+        tabBarActiveTintColor: "#4A6FA5",
+        tabBarInactiveTintColor: "#6B7280",
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopColor: '#E5E7EB',
+          backgroundColor: "#FFFFFF",
+          borderTopColor: "#E5E7EB",
           borderTopWidth: 1,
           paddingBottom: Math.max(insets.bottom, 4),
           paddingTop: 4,
@@ -43,7 +43,7 @@ export default function MainTabNavigator() {
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: '600',
+          fontWeight: "600",
         },
       }}
     >
@@ -51,7 +51,7 @@ export default function MainTabNavigator() {
         name="HomeTab"
         component={HomeStackNavigator}
         options={{
-          tabBarLabel: t('feed.home'),
+          tabBarLabel: t("feed.home"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
@@ -63,7 +63,7 @@ export default function MainTabNavigator() {
         name="BibleTab"
         component={BibleStackNavigator}
         options={{
-          tabBarLabel: t('bible.bible'),
+          tabBarLabel: t("bible.bible"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="book-outline" size={size} color={color} />
           ),
@@ -74,7 +74,7 @@ export default function MainTabNavigator() {
         name="ShopTab"
         component={ShopStackNavigator}
         options={{
-          tabBarLabel: t('shop.shop'),
+          tabBarLabel: t("shop.shop"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bag-outline" size={size} color={color} />
           ),
@@ -85,9 +85,13 @@ export default function MainTabNavigator() {
         name="GamesTab"
         component={GamesStackNavigator}
         options={{
-          tabBarLabel: 'Games',
+          tabBarLabel: "Games",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="game-controller-outline" size={size} color={color} />
+            <Ionicons
+              name="game-controller-outline"
+              size={size}
+              color={color}
+            />
           ),
         }}
         listeners={hapticListeners}
@@ -96,7 +100,7 @@ export default function MainTabNavigator() {
         name="ProfileTab"
         component={ProfileStackNavigator}
         options={{
-          tabBarLabel: t('profile.profile'),
+          tabBarLabel: t("profile.profile"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />
           ),

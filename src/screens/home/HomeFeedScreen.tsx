@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, Platform } from 'react-native';
-import { Image } from 'expo-image';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import TabBar from '@/components/ui/TabBar';
-import InfiniteList from '@/components/layout/InfiniteList';
-import PostCard from '@/components/feed/PostCard';
-import PrayerCard from '@/components/feed/PrayerCard';
-import VerseOfDayBanner from '@/components/bible/VerseOfDayBanner';
-import Badge from '@/components/ui/Badge';
-import { usePosts, usePrayers } from '@/hooks/useSocial';
-import { useUnreadCount } from '@/hooks/useNotifications';
-import { useNotificationStore } from '@/stores/notificationStore';
-import { lightHaptic } from '@/lib/haptics';
-import type { Post, Prayer } from '@/types/models';
+import React, { useState, useCallback } from "react";
+import { View, Text, Pressable, Platform } from "react-native";
+import { Image } from "expo-image";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import TabBar from "@/components/ui/TabBar";
+import InfiniteList from "@/components/layout/InfiniteList";
+import PostCard from "@/components/feed/PostCard";
+import PrayerCard from "@/components/feed/PrayerCard";
+import VerseOfDayBanner from "@/components/bible/VerseOfDayBanner";
+import Badge from "@/components/ui/Badge";
+import { usePosts, usePrayers } from "@/hooks/useSocial";
+import { useUnreadCount } from "@/hooks/useNotifications";
+import { useNotificationStore } from "@/stores/notificationStore";
+import { lightHaptic } from "@/lib/haptics";
+import type { Post, Prayer } from "@/types/models";
 
 export default function HomeFeedScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const [activeTab, setActiveTab] = useState('posts');
+  const [activeTab, setActiveTab] = useState("posts");
   const postsQuery = usePosts();
   const prayersQuery = usePrayers();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
@@ -29,20 +29,29 @@ export default function HomeFeedScreen() {
   useUnreadCount();
 
   const tabs = [
-    { key: 'posts', label: t('feed.posts') },
-    { key: 'prayers', label: t('feed.prayers') },
+    { key: "posts", label: t("feed.posts") },
+    { key: "prayers", label: t("feed.prayers") },
   ];
+
+  const handleFabPress = useCallback(() => {
+    lightHaptic();
+    navigation.navigate(activeTab === "posts" ? "CreatePost" : "CreatePrayer");
+  }, [activeTab, navigation]);
 
   return (
     <SafeAreaScreen>
       <View className="flex-row items-center justify-between px-4 py-3">
         <Image
-          source={require('../../../assets/logo.png')}
+          source={require("../../../assets/logo.png")}
           style={{ width: 120, height: 36 }}
           contentFit="contain"
         />
         <View className="flex-row items-center">
-          <Pressable onPress={() => navigation.navigate('Notifications')} className="relative p-2" accessibilityLabel="Notifications">
+          <Pressable
+            onPress={() => navigation.navigate("Notifications")}
+            className="relative p-2"
+            accessibilityLabel="Notifications"
+          >
             <Ionicons name="notifications-outline" size={24} color="#1A1A2E" />
             {unreadCount > 0 && (
               <View className="absolute top-1 right-1">
@@ -55,13 +64,13 @@ export default function HomeFeedScreen() {
 
       <TabBar tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {activeTab === 'posts' ? (
+      {activeTab === "posts" ? (
         <InfiniteList<Post>
           queryResult={postsQuery}
           renderItem={({ item }) => <PostCard post={item} />}
           keyExtractor={(item) => item.id}
           headerComponent={<VerseOfDayBanner />}
-          emptyTitle={t('feed.noPostsYet')}
+          emptyTitle={t("feed.noPostsYet")}
           bottomInset={tabBarHeight}
         />
       ) : (
@@ -69,17 +78,14 @@ export default function HomeFeedScreen() {
           queryResult={prayersQuery}
           renderItem={({ item }) => <PrayerCard prayer={item} />}
           keyExtractor={(item) => item.id}
-          emptyTitle={t('feed.noPrayersYet')}
+          emptyTitle={t("feed.noPrayersYet")}
           bottomInset={tabBarHeight}
         />
       )}
 
       <Pressable
-        onPress={() => {
-          lightHaptic();
-          navigation.navigate(activeTab === 'posts' ? 'CreatePost' : 'CreatePrayer');
-        }}
-        style={{ position: 'absolute', bottom: tabBarHeight + 16, right: 24 }}
+        onPress={handleFabPress}
+        style={{ position: "absolute", bottom: tabBarHeight + 16, right: 24 }}
         className="w-14 h-14 bg-primary rounded-full items-center justify-center shadow-lg"
         accessibilityLabel="Create new"
       >

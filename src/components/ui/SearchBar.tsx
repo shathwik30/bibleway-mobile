@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
-import { View, TextInput, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useCallback } from "react";
+import { View, TextInput, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -8,8 +9,12 @@ interface SearchBarProps {
   debounceMs?: number;
 }
 
-export default function SearchBar({ onSearch, placeholder = 'Search...', debounceMs = 300 }: SearchBarProps) {
-  const [value, setValue] = useState('');
+export default function SearchBar({
+  onSearch,
+  placeholder = "Search...",
+  debounceMs = 300,
+}: SearchBarProps) {
+  const [value, setValue] = useState("");
   const timeoutRef = React.useRef<NodeJS.Timeout>(undefined);
 
   const handleChange = useCallback(
@@ -18,12 +23,12 @@ export default function SearchBar({ onSearch, placeholder = 'Search...', debounc
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => onSearch(text), debounceMs);
     },
-    [onSearch, debounceMs]
+    [onSearch, debounceMs],
   );
 
   const handleClear = () => {
-    setValue('');
-    onSearch('');
+    setValue("");
+    onSearch("");
   };
 
   return (
@@ -33,7 +38,7 @@ export default function SearchBar({ onSearch, placeholder = 'Search...', debounc
         value={value}
         onChangeText={handleChange}
         placeholder={placeholder}
-        placeholderTextColor="#9CA3AF"
+        placeholderTextColor={colors.textTertiary}
         className="flex-1 ml-2 text-base text-textPrimary"
         returnKeyType="search"
       />

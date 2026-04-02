@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, Text, Pressable, ScrollView, useWindowDimensions } from 'react-native';
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,14 +14,18 @@ import Animated, {
   withTiming,
   ZoomIn,
   FadeInDown,
-} from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import * as Haptics from 'expo-haptics';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import { LEVELS, type LevelData, type WordData } from '@/constants/crosswordLevels';
-import { mmkvStorage } from '@/lib/storage';
+} from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import * as Haptics from "expo-haptics";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import {
+  LEVELS,
+  type LevelData,
+  type WordData,
+} from "@/constants/crosswordLevels";
+import { mmkvStorage } from "@/lib/storage";
 
 interface LetterTile {
   id: string;
@@ -28,9 +38,9 @@ interface CellInfo {
   wordIndices: number[];
 }
 
-const DISTRACTOR_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const STORAGE_KEY_UNLOCKED = 'crossword_unlocked_level';
-const STORAGE_KEY_COMPLETED = 'crossword_completed_levels';
+const DISTRACTOR_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const STORAGE_KEY_UNLOCKED = "crossword_unlocked_level";
+const STORAGE_KEY_COMPLETED = "crossword_completed_levels";
 
 function loadUnlockedLevel(): number {
   return mmkvStorage.getNumber(STORAGE_KEY_UNLOCKED) ?? 1;
@@ -58,8 +68,8 @@ function buildGrid(level: LevelData) {
   const map = new Map<string, CellInfo>();
   level.words.forEach((w, wi) => {
     for (let i = 0; i < w.word.length; i++) {
-      const r = w.direction === 'across' ? w.row : w.row + i;
-      const c = w.direction === 'across' ? w.col + i : w.col;
+      const r = w.direction === "across" ? w.row : w.row + i;
+      const c = w.direction === "across" ? w.col + i : w.col;
       const k = `${r}-${c}`;
       const ex = map.get(k);
       if (ex) ex.wordIndices.push(wi);
@@ -72,8 +82,8 @@ function buildGrid(level: LevelData) {
 function getWordKeys(word: WordData) {
   const keys = new Set<string>();
   for (let i = 0; i < word.word.length; i++) {
-    const r = word.direction === 'across' ? word.row : word.row + i;
-    const c = word.direction === 'across' ? word.col + i : word.col;
+    const r = word.direction === "across" ? word.row : word.row + i;
+    const c = word.direction === "across" ? word.col + i : word.col;
     keys.add(`${r}-${c}`);
   }
   return keys;
@@ -89,11 +99,11 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 function makeBank(word: string): LetterTile[] {
-  const unique = new Set(word.split(''));
+  const unique = new Set(word.split(""));
   const distractors = shuffle(
-    DISTRACTOR_POOL.split('').filter((c) => !unique.has(c)),
+    DISTRACTOR_POOL.split("").filter((c) => !unique.has(c)),
   ).slice(0, Math.min(3, 12 - word.length));
-  return shuffle([...word.split(''), ...distractors]).map((letter, i) => ({
+  return shuffle([...word.split(""), ...distractors]).map((letter, i) => ({
     id: `${i}-${letter}-${Math.random().toString(36).slice(2, 6)}`,
     letter,
     used: false,
@@ -128,7 +138,10 @@ function LevelSelect({
           const completed = completedLevels.has(level.id);
 
           return (
-            <Animated.View key={level.id} entering={FadeInDown.delay(i * 50).springify()}>
+            <Animated.View
+              key={level.id}
+              entering={FadeInDown.delay(i * 50).springify()}
+            >
               <Pressable
                 onPress={() => !locked && onSelectLevel(level.id)}
                 disabled={locked}
@@ -141,8 +154,12 @@ function LevelSelect({
                     height: 44,
                     borderRadius: 22,
                     borderWidth: 2,
-                    borderColor: completed ? '#22C55E' : locked ? '#D1D5DB' : '#4A6FA5',
-                    backgroundColor: completed ? '#ECFDF5' : '#FFFFFF',
+                    borderColor: completed
+                      ? "#22C55E"
+                      : locked
+                        ? "#D1D5DB"
+                        : "#4A6FA5",
+                    backgroundColor: completed ? "#ECFDF5" : "#FFFFFF",
                   }}
                   className="items-center justify-center mr-3"
                 >
@@ -151,12 +168,16 @@ function LevelSelect({
                   ) : locked ? (
                     <Ionicons name="lock-closed" size={16} color="#9CA3AF" />
                   ) : (
-                    <Text className="text-base font-bold text-primary">{level.id}</Text>
+                    <Text className="text-base font-bold text-primary">
+                      {level.id}
+                    </Text>
                   )}
                 </View>
 
                 <View className="flex-1">
-                  <Text className="text-base font-bold text-textPrimary">{level.theme}</Text>
+                  <Text className="text-base font-bold text-textPrimary">
+                    {level.theme}
+                  </Text>
                   <Text className="text-xs text-textSecondary mt-0.5">
                     {level.title} · {level.words.length} words
                   </Text>
@@ -168,14 +189,14 @@ function LevelSelect({
                       width: 36,
                       height: 36,
                       borderRadius: 18,
-                      backgroundColor: completed ? '#ECFDF5' : '#EFF6FF',
+                      backgroundColor: completed ? "#ECFDF5" : "#EFF6FF",
                     }}
                     className="items-center justify-center"
                   >
                     <Ionicons
-                      name={completed ? 'refresh' : 'play'}
+                      name={completed ? "refresh" : "play"}
                       size={16}
-                      color={completed ? '#22C55E' : '#4A6FA5'}
+                      color={completed ? "#22C55E" : "#4A6FA5"}
                     />
                   </View>
                 )}
@@ -205,7 +226,12 @@ function LevelCompleteScreen({
   onLevels: () => void;
   screenWidth: number;
 }) {
-  const stars = score >= level.words.length * 80 ? 3 : score >= level.words.length * 50 ? 2 : 1;
+  const stars =
+    score >= level.words.length * 80
+      ? 3
+      : score >= level.words.length * 50
+        ? 2
+        : 1;
 
   return (
     <SafeAreaScreen>
@@ -216,14 +242,18 @@ function LevelCompleteScreen({
             <Ionicons name="trophy" size={40} color="#22C55E" />
           </View>
 
-          <Text className="text-xl font-bold text-textPrimary mb-1">{level.theme}</Text>
-          <Text className="text-sm text-textSecondary mb-5">Level Complete!</Text>
+          <Text className="text-xl font-bold text-textPrimary mb-1">
+            {level.theme}
+          </Text>
+          <Text className="text-sm text-textSecondary mb-5">
+            Level Complete!
+          </Text>
 
           <View className="flex-row items-center mb-5">
             {[1, 2, 3].map((n) => (
               <Ionicons
                 key={n}
-                name={n <= stars ? 'star' : 'star-outline'}
+                name={n <= stars ? "star" : "star-outline"}
                 size={34}
                 color="#F59E0B"
                 style={{ marginHorizontal: 4 }}
@@ -237,12 +267,18 @@ function LevelCompleteScreen({
           >
             <View className="flex-1 items-center py-4">
               <Ionicons name="trophy-outline" size={20} color="#F59E0B" />
-              <Text className="text-xl font-bold text-textPrimary mt-1">{score}</Text>
+              <Text className="text-xl font-bold text-textPrimary mt-1">
+                {score}
+              </Text>
               <Text className="text-xs text-textSecondary">Points</Text>
             </View>
             <View style={{ width: 1, height: 40 }} className="bg-border" />
             <View className="flex-1 items-center py-4">
-              <Ionicons name="checkmark-circle-outline" size={20} color="#22C55E" />
+              <Ionicons
+                name="checkmark-circle-outline"
+                size={20}
+                color="#22C55E"
+              />
               <Text className="text-xl font-bold text-textPrimary mt-1">
                 {level.words.length}/{level.words.length}
               </Text>
@@ -283,16 +319,22 @@ export default function BibleCrosswordScreen() {
   const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
 
-  const [screen, setScreen] = useState<'levels' | 'game' | 'complete'>('levels');
+  const [screen, setScreen] = useState<"levels" | "game" | "complete">(
+    "levels",
+  );
   const [levelId, setLevelId] = useState(1);
   const [unlockedLevel, setUnlockedLevel] = useState(() => loadUnlockedLevel());
-  const [completedLevels, setCompletedLevels] = useState(() => loadCompletedLevels());
+  const [completedLevels, setCompletedLevels] = useState(() =>
+    loadCompletedLevels(),
+  );
 
   const [solved, setSolved] = useState<Set<number>>(new Set());
   const [wordIdx, setWordIdx] = useState(0);
   const [input, setInput] = useState<string[]>([]);
   const [bank, setBank] = useState<LetterTile[]>([]);
-  const [feedback, setFeedback] = useState<'idle' | 'correct' | 'wrong'>('idle');
+  const [feedback, setFeedback] = useState<"idle" | "correct" | "wrong">(
+    "idle",
+  );
   const [score, setScore] = useState(0);
   const [hints, setHints] = useState(0);
 
@@ -314,7 +356,7 @@ export default function BibleCrosswordScreen() {
   useEffect(() => {
     setBank(makeBank(word.word));
     setInput([]);
-    setFeedback('idle');
+    setFeedback("idle");
     setHints(0);
   }, [wordIdx, levelId]);
 
@@ -331,8 +373,8 @@ export default function BibleCrosswordScreen() {
     setWordIdx(0);
     setScore(0);
     setHints(0);
-    setFeedback('idle');
-    setScreen('game');
+    setFeedback("idle");
+    setScreen("game");
   }, []);
 
   const selectNextUnsolved = useCallback(
@@ -386,8 +428,8 @@ export default function BibleCrosswordScreen() {
 
   const submit = useCallback(() => {
     if (input.length < word.word.length) return;
-    if (input.join('') === word.word) {
-      setFeedback('correct');
+    if (input.join("") === word.word) {
+      setFeedback("correct");
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       popScale.value = withSequence(withSpring(1.05), withSpring(1));
 
@@ -407,14 +449,14 @@ export default function BibleCrosswordScreen() {
             setUnlockedLevel(next);
             saveUnlockedLevel(next);
           }
-          setScreen('complete');
+          setScreen("complete");
         } else {
           selectNextUnsolved(newSolved);
-          setFeedback('idle');
+          setFeedback("idle");
         }
       }, 900);
     } else {
-      setFeedback('wrong');
+      setFeedback("wrong");
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       shakeX.value = withSequence(
         withTiming(-10, { duration: 55 }),
@@ -423,9 +465,19 @@ export default function BibleCrosswordScreen() {
         withTiming(8, { duration: 55 }),
         withTiming(0, { duration: 55 }),
       );
-      setTimeout(() => setFeedback('idle'), 600);
+      setTimeout(() => setFeedback("idle"), 600);
     }
-  }, [input, word, wordIdx, level, levelId, hints, solved, unlockedLevel, selectNextUnsolved]);
+  }, [
+    input,
+    word,
+    wordIdx,
+    level,
+    levelId,
+    hints,
+    solved,
+    unlockedLevel,
+    selectNextUnsolved,
+  ]);
 
   const hint = useCallback(() => {
     const next = input.length;
@@ -438,7 +490,7 @@ export default function BibleCrosswordScreen() {
     tap(tile.id, tile.letter);
   }, [input.length, word.word, bank, tap, hints]);
 
-  if (screen === 'levels') {
+  if (screen === "levels") {
     return (
       <LevelSelect
         unlockedLevel={unlockedLevel}
@@ -448,7 +500,7 @@ export default function BibleCrosswordScreen() {
     );
   }
 
-  if (screen === 'complete') {
+  if (screen === "complete") {
     return (
       <LevelCompleteScreen
         level={level}
@@ -456,7 +508,7 @@ export default function BibleCrosswordScreen() {
         isLastLevel={levelId >= LEVELS.length}
         onNext={() => startLevel(levelId + 1)}
         onReplay={() => startLevel(levelId)}
-        onLevels={() => setScreen('levels')}
+        onLevels={() => setScreen("levels")}
         screenWidth={SW}
       />
     );
@@ -470,7 +522,9 @@ export default function BibleCrosswordScreen() {
         const k = `${r}-${c}`;
         const cell = gridMap.get(k);
         const isCur = currKeys.has(k);
-        const isDone = cell ? cell.wordIndices.some((idx) => solved.has(idx)) : false;
+        const isDone = cell
+          ? cell.wordIndices.some((idx) => solved.has(idx))
+          : false;
 
         if (!cell) {
           cells.push(
@@ -488,8 +542,12 @@ export default function BibleCrosswordScreen() {
                 width: CELL,
                 height: CELL,
                 borderWidth: 1.5,
-                borderColor: isDone ? '#22C55E' : isCur ? '#4A6FA5' : '#E5E7EB',
-                backgroundColor: isDone ? '#ECFDF5' : isCur ? '#EFF6FF' : '#FFFFFF',
+                borderColor: isDone ? "#22C55E" : isCur ? "#4A6FA5" : "#E5E7EB",
+                backgroundColor: isDone
+                  ? "#ECFDF5"
+                  : isCur
+                    ? "#EFF6FF"
+                    : "#FFFFFF",
               }}
               className="items-center justify-center"
             >
@@ -506,7 +564,7 @@ export default function BibleCrosswordScreen() {
         }
       }
       rows.push(
-        <View key={r} style={{ flexDirection: 'row', gap: CELL_GAP }}>
+        <View key={r} style={{ flexDirection: "row", gap: CELL_GAP }}>
           {cells}
         </View>,
       );
@@ -516,7 +574,14 @@ export default function BibleCrosswordScreen() {
 
   const TILE_SIZE = Math.floor((SW - 64 - 4 * 8) / 5);
   const renderLetterBank = () => (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
+    <View
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 8,
+        justifyContent: "center",
+      }}
+    >
       {bank.map((tile) => (
         <Pressable
           key={tile.id}
@@ -528,11 +593,11 @@ export default function BibleCrosswordScreen() {
             borderRadius: 12,
             opacity: tile.used ? 0.3 : 1,
           }}
-          className={`items-center justify-center ${tile.used ? 'bg-gray-100' : 'bg-primary'}`}
+          className={`items-center justify-center ${tile.used ? "bg-gray-100" : "bg-primary"}`}
         >
           <Text
             style={{ fontSize: TILE_SIZE * 0.4 }}
-            className={`font-bold ${tile.used ? 'text-gray-300' : 'text-white'}`}
+            className={`font-bold ${tile.used ? "text-gray-300" : "text-white"}`}
           >
             {tile.letter}
           </Text>
@@ -541,7 +606,10 @@ export default function BibleCrosswordScreen() {
     </View>
   );
 
-  const boxW = Math.min(42, (SW - 48 - (word.word.length - 1) * 6) / word.word.length);
+  const boxW = Math.min(
+    42,
+    (SW - 48 - (word.word.length - 1) * 6) / word.word.length,
+  );
 
   return (
     <SafeAreaScreen>
@@ -550,7 +618,9 @@ export default function BibleCrosswordScreen() {
         rightAction={
           <View className="flex-row items-center bg-surface rounded-full px-3 py-1.5">
             <Ionicons name="star" size={14} color="#F59E0B" />
-            <Text className="text-sm font-bold text-textPrimary ml-1.5">{score}</Text>
+            <Text className="text-sm font-bold text-textPrimary ml-1.5">
+              {score}
+            </Text>
           </View>
         }
       />
@@ -575,7 +645,11 @@ export default function BibleCrosswordScreen() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 16, gap: 6, paddingBottom: 8 }}
+          contentContainerStyle={{
+            paddingHorizontal: 16,
+            gap: 6,
+            paddingBottom: 8,
+          }}
         >
           {level.words.map((w, i) => {
             const isSolved = solved.has(i);
@@ -586,23 +660,37 @@ export default function BibleCrosswordScreen() {
                 onPress={() => !isSolved && setWordIdx(i)}
                 disabled={isSolved}
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  flexDirection: "row",
+                  alignItems: "center",
                   borderRadius: 20,
                   paddingHorizontal: 12,
                   paddingVertical: 6,
                   borderWidth: 1.5,
-                  borderColor: isSolved ? '#22C55E' : isActive ? '#4A6FA5' : '#E5E7EB',
-                  backgroundColor: isSolved ? '#ECFDF5' : isActive ? '#EFF6FF' : '#FFFFFF',
+                  borderColor: isSolved
+                    ? "#22C55E"
+                    : isActive
+                      ? "#4A6FA5"
+                      : "#E5E7EB",
+                  backgroundColor: isSolved
+                    ? "#ECFDF5"
+                    : isActive
+                      ? "#EFF6FF"
+                      : "#FFFFFF",
                   gap: 4,
                 }}
               >
-                {isSolved && <Ionicons name="checkmark-circle" size={14} color="#22C55E" />}
+                {isSolved && (
+                  <Ionicons name="checkmark-circle" size={14} color="#22C55E" />
+                )}
                 <Text
                   style={{
                     fontSize: 11,
-                    fontWeight: '600',
-                    color: isSolved ? '#22C55E' : isActive ? '#4A6FA5' : '#6B7280',
+                    fontWeight: "600",
+                    color: isSolved
+                      ? "#22C55E"
+                      : isActive
+                        ? "#4A6FA5"
+                        : "#6B7280",
                   }}
                 >
                   {w.word.length} letters · {w.direction}
@@ -634,23 +722,25 @@ export default function BibleCrosswordScreen() {
           <View className="flex-row items-center mb-2" style={{ gap: 8 }}>
             <View className="bg-primary rounded-lg px-2.5 py-1">
               <Text className="text-xs font-bold text-white">
-                {word.direction === 'across' ? 'ACROSS' : 'DOWN'}
+                {word.direction === "across" ? "ACROSS" : "DOWN"}
               </Text>
             </View>
             <Text className="text-xs text-textSecondary font-medium">
               {word.word.length} letters
             </Text>
           </View>
-          <Text className="text-base text-textPrimary leading-6">{word.hint}</Text>
+          <Text className="text-base text-textPrimary leading-6">
+            {word.hint}
+          </Text>
         </Animated.View>
 
         <Animated.View
           style={[
             {
-              flexDirection: 'row',
+              flexDirection: "row",
               gap: 6,
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: "center",
+              justifyContent: "center",
               marginBottom: 20,
               paddingHorizontal: 16,
             },
@@ -658,24 +748,24 @@ export default function BibleCrosswordScreen() {
             popStyle,
           ]}
         >
-          {word.word.split('').map((_, i) => {
+          {word.word.split("").map((_, i) => {
             const isFilled = !!input[i];
             const borderColor =
-              feedback === 'correct'
-                ? '#22C55E'
-                : feedback === 'wrong'
-                  ? '#EF4444'
+              feedback === "correct"
+                ? "#22C55E"
+                : feedback === "wrong"
+                  ? "#EF4444"
                   : isFilled
-                    ? '#4A6FA5'
-                    : '#E5E7EB';
+                    ? "#4A6FA5"
+                    : "#E5E7EB";
             const bgColor =
-              feedback === 'correct'
-                ? '#ECFDF5'
-                : feedback === 'wrong'
-                  ? '#FEF2F2'
+              feedback === "correct"
+                ? "#ECFDF5"
+                : feedback === "wrong"
+                  ? "#FEF2F2"
                   : isFilled
-                    ? '#EFF6FF'
-                    : '#FFFFFF';
+                    ? "#EFF6FF"
+                    : "#FFFFFF";
             return (
               <View
                 key={i}
@@ -724,7 +814,9 @@ export default function BibleCrosswordScreen() {
             style={{ flex: 1, gap: 6 }}
           >
             <Ionicons name="close-outline" size={20} color="#6B7280" />
-            <Text className="text-sm font-semibold text-textSecondary">Clear</Text>
+            <Text className="text-sm font-semibold text-textSecondary">
+              Clear
+            </Text>
           </Pressable>
 
           <Pressable
@@ -745,7 +837,9 @@ export default function BibleCrosswordScreen() {
             style={{ opacity: input.length < word.word.length ? 0.4 : 1 }}
             className="h-14 rounded-2xl bg-primary items-center justify-center"
           >
-            <Text className="text-base font-bold text-white tracking-wide">Check Answer</Text>
+            <Text className="text-base font-bold text-white tracking-wide">
+              Check Answer
+            </Text>
           </Pressable>
         </View>
       </ScrollView>

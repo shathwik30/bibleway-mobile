@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, Text, FlatList, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import LoadingScreen from '@/components/layout/LoadingScreen';
-import EmptyState from '@/components/ui/EmptyState';
-import { useBookmarks, useDeleteBookmark } from '@/hooks/useBible';
-import { flattenPages } from '@/lib/pages';
-import { confirmAction } from '@/lib/confirm';
-import { colors } from '@/theme/colors';
+import React from "react";
+import { View, Text, FlatList, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import LoadingScreen from "@/components/layout/LoadingScreen";
+import EmptyState from "@/components/ui/EmptyState";
+import { useBookmarks, useDeleteBookmark } from "@/hooks/useBible";
+import { flattenPages } from "@/lib/pages";
+import { confirmAction } from "@/lib/confirm";
+import { colors } from "@/theme/colors";
 
 export default function BookmarksScreen() {
   const navigation = useNavigation();
@@ -31,18 +31,33 @@ export default function BookmarksScreen() {
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3">
             <Pressable
-              onPress={() => item.object_id ? navigation.navigate('SegregatedPageDetail', { pageId: item.object_id }) : undefined}
+              onPress={() =>
+                item.object_id
+                  ? navigation.navigate("SegregatedPageDetail", {
+                      pageId: item.object_id,
+                    })
+                  : undefined
+              }
               className="flex-1 mr-3"
             >
-              <Text className="text-base font-semibold text-textPrimary">{item.verse_reference}</Text>
-              <Text className="text-sm text-textSecondary mt-1">{item.bookmark_type}</Text>
+              <Text className="text-base font-semibold text-textPrimary">
+                {item.verse_reference}
+              </Text>
+              <Text className="text-sm text-textSecondary mt-1">
+                {item.bookmark_type}
+              </Text>
             </Pressable>
-            <Pressable onPress={() => confirmAction(
-              'Delete Bookmark',
-              'Are you sure?',
-              () => deleteMutation.mutate(item.id),
-              'Delete',
-            )} className="p-2">
+            <Pressable
+              onPress={() =>
+                confirmAction(
+                  "Delete Bookmark",
+                  "Are you sure?",
+                  () => deleteMutation.mutate(item.id),
+                  "Delete",
+                )
+              }
+              className="p-2"
+            >
               <Ionicons name="trash-outline" size={20} color={colors.error} />
             </Pressable>
           </View>

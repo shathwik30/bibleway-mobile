@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, FlatList, Pressable, useWindowDimensions } from 'react-native';
-import { Image } from 'expo-image';
-import { STICKERS, type Sticker } from '@/constants/stickers';
+import React from "react";
+import { View, FlatList, Pressable, useWindowDimensions } from "react-native";
+import { Image } from "expo-image";
+import { STICKERS, type Sticker } from "@/constants/stickers";
 
 interface StickerPickerProps {
   onSelect: (stickerId: number) => void;

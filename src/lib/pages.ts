@@ -1,5 +1,7 @@
-import type { InfiniteData } from '@tanstack/react-query';
+import type { InfiniteData } from "@tanstack/react-query";
 
-export function flattenPages<T>(data: InfiniteData<{ results: T[] }> | undefined): T[] {
+export function flattenPages<T>(
+  data: InfiniteData<{ results: T[] }> | undefined,
+): T[] {
   return data?.pages?.flatMap((page) => page.results) ?? [];
 }

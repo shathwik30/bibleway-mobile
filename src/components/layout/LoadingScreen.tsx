@@ -1,15 +1,18 @@
-import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import SafeAreaScreen from './SafeAreaScreen';
-import ScreenHeader from './ScreenHeader';
-import { colors } from '@/theme/colors';
+import React from "react";
+import { View, ActivityIndicator } from "react-native";
+import SafeAreaScreen from "./SafeAreaScreen";
+import ScreenHeader from "./ScreenHeader";
+import { colors } from "@/theme/colors";
 
 interface LoadingScreenProps {
   title: string;
   showBack?: boolean;
 }
 
-export default function LoadingScreen({ title, showBack = true }: LoadingScreenProps) {
+export default function LoadingScreen({
+  title,
+  showBack = true,
+}: LoadingScreenProps) {
   return (
     <SafeAreaScreen>
       <ScreenHeader title={title} showBack={showBack} />

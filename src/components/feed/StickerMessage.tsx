@@ -1,6 +1,6 @@
-import React from 'react';
-import { Image } from 'expo-image';
-import { parseStickerText, getStickerSource } from '@/constants/stickers';
+import React from "react";
+import { Image } from "expo-image";
+import { parseStickerText, getStickerSource } from "@/constants/stickers";
 
 interface StickerMessageProps {
   text: string;

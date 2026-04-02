@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 import {
   initConnection,
   endConnection,
@@ -7,12 +7,12 @@ import {
   finishTransaction,
   type Purchase,
   type Product,
-} from 'react-native-iap';
+} from "react-native-iap";
 
 export const BOOST_PRODUCT_IDS = [
-  'boost_basic',
-  'boost_standard',
-  'boost_premium',
+  "boost_basic",
+  "boost_standard",
+  "boost_premium",
 ] as const;
 
 export type BoostProductId = (typeof BOOST_PRODUCT_IDS)[number];
@@ -31,7 +31,7 @@ export async function teardownIAP(): Promise<void> {
 }
 
 export async function getStoreProducts(skus: string[]): Promise<Product[]> {
-  const products = await fetchProducts({ skus, type: 'in-app' });
+  const products = await fetchProducts({ skus, type: "in-app" });
   return (products ?? []) as Product[];
 }
 
@@ -49,20 +49,22 @@ async function executePurchase(
       apple: { sku: appleProductId },
       google: { skus: [googleProductId] },
     },
-    type: 'in-app',
+    type: "in-app",
   });
 
-  const purchase: Purchase | null = Array.isArray(result) ? result[0] ?? null : result;
+  const purchase: Purchase | null = Array.isArray(result)
+    ? (result[0] ?? null)
+    : result;
 
   if (!purchase) {
-    throw new Error('Purchase was cancelled.');
+    throw new Error("Purchase was cancelled.");
   }
 
-  const receiptData = purchase.purchaseToken ?? '';
-  const transactionId = purchase.transactionId ?? '';
+  const receiptData = purchase.purchaseToken ?? "";
+  const transactionId = purchase.transactionId ?? "";
 
   if (!receiptData || !transactionId) {
-    throw new Error('Invalid purchase data received.');
+    throw new Error("Invalid purchase data received.");
   }
 
   await finishTransaction({ purchase, isConsumable });
@@ -70,7 +72,9 @@ async function executePurchase(
   return { receiptData, transactionId };
 }
 
-export async function purchaseBoost(productId: BoostProductId): Promise<PurchaseResult> {
+export async function purchaseBoost(
+  productId: BoostProductId,
+): Promise<PurchaseResult> {
   return executePurchase(productId, productId, true);
 }
 

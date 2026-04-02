@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import { View, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
 
 interface AnalyticsCardProps {
   title: string;
@@ -9,7 +10,12 @@ interface AnalyticsCardProps {
   color?: string;
 }
 
-export default function AnalyticsCard({ title, value, icon, color = '#4A6FA5' }: AnalyticsCardProps) {
+export default function AnalyticsCard({
+  title,
+  value,
+  icon,
+  color = colors.primary.DEFAULT,
+}: AnalyticsCardProps) {
   return (
     <View className="bg-white border border-border rounded-xl p-4 flex-1 mx-1">
       <View className="flex-row items-center mb-2">

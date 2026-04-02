@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Image } from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
-import { RootStackParamList } from '@/types/navigation';
-import { useAuthStore } from '@/stores/authStore';
-import { registerForPushNotifications } from '@/lib/pushNotifications';
-import AuthNavigator from './AuthNavigator';
-import MainTabNavigator from './MainTabNavigator';
+import React, { useEffect, useRef } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { View, Image } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
+import { RootStackParamList } from "@/types/navigation";
+import { useAuthStore } from "@/stores/authStore";
+import { registerForPushNotifications } from "@/lib/pushNotifications";
+import AuthNavigator from "./AuthNavigator";
+import MainTabNavigator from "./MainTabNavigator";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,9 +36,16 @@ export default function RootNavigator() {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#FFFFFF",
+        }}
+      >
         <Image
-          source={require('../../assets/logo.png')}
+          source={require("../../assets/logo.png")}
           style={{ width: 220, height: 80 }}
           resizeMode="contain"
         />

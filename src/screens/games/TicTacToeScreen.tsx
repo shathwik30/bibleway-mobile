@@ -1,20 +1,25 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { View, Text, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import Animated, { FadeIn } from "react-native-reanimated";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
 
-type Player = 'X' | 'O';
+type Player = "X" | "O";
 type Cell = Player | null;
 type Board = Cell[];
-type GameMode = '1P' | '2P';
+type GameMode = "1P" | "2P";
 
 const WINNING_LINES = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8],
-  [0, 3, 6], [1, 4, 7], [2, 5, 8],
-  [0, 4, 8], [2, 4, 6],
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
 ];
 
 const VICTORY_VERSES = [
@@ -43,14 +48,14 @@ function getWinner(board: Board): { winner: Player; line: number[] } | null {
 
 function minimax(board: Board, isMaximizing: boolean): number {
   const result = getWinner(board);
-  if (result) return result.winner === 'O' ? 10 : -10;
+  if (result) return result.winner === "O" ? 10 : -10;
   if (board.every((c) => c !== null)) return 0;
 
   if (isMaximizing) {
     let best = -Infinity;
     for (let i = 0; i < 9; i++) {
       if (!board[i]) {
-        board[i] = 'O';
+        board[i] = "O";
         best = Math.max(best, minimax(board, false));
         board[i] = null;
       }
@@ -60,7 +65,7 @@ function minimax(board: Board, isMaximizing: boolean): number {
     let best = Infinity;
     for (let i = 0; i < 9; i++) {
       if (!board[i]) {
-        board[i] = 'X';
+        board[i] = "X";
         best = Math.min(best, minimax(board, true));
         board[i] = null;
       }
@@ -74,7 +79,7 @@ function getBestMove(board: Board): number {
   let bestMove = -1;
   for (let i = 0; i < 9; i++) {
     if (!board[i]) {
-      board[i] = 'O';
+      board[i] = "O";
       const score = minimax(board, false);
       board[i] = null;
       if (score > bestScore) {
@@ -101,23 +106,19 @@ function CellButton({
   isWinning: boolean;
   disabled: boolean;
 }) {
-  const bgClass = isWinning
-    ? 'bg-primary/20'
-    : 'bg-surface';
+  const bgClass = isWinning ? "bg-primary/20" : "bg-surface";
 
   return (
     <View className="m-1.5">
       <Pressable
-        onPress={() => { if (!value && !disabled) onPress(); }}
+        onPress={() => {
+          if (!value && !disabled) onPress();
+        }}
         disabled={disabled}
         className={`w-24 h-24 rounded-xl items-center justify-center border border-border ${bgClass}`}
       >
-        {value === 'X' && (
-          <Ionicons name="add" size={48} color="#4A6FA5" />
-        )}
-        {value === 'O' && (
-          <Ionicons name="star" size={36} color="#D4A373" />
-        )}
+        {value === "X" && <Ionicons name="add" size={48} color="#4A6FA5" />}
+        {value === "O" && <Ionicons name="star" size={36} color="#D4A373" />}
       </Pressable>
     </View>
   );
@@ -133,38 +134,38 @@ function ModeToggle({
   return (
     <View className="flex-row bg-surface rounded-xl border border-border overflow-hidden mb-5">
       <Pressable
-        onPress={() => onToggle('1P')}
+        onPress={() => onToggle("1P")}
         className={`flex-1 flex-row items-center justify-center py-2.5 px-4 ${
-          mode === '1P' ? 'bg-primary' : ''
+          mode === "1P" ? "bg-primary" : ""
         }`}
       >
         <Ionicons
           name="person-outline"
           size={16}
-          color={mode === '1P' ? '#FFFFFF' : '#6B7280'}
+          color={mode === "1P" ? "#FFFFFF" : "#6B7280"}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
-            mode === '1P' ? 'text-white' : 'text-textSecondary'
+            mode === "1P" ? "text-white" : "text-textSecondary"
           }`}
         >
           vs Computer
         </Text>
       </Pressable>
       <Pressable
-        onPress={() => onToggle('2P')}
+        onPress={() => onToggle("2P")}
         className={`flex-1 flex-row items-center justify-center py-2.5 px-4 ${
-          mode === '2P' ? 'bg-primary' : ''
+          mode === "2P" ? "bg-primary" : ""
         }`}
       >
         <Ionicons
           name="people-outline"
           size={16}
-          color={mode === '2P' ? '#FFFFFF' : '#6B7280'}
+          color={mode === "2P" ? "#FFFFFF" : "#6B7280"}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
-            mode === '2P' ? 'text-white' : 'text-textSecondary'
+            mode === "2P" ? "text-white" : "text-textSecondary"
           }`}
         >
           2 Players
@@ -175,11 +176,11 @@ function ModeToggle({
 }
 
 export default function TicTacToeScreen() {
-  const [mode, setMode] = useState<GameMode>('1P');
+  const [mode, setMode] = useState<GameMode>("1P");
   const [board, setBoard] = useState<Board>(Array(9).fill(null));
-  const [currentPlayer, setCurrentPlayer] = useState<Player>('X');
+  const [currentPlayer, setCurrentPlayer] = useState<Player>("X");
   const [scores, setScores] = useState({ X: 0, O: 0 });
-  const [verse, setVerse] = useState('');
+  const [verse, setVerse] = useState("");
   const computerThinking = useRef(false);
 
   const result = getWinner(board);
@@ -187,7 +188,7 @@ export default function TicTacToeScreen() {
   const gameOver = !!result || isDraw;
 
   useEffect(() => {
-    if (mode !== '1P' || currentPlayer !== 'O' || gameOver) return;
+    if (mode !== "1P" || currentPlayer !== "O" || gameOver) return;
     computerThinking.current = true;
 
     const timer = setTimeout(() => {
@@ -199,7 +200,7 @@ export default function TicTacToeScreen() {
       }
 
       const newBoard = [...board];
-      newBoard[move] = 'O';
+      newBoard[move] = "O";
       setBoard(newBoard);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
@@ -212,7 +213,7 @@ export default function TicTacToeScreen() {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
         setVerse(getRandomVerse(DRAW_VERSES));
       } else {
-        setCurrentPlayer('X');
+        setCurrentPlayer("X");
       }
       computerThinking.current = false;
     }, 400);
@@ -223,7 +224,7 @@ export default function TicTacToeScreen() {
   const handleCellPress = useCallback(
     (index: number) => {
       if (board[index] || gameOver) return;
-      if (mode === '1P' && currentPlayer === 'O') return;
+      if (mode === "1P" && currentPlayer === "O") return;
       if (computerThinking.current) return;
 
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -244,17 +245,17 @@ export default function TicTacToeScreen() {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
         setVerse(getRandomVerse(DRAW_VERSES));
       } else {
-        setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+        setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
       }
     },
-    [board, currentPlayer, gameOver, mode]
+    [board, currentPlayer, gameOver, mode],
   );
 
   const resetGame = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setBoard(Array(9).fill(null));
-    setCurrentPlayer('X');
-    setVerse('');
+    setCurrentPlayer("X");
+    setVerse("");
     computerThinking.current = false;
   }, []);
 
@@ -262,40 +263,39 @@ export default function TicTacToeScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setMode(newMode);
     setBoard(Array(9).fill(null));
-    setCurrentPlayer('X');
+    setCurrentPlayer("X");
     setScores({ X: 0, O: 0 });
-    setVerse('');
+    setVerse("");
     computerThinking.current = false;
   }, []);
 
   const resetScores = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setBoard(Array(9).fill(null));
-    setCurrentPlayer('X');
+    setCurrentPlayer("X");
     setScores({ X: 0, O: 0 });
-    setVerse('');
+    setVerse("");
     computerThinking.current = false;
   }, []);
 
-  const youLabel = mode === '1P' ? 'You' : 'Player 1';
-  const opponentLabel = mode === '1P' ? 'Computer' : 'Player 2';
+  const youLabel = mode === "1P" ? "You" : "Player 1";
+  const opponentLabel = mode === "1P" ? "Computer" : "Player 2";
 
   const statusText = result
-    ? mode === '1P'
-      ? result.winner === 'X'
-        ? 'You win! Praise the Lord!'
-        : 'Computer wins. Keep the faith!'
-      : `Player ${result.winner === 'X' ? '1' : '2'} wins!`
+    ? mode === "1P"
+      ? result.winner === "X"
+        ? "You win! Praise the Lord!"
+        : "Computer wins. Keep the faith!"
+      : `Player ${result.winner === "X" ? "1" : "2"} wins!`
     : isDraw
-    ? "It's a draw! Well played!"
-    : mode === '1P'
-    ? currentPlayer === 'X'
-      ? 'Your turn'
-      : 'Computer is thinking...'
-    : `Player ${currentPlayer === 'X' ? '1' : '2'}'s turn`;
+      ? "It's a draw! Well played!"
+      : mode === "1P"
+        ? currentPlayer === "X"
+          ? "Your turn"
+          : "Computer is thinking..."
+        : `Player ${currentPlayer === "X" ? "1" : "2"}'s turn`;
 
-  const isInputDisabled =
-    gameOver || (mode === '1P' && currentPlayer === 'O');
+  const isInputDisabled = gameOver || (mode === "1P" && currentPlayer === "O");
 
   return (
     <SafeAreaScreen>
@@ -303,11 +303,7 @@ export default function TicTacToeScreen() {
         title="Tic Tac Toe"
         rightAction={
           <Pressable onPress={resetScores} className="p-1">
-            <Ionicons
-              name="refresh-outline"
-              size={22}
-              color="#1A1A2E"
-            />
+            <Ionicons name="refresh-outline" size={22} color="#1A1A2E" />
           </Pressable>
         }
       />
@@ -329,9 +325,7 @@ export default function TicTacToeScreen() {
           </View>
           <View className="w-px h-12 bg-border" />
           <View className="items-center px-5 py-3">
-            <Text className="text-sm font-semibold text-textSecondary">
-              VS
-            </Text>
+            <Text className="text-sm font-semibold text-textSecondary">VS</Text>
           </View>
           <View className="w-px h-12 bg-border" />
           <View className="items-center px-6 py-3">
@@ -351,12 +345,12 @@ export default function TicTacToeScreen() {
           <Text
             className={`text-base font-semibold text-center ${
               result
-                ? result.winner === 'X'
-                  ? 'text-primary'
-                  : 'text-secondary'
+                ? result.winner === "X"
+                  ? "text-primary"
+                  : "text-secondary"
                 : isDraw
-                ? 'text-warning'
-                : 'text-textPrimary'
+                  ? "text-warning"
+                  : "text-textPrimary"
             }`}
           >
             {statusText}
@@ -388,15 +382,16 @@ export default function TicTacToeScreen() {
               onPress={resetGame}
               className="mt-6 bg-primary rounded-xl px-8 py-3.5"
             >
-              <Text className="text-white font-bold text-base">
-                Play Again
-              </Text>
+              <Text className="text-white font-bold text-base">Play Again</Text>
             </Pressable>
           </Animated.View>
         )}
 
-        {gameOver && verse !== '' && (
-          <Animated.View entering={FadeIn.delay(200).duration(400)} className="mt-5 mx-4">
+        {gameOver && verse !== "" && (
+          <Animated.View
+            entering={FadeIn.delay(200).duration(400)}
+            className="mt-5 mx-4"
+          >
             <Text className="text-xs text-center text-textSecondary italic leading-5">
               {verse}
             </Text>

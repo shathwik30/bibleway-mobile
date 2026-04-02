@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, FlatList, Modal } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
+import React, { useState } from "react";
+import { View, Text, Pressable, FlatList, Modal } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
 
 export interface SelectOption {
   label: string;
@@ -19,7 +19,7 @@ interface SelectPickerProps {
 
 export default function SelectPicker({
   label,
-  placeholder = 'Select...',
+  placeholder = "Select...",
   options,
   value,
   onChange,
@@ -31,16 +31,18 @@ export default function SelectPicker({
   return (
     <View className="mb-4">
       {label && (
-        <Text className="text-sm font-medium text-textPrimary mb-1.5">{label}</Text>
+        <Text className="text-sm font-medium text-textPrimary mb-1.5">
+          {label}
+        </Text>
       )}
       <Pressable
         onPress={() => setVisible(true)}
         className={`flex-row items-center justify-between border rounded-lg px-3 py-3 bg-white ${
-          error ? 'border-error' : 'border-border'
+          error ? "border-error" : "border-border"
         }`}
       >
         <Text
-          className={`text-base ${selectedOption ? 'text-textPrimary' : 'text-gray-400'}`}
+          className={`text-base ${selectedOption ? "text-textPrimary" : "text-gray-400"}`}
         >
           {selectedOption ? selectedOption.label : placeholder}
         </Text>
@@ -48,11 +50,21 @@ export default function SelectPicker({
       </Pressable>
       {error && <Text className="text-xs text-error mt-1">{error}</Text>}
 
-      <Modal visible={visible} transparent animationType="slide" onRequestClose={() => setVisible(false)}>
-        <Pressable onPress={() => setVisible(false)} className="flex-1 bg-black/40" />
+      <Modal
+        visible={visible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setVisible(false)}
+      >
+        <Pressable
+          onPress={() => setVisible(false)}
+          className="flex-1 bg-black/40"
+        />
         <View className="bg-white rounded-t-2xl max-h-[60%]">
           <View className="flex-row items-center justify-between px-4 py-3 border-b border-border">
-            <Text className="text-lg font-bold text-textPrimary">{label || 'Select'}</Text>
+            <Text className="text-lg font-bold text-textPrimary">
+              {label || "Select"}
+            </Text>
             <Pressable onPress={() => setVisible(false)}>
               <Ionicons name="close" size={24} color={colors.textPrimary} />
             </Pressable>
@@ -67,18 +79,24 @@ export default function SelectPicker({
                   setVisible(false);
                 }}
                 className={`flex-row items-center justify-between px-4 py-3.5 border-b border-border/50 ${
-                  value === item.value ? 'bg-primary/5' : ''
+                  value === item.value ? "bg-primary/5" : ""
                 }`}
               >
                 <Text
                   className={`text-base ${
-                    value === item.value ? 'text-primary font-semibold' : 'text-textPrimary'
+                    value === item.value
+                      ? "text-primary font-semibold"
+                      : "text-textPrimary"
                   }`}
                 >
                   {item.label}
                 </Text>
                 {value === item.value && (
-                  <Ionicons name="checkmark-circle" size={22} color={colors.primary.DEFAULT} />
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={22}
+                    color={colors.primary.DEFAULT}
+                  />
                 )}
               </Pressable>
             )}

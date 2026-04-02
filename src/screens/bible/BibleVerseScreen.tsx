@@ -1,57 +1,79 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, ScrollView, ActivityIndicator, Pressable, Modal, FlatList, TextInput } from 'react-native';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import ReadAloudControls from '@/components/bible/ReadAloudControls';
-import { useBibleChapterContent } from '@/hooks/useBible';
-import { translateText } from '@/lib/translate';
-import { SUPPORTED_LANGUAGES } from '@/constants/languages';
-import type { BibleStackParamList } from '@/types/navigation';
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  Pressable,
+  Modal,
+  FlatList,
+  TextInput,
+} from "react-native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import ReadAloudControls from "@/components/bible/ReadAloudControls";
+import { useBibleChapterContent } from "@/hooks/useBible";
+import { translateText } from "@/lib/translate";
+import { SUPPORTED_LANGUAGES } from "@/constants/languages";
+import type { BibleStackParamList } from "@/types/navigation";
 
 export default function BibleVerseScreen() {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<BibleStackParamList, 'BibleVerse'>>();
+  const route = useRoute<RouteProp<BibleStackParamList, "BibleVerse">>();
   const { bibleId, chapterId } = route.params;
-  const { data: chapter, isLoading } = useBibleChapterContent(bibleId, chapterId);
+  const { data: chapter, isLoading } = useBibleChapterContent(
+    bibleId,
+    chapterId,
+  );
 
-  const [selectedLang, setSelectedLang] = useState('en');
-  const [translatedContent, setTranslatedContent] = useState<string | null>(null);
+  const [selectedLang, setSelectedLang] = useState("en");
+  const [translatedContent, setTranslatedContent] = useState<string | null>(
+    null,
+  );
   const [isTranslating, setIsTranslating] = useState(false);
   const [showLangPicker, setShowLangPicker] = useState(false);
-  const [langSearch, setLangSearch] = useState('');
+  const [langSearch, setLangSearch] = useState("");
 
-  const content = typeof chapter?.content === 'string' ? chapter.content : '';
+  const content = typeof chapter?.content === "string" ? chapter.content : "";
   const displayContent = translatedContent ?? content;
   const title = chapter?.reference || chapterId;
 
+  const translateTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
   useEffect(() => {
-    if (selectedLang === 'en' || !content) {
+    if (selectedLang === "en" || !content) {
       setTranslatedContent(null);
       return;
     }
-
+    clearTimeout(translateTimerRef.current);
     let cancelled = false;
-    setIsTranslating(true);
 
-    translateText(content, selectedLang, 'en')
-      .then((result) => {
-        if (!cancelled) setTranslatedContent(result);
-      })
-      .catch(() => {
-        if (!cancelled) setTranslatedContent(null);
-      })
-      .finally(() => {
-        if (!cancelled) setIsTranslating(false);
-      });
+    translateTimerRef.current = setTimeout(() => {
+      setIsTranslating(true);
 
-    return () => { cancelled = true; };
+      translateText(content, selectedLang, "en")
+        .then((result) => {
+          if (!cancelled) setTranslatedContent(result);
+        })
+        .catch(() => {
+          if (!cancelled) setTranslatedContent(null);
+        })
+        .finally(() => {
+          if (!cancelled) setIsTranslating(false);
+        });
+    }, 300);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(translateTimerRef.current);
+    };
   }, [content, selectedLang]);
 
   useEffect(() => {
-    setSelectedLang('en');
+    setSelectedLang("en");
     setTranslatedContent(null);
   }, [chapterId]);
 
@@ -77,9 +99,13 @@ export default function BibleVerseScreen() {
             onPress={() => setShowLangPicker(!showLangPicker)}
             className="flex-row items-center px-3 py-1.5 bg-surface rounded-full"
           >
-            <Ionicons name="language" size={16} color={colors.primary.DEFAULT} />
+            <Ionicons
+              name="language"
+              size={16}
+              color={colors.primary.DEFAULT}
+            />
             <Text className="text-xs text-primary ml-1 font-medium">
-              {currentLang?.code.toUpperCase() || 'EN'}
+              {currentLang?.code.toUpperCase() || "EN"}
             </Text>
           </Pressable>
         }
@@ -93,11 +119,11 @@ export default function BibleVerseScreen() {
         onSelect={(code) => {
           setSelectedLang(code);
           setShowLangPicker(false);
-          setLangSearch('');
+          setLangSearch("");
         }}
         onClose={() => {
           setShowLangPicker(false);
-          setLangSearch('');
+          setLangSearch("");
         }}
       />
 
@@ -112,35 +138,57 @@ export default function BibleVerseScreen() {
 
       <ScrollView className="flex-1 px-4 pt-4">
         {chapter?.copyright ? (
-          <Text className="text-xs text-textTertiary mb-3">{chapter.copyright}</Text>
+          <Text className="text-xs text-textTertiary mb-3">
+            {chapter.copyright}
+          </Text>
         ) : null}
 
         <Text
           className="text-base text-textPrimary leading-7"
-          style={currentLang?.rtl ? { writingDirection: 'rtl', textAlign: 'right' } : undefined}
+          style={
+            currentLang?.rtl
+              ? { writingDirection: "rtl", textAlign: "right" }
+              : undefined
+          }
         >
-          {displayContent || 'No content available'}
+          {displayContent || "No content available"}
         </Text>
 
         <View className="flex-row justify-between items-center mt-6 mb-4">
           {chapter?.previous ? (
             <Pressable
-              onPress={() => navigation.setParams({ chapterId: chapter.previous!.id })}
+              onPress={() =>
+                navigation.setParams({ chapterId: chapter.previous!.id })
+              }
               className="flex-row items-center px-4 py-2 bg-surface rounded-xl"
             >
-              <Ionicons name="chevron-back" size={18} color={colors.primary.DEFAULT} />
+              <Ionicons
+                name="chevron-back"
+                size={18}
+                color={colors.primary.DEFAULT}
+              />
               <Text className="text-sm text-primary ml-1">Previous</Text>
             </Pressable>
-          ) : <View />}
+          ) : (
+            <View />
+          )}
           {chapter?.next ? (
             <Pressable
-              onPress={() => navigation.setParams({ chapterId: chapter.next!.id })}
+              onPress={() =>
+                navigation.setParams({ chapterId: chapter.next!.id })
+              }
               className="flex-row items-center px-4 py-2 bg-surface rounded-xl"
             >
               <Text className="text-sm text-primary mr-1">Next</Text>
-              <Ionicons name="chevron-forward" size={18} color={colors.primary.DEFAULT} />
+              <Ionicons
+                name="chevron-forward"
+                size={18}
+                color={colors.primary.DEFAULT}
+              />
             </Pressable>
-          ) : <View />}
+          ) : (
+            <View />
+          )}
         </View>
 
         <View className="h-24" />
@@ -184,7 +232,9 @@ function LanguagePickerModal({
       <View className="flex-1 bg-black/40 justify-end">
         <View className="bg-white rounded-t-3xl max-h-[75%]">
           <View className="flex-row items-center justify-between px-5 pt-5 pb-3">
-            <Text className="text-lg font-bold text-textPrimary">Select Language</Text>
+            <Text className="text-lg font-bold text-textPrimary">
+              Select Language
+            </Text>
             <Pressable onPress={onClose} className="p-1">
               <Ionicons name="close" size={24} color={colors.textSecondary} />
             </Pressable>
@@ -195,7 +245,7 @@ function LanguagePickerModal({
             <TextInput
               className="flex-1 py-2.5 px-2 text-sm text-textPrimary"
               placeholder="Search languages..."
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={colors.textTertiary}
               value={searchQuery}
               onChangeText={onSearchChange}
               autoFocus
@@ -210,21 +260,31 @@ function LanguagePickerModal({
               <Pressable
                 onPress={() => onSelect(item.code)}
                 className={`flex-row items-center justify-between px-5 py-3.5 border-b border-gray-100 ${
-                  selectedCode === item.code ? 'bg-primary/5' : ''
+                  selectedCode === item.code ? "bg-primary/5" : ""
                 }`}
               >
                 <View className="flex-1">
-                  <Text className="text-sm text-textPrimary font-medium">{item.name}</Text>
-                  <Text className="text-xs text-textSecondary">{item.nativeName}</Text>
+                  <Text className="text-sm text-textPrimary font-medium">
+                    {item.name}
+                  </Text>
+                  <Text className="text-xs text-textSecondary">
+                    {item.nativeName}
+                  </Text>
                 </View>
                 {selectedCode === item.code && (
-                  <Ionicons name="checkmark-circle" size={20} color={colors.primary.DEFAULT} />
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={20}
+                    color={colors.primary.DEFAULT}
+                  />
                 )}
               </Pressable>
             )}
             ListEmptyComponent={
               <View className="items-center pt-10">
-                <Text className="text-sm text-textSecondary">No languages found</Text>
+                <Text className="text-sm text-textSecondary">
+                  No languages found
+                </Text>
               </View>
             }
           />

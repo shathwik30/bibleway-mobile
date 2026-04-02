@@ -1,53 +1,57 @@
-import React from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import AnimatedPressable from '@/components/ui/AnimatedPressable';
-import { colors } from '@/theme/colors';
+import React from "react";
+import { View, Text, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import AnimatedPressable from "@/components/ui/AnimatedPressable";
+import { colors } from "@/theme/colors";
 
 interface GameItem {
   id: string;
   title: string;
   description: string;
   icon: keyof typeof Ionicons.glyphMap;
-  screen: 'TicTacToe' | 'BibleCrossword' | 'BibleQuiz' | 'FindDifference';
+  screen: "TicTacToe" | "BibleCrossword" | "BibleQuiz" | "FindDifference";
   players: string;
 }
 
 const GAMES: GameItem[] = [
   {
-    id: 'tic-tac-toe',
-    title: 'Tic Tac Toe',
-    description: 'The classic game of crosses and circles. Play solo against the computer or with a friend!',
-    icon: 'grid-outline',
-    screen: 'TicTacToe',
-    players: '1-2 Players',
+    id: "tic-tac-toe",
+    title: "Tic Tac Toe",
+    description:
+      "The classic game of crosses and circles. Play solo against the computer or with a friend!",
+    icon: "grid-outline",
+    screen: "TicTacToe",
+    players: "1-2 Players",
   },
   {
-    id: 'bible-crossword',
-    title: 'Bible Crossword',
-    description: 'Solve clues about biblical places and fill the crossword grid. Hints available!',
-    icon: 'extension-puzzle-outline',
-    screen: 'BibleCrossword',
-    players: '1 Player',
+    id: "bible-crossword",
+    title: "Bible Crossword",
+    description:
+      "Solve clues about biblical places and fill the crossword grid. Hints available!",
+    icon: "extension-puzzle-outline",
+    screen: "BibleCrossword",
+    players: "1 Player",
   },
   {
-    id: 'bible-quiz',
-    title: 'Bible Quiz',
-    description: 'Read Bible stories and answer comprehension questions. 30 levels from Creation to the Great Commission!',
-    icon: 'help-circle-outline',
-    screen: 'BibleQuiz',
-    players: '1 Player',
+    id: "bible-quiz",
+    title: "Bible Quiz",
+    description:
+      "Read Bible stories and answer comprehension questions. 30 levels from Creation to the Great Commission!",
+    icon: "help-circle-outline",
+    screen: "BibleQuiz",
+    players: "1 Player",
   },
   {
-    id: 'find-difference',
-    title: 'Find the Difference',
-    description: 'Spot the hidden differences between two Bible-themed pictures. 30 levels!',
-    icon: 'eye-outline',
-    screen: 'FindDifference',
-    players: '1 Player',
+    id: "find-difference",
+    title: "Find the Difference",
+    description:
+      "Spot the hidden differences between two Bible-themed pictures. 30 levels!",
+    icon: "eye-outline",
+    screen: "FindDifference",
+    players: "1 Player",
   },
 ];
 
@@ -70,7 +74,11 @@ const GameCard = React.memo(function GameCard({ game }: { game: GameItem }) {
           {game.description}
         </Text>
         <View className="flex-row items-center mt-1.5">
-          <Ionicons name="people-outline" size={14} color={colors.textSecondary} />
+          <Ionicons
+            name="people-outline"
+            size={14}
+            color={colors.textSecondary}
+          />
           <Text className="text-xs text-textSecondary ml-1">
             {game.players}
           </Text>

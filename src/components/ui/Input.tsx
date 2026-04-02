@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, Pressable, TextInputProps } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
+import React, { useState } from "react";
+import { View, TextInput, Text, Pressable, TextInputProps } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
 
-interface InputProps extends Omit<TextInputProps, 'className'> {
+interface InputProps extends Omit<TextInputProps, "className"> {
   label?: string;
   error?: string;
   leftIcon?: React.ReactNode;
@@ -24,11 +24,17 @@ export default function Input({
   return (
     <View className="mb-4">
       {label && (
-        <Text className="text-sm font-medium text-textPrimary mb-1.5">{label}</Text>
+        <Text className="text-sm font-medium text-textPrimary mb-1.5">
+          {label}
+        </Text>
       )}
       <View
         className={`flex-row items-center border rounded-lg px-3 py-2.5 bg-white ${
-          error ? 'border-error' : isFocused ? 'border-primary' : 'border-border'
+          error
+            ? "border-error"
+            : isFocused
+              ? "border-primary"
+              : "border-border"
         }`}
       >
         {leftIcon && <View className="mr-2">{leftIcon}</View>}
@@ -36,7 +42,7 @@ export default function Input({
           {...props}
           secureTextEntry={isSecure}
           className="flex-1 text-base text-textPrimary"
-          placeholderTextColor="#9CA3AF"
+          placeholderTextColor={colors.textTertiary}
           accessibilityLabel={label}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
@@ -44,13 +50,15 @@ export default function Input({
         {secureTextEntry && (
           <Pressable onPress={() => setIsSecure(!isSecure)} className="ml-2">
             <Ionicons
-              name={isSecure ? 'eye-off-outline' : 'eye-outline'}
+              name={isSecure ? "eye-off-outline" : "eye-outline"}
               size={20}
               color={colors.textSecondary}
             />
           </Pressable>
         )}
-        {rightIcon && !secureTextEntry && <View className="ml-2">{rightIcon}</View>}
+        {rightIcon && !secureTextEntry && (
+          <View className="ml-2">{rightIcon}</View>
+        )}
       </View>
       {error && <Text className="text-xs text-error mt-1">{error}</Text>}
     </View>

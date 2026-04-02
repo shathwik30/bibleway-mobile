@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal as RNModal, View, Pressable, Text } from 'react-native';
+import React from "react";
+import { Modal as RNModal, View, Pressable, Text } from "react-native";
 
 interface ModalProps {
   visible: boolean;
@@ -8,7 +8,12 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-export default function Modal({ visible, onClose, title, children }: ModalProps) {
+export default function Modal({
+  visible,
+  onClose,
+  title,
+  children,
+}: ModalProps) {
   return (
     <RNModal
       visible={visible}
@@ -20,9 +25,14 @@ export default function Modal({ visible, onClose, title, children }: ModalProps)
         onPress={onClose}
         className="flex-1 bg-black/50 items-center justify-center px-6"
       >
-        <Pressable onPress={() => {}} className="bg-white rounded-2xl w-full max-w-sm p-6">
+        <Pressable
+          onPress={() => {}}
+          className="bg-white rounded-2xl w-full max-w-sm p-6"
+        >
           {title && (
-            <Text className="text-lg font-bold text-textPrimary mb-4">{title}</Text>
+            <Text className="text-lg font-bold text-textPrimary mb-4">
+              {title}
+            </Text>
           )}
           {children}
         </Pressable>

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, Platform, Modal } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
-import { format } from 'date-fns';
+import React, { useState } from "react";
+import { View, Text, Pressable, Platform, Modal } from "react-native";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
+import { format } from "date-fns";
 
 interface DatePickerProps {
   label?: string;
@@ -27,42 +29,62 @@ export default function DatePicker({
   const dateValue = value ? new Date(value) : new Date(2000, 0, 1);
 
   const handleChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       setShow(false);
     }
     if (selectedDate) {
-      onChange(format(selectedDate, 'yyyy-MM-dd'));
+      onChange(format(selectedDate, "yyyy-MM-dd"));
     }
   };
 
-  const displayText = value ? format(new Date(value), 'MMMM d, yyyy') : '';
+  const displayText = value ? format(new Date(value), "MMMM d, yyyy") : "";
 
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === "ios") {
     return (
       <View className="mb-4">
         {label && (
-          <Text className="text-sm font-medium text-textPrimary mb-1.5">{label}</Text>
+          <Text className="text-sm font-medium text-textPrimary mb-1.5">
+            {label}
+          </Text>
         )}
         <Pressable
           onPress={() => setShow(true)}
           className={`flex-row items-center justify-between border rounded-lg px-3 py-3 bg-white ${
-            error ? 'border-error' : 'border-border'
+            error ? "border-error" : "border-border"
           }`}
         >
-          <Text className={`text-base ${value ? 'text-textPrimary' : 'text-gray-400'}`}>
-            {displayText || 'Select date...'}
+          <Text
+            className={`text-base ${value ? "text-textPrimary" : "text-gray-400"}`}
+          >
+            {displayText || "Select date..."}
           </Text>
-          <Ionicons name="calendar-outline" size={18} color={colors.textSecondary} />
+          <Ionicons
+            name="calendar-outline"
+            size={18}
+            color={colors.textSecondary}
+          />
         </Pressable>
         {error && <Text className="text-xs text-error mt-1">{error}</Text>}
 
-        <Modal visible={show} transparent animationType="slide" onRequestClose={() => setShow(false)}>
-          <Pressable onPress={() => setShow(false)} className="flex-1 bg-black/40" />
+        <Modal
+          visible={show}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setShow(false)}
+        >
+          <Pressable
+            onPress={() => setShow(false)}
+            className="flex-1 bg-black/40"
+          />
           <View className="bg-white rounded-t-2xl pb-8">
             <View className="flex-row items-center justify-between px-4 py-3 border-b border-border">
-              <Text className="text-lg font-bold text-textPrimary">{label || 'Select Date'}</Text>
+              <Text className="text-lg font-bold text-textPrimary">
+                {label || "Select Date"}
+              </Text>
               <Pressable onPress={() => setShow(false)}>
-                <Text className="text-base font-semibold text-primary">Done</Text>
+                <Text className="text-base font-semibold text-primary">
+                  Done
+                </Text>
               </Pressable>
             </View>
             <DateTimePicker
@@ -83,18 +105,26 @@ export default function DatePicker({
   return (
     <View className="mb-4">
       {label && (
-        <Text className="text-sm font-medium text-textPrimary mb-1.5">{label}</Text>
+        <Text className="text-sm font-medium text-textPrimary mb-1.5">
+          {label}
+        </Text>
       )}
       <Pressable
         onPress={() => setShow(true)}
         className={`flex-row items-center justify-between border rounded-lg px-3 py-3 bg-white ${
-          error ? 'border-error' : 'border-border'
+          error ? "border-error" : "border-border"
         }`}
       >
-        <Text className={`text-base ${value ? 'text-textPrimary' : 'text-gray-400'}`}>
-          {displayText || 'Select date...'}
+        <Text
+          className={`text-base ${value ? "text-textPrimary" : "text-gray-400"}`}
+        >
+          {displayText || "Select date..."}
         </Text>
-        <Ionicons name="calendar-outline" size={18} color={colors.textSecondary} />
+        <Ionicons
+          name="calendar-outline"
+          size={18}
+          color={colors.textSecondary}
+        />
       </Pressable>
       {error && <Text className="text-xs text-error mt-1">{error}</Text>}
 

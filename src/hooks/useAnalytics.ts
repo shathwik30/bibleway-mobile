@@ -1,45 +1,61 @@
-import { useEffect, useRef } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/api/client';
-import { ENDPOINTS } from '@/api/endpoints';
-import type { PaginatedResponse } from '@/types/api';
-import type { PostAnalytics, PostBoost, BoostAnalyticSnapshot } from '@/types/models';
+import { useEffect, useRef } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/api/client";
+import { ENDPOINTS } from "@/api/endpoints";
+import type { PaginatedResponse } from "@/types/api";
+import type {
+  PostAnalytics,
+  PostBoost,
+  BoostAnalyticSnapshot,
+} from "@/types/models";
 
-export function useRecordView(contentType: 'post' | 'prayer', objectId: string) {
+export function useRecordView(
+  contentType: "post" | "prayer",
+  objectId: string,
+) {
   const recorded = useRef(false);
   useEffect(() => {
     if (recorded.current) return;
     recorded.current = true;
-    api.post(ENDPOINTS.analytics.recordView, {
-      content_type_model: contentType,
-      object_id: objectId,
-      view_type: 'view',
-    }).catch(() => {});
+    api
+      .post(ENDPOINTS.analytics.recordView, {
+        content_type_model: contentType,
+        object_id: objectId,
+        view_type: "view",
+      })
+      .catch(() => {});
   }, [contentType, objectId]);
 }
 
 export function useRecordShare() {
   return useMutation({
-    mutationFn: ({ contentType, objectId }: { contentType: 'post' | 'prayer'; objectId: string }) =>
+    mutationFn: ({
+      contentType,
+      objectId,
+    }: {
+      contentType: "post" | "prayer";
+      objectId: string;
+    }) =>
       api.post(ENDPOINTS.analytics.recordView, {
         content_type_model: contentType,
         object_id: objectId,
-        view_type: 'share',
+        view_type: "share",
       }),
   });
 }
 
 export function usePostAnalytics(postId: string) {
   return useQuery({
-    queryKey: ['analytics', 'post', postId],
-    queryFn: () => api.get<PostAnalytics>(ENDPOINTS.analytics.postAnalytics(postId)),
+    queryKey: ["analytics", "post", postId],
+    queryFn: () =>
+      api.get<PostAnalytics>(ENDPOINTS.analytics.postAnalytics(postId)),
     enabled: !!postId,
   });
 }
 
 export function useUserAnalytics() {
   return useQuery({
-    queryKey: ['analytics', 'me'],
+    queryKey: ["analytics", "me"],
     queryFn: () => api.get(ENDPOINTS.analytics.userAnalytics),
   });
 }
@@ -56,23 +72,30 @@ export function useCreateBoost() {
       duration_days: number;
     }) => api.post(ENDPOINTS.analytics.boostCreate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['boosts'] });
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ["boosts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 }
 
 export function useBoosts(activeOnly = false) {
   return useQuery({
-    queryKey: ['boosts', { activeOnly }],
-    queryFn: () => api.get(ENDPOINTS.analytics.boostList, activeOnly ? { active_only: 'true' } : undefined),
+    queryKey: ["boosts", { activeOnly }],
+    queryFn: () =>
+      api.get(
+        ENDPOINTS.analytics.boostList,
+        activeOnly ? { active_only: "true" } : undefined,
+      ),
   });
 }
 
 export function useBoostAnalytics(boostId: string) {
   return useQuery({
-    queryKey: ['analytics', 'boost', boostId],
-    queryFn: () => api.get<PaginatedResponse<BoostAnalyticSnapshot>>(ENDPOINTS.analytics.boostAnalytics(boostId)),
+    queryKey: ["analytics", "boost", boostId],
+    queryFn: () =>
+      api.get<PaginatedResponse<BoostAnalyticSnapshot>>(
+        ENDPOINTS.analytics.boostAnalytics(boostId),
+      ),
     enabled: !!boostId,
   });
 }

@@ -1,17 +1,17 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ProfileStackParamList } from '@/types/navigation';
-import ErrorBoundary from '@/components/ui/ErrorBoundary';
-import MyProfileScreen from '@/screens/profile/MyProfileScreen';
-import EditProfileScreen from '@/screens/profile/EditProfileScreen';
-import SettingsScreen from '@/screens/profile/SettingsScreen';
-import LanguageSettingsScreen from '@/screens/profile/LanguageSettingsScreen';
-import BlockedUsersScreen from '@/screens/profile/BlockedUsersScreen';
-import FollowersScreen from '@/screens/profile/FollowersScreen';
-import FollowingScreen from '@/screens/profile/FollowingScreen';
-import PostAnalyticsScreen from '@/screens/profile/PostAnalyticsScreen';
-import BoostPostScreen from '@/screens/profile/BoostPostScreen';
-import BoostAnalyticsScreen from '@/screens/profile/BoostAnalyticsScreen';
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ProfileStackParamList } from "@/types/navigation";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import MyProfileScreen from "@/screens/profile/MyProfileScreen";
+import EditProfileScreen from "@/screens/profile/EditProfileScreen";
+import SettingsScreen from "@/screens/profile/SettingsScreen";
+import LanguageSettingsScreen from "@/screens/profile/LanguageSettingsScreen";
+import BlockedUsersScreen from "@/screens/profile/BlockedUsersScreen";
+import FollowersScreen from "@/screens/profile/FollowersScreen";
+import FollowingScreen from "@/screens/profile/FollowingScreen";
+import PostAnalyticsScreen from "@/screens/profile/PostAnalyticsScreen";
+import BoostPostScreen from "@/screens/profile/BoostPostScreen";
+import BoostAnalyticsScreen from "@/screens/profile/BoostAnalyticsScreen";
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
@@ -21,13 +21,16 @@ export default function ProfileStackNavigator() {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: 'slide_from_right',
+          animation: "slide_from_right",
         }}
       >
         <Stack.Screen name="MyProfile" component={MyProfileScreen} />
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="LanguageSettings" component={LanguageSettingsScreen} />
+        <Stack.Screen
+          name="LanguageSettings"
+          component={LanguageSettingsScreen}
+        />
         <Stack.Screen name="BlockedUsers" component={BlockedUsersScreen} />
         <Stack.Screen name="Followers" component={FollowersScreen} />
         <Stack.Screen name="Following" component={FollowingScreen} />

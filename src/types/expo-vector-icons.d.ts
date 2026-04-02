@@ -1,6 +1,6 @@
-declare module '@expo/vector-icons' {
-  import { ComponentType } from 'react';
-  import { TextStyle, ViewStyle } from 'react-native';
+declare module "@expo/vector-icons" {
+  import { ComponentType } from "react";
+  import { TextStyle, ViewStyle } from "react-native";
 
   interface IconProps {
     name: string;

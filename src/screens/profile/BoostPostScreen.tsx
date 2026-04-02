@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, ScrollView, Platform } from 'react-native';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/theme/colors';
-import SafeAreaScreen from '@/components/layout/SafeAreaScreen';
-import ScreenHeader from '@/components/layout/ScreenHeader';
-import Button from '@/components/ui/Button';
-import { useCreateBoost } from '@/hooks/useAnalytics';
-import { showToast } from '@/components/ui/Toast';
-import { initIAP, purchaseBoost, teardownIAP, type BoostProductId } from '@/lib/iap';
-import type { ProfileStackParamList } from '@/types/navigation';
+import React, { useState, useEffect } from "react";
+import { View, Text, Pressable, ScrollView, Platform } from "react-native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
+import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
+import ScreenHeader from "@/components/layout/ScreenHeader";
+import Button from "@/components/ui/Button";
+import { useCreateBoost } from "@/hooks/useAnalytics";
+import { showToast } from "@/components/ui/Toast";
+import {
+  initIAP,
+  purchaseBoost,
+  teardownIAP,
+  type BoostProductId,
+} from "@/lib/iap";
+import type { ProfileStackParamList } from "@/types/navigation";
 
 const BOOST_TIERS: {
   productId: BoostProductId;
@@ -18,14 +23,32 @@ const BOOST_TIERS: {
   durationDays: number;
   reach: string;
 }[] = [
-  { productId: 'boost_basic', name: 'Basic Boost', duration: '24 hours', durationDays: 1, reach: '500+' },
-  { productId: 'boost_standard', name: 'Standard Boost', duration: '3 days', durationDays: 3, reach: '2,000+' },
-  { productId: 'boost_premium', name: 'Premium Boost', duration: '7 days', durationDays: 7, reach: '5,000+' },
+  {
+    productId: "boost_basic",
+    name: "Basic Boost",
+    duration: "24 hours",
+    durationDays: 1,
+    reach: "500+",
+  },
+  {
+    productId: "boost_standard",
+    name: "Standard Boost",
+    duration: "3 days",
+    durationDays: 3,
+    reach: "2,000+",
+  },
+  {
+    productId: "boost_premium",
+    name: "Premium Boost",
+    duration: "7 days",
+    durationDays: 7,
+    reach: "5,000+",
+  },
 ];
 
 export default function BoostPostScreen() {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<ProfileStackParamList, 'BoostPost'>>();
+  const route = useRoute<RouteProp<ProfileStackParamList, "BoostPost">>();
   const { postId } = route.params;
   const [selectedTier, setSelectedTier] = useState<BoostProductId | null>(null);
   const [purchasing, setPurchasing] = useState(false);
@@ -33,7 +56,9 @@ export default function BoostPostScreen() {
 
   useEffect(() => {
     initIAP().catch(() => {});
-    return () => { teardownIAP().catch(() => {}); };
+    return () => {
+      teardownIAP().catch(() => {});
+    };
   }, []);
 
   const handleBoost = async () => {
@@ -43,35 +68,42 @@ export default function BoostPostScreen() {
 
     setPurchasing(true);
     try {
-      const { receiptData, transactionId } = await purchaseBoost(tier.productId);
+      const { receiptData, transactionId } = await purchaseBoost(
+        tier.productId,
+      );
 
       boostMutation.mutate(
         {
           post_id: postId,
           tier: tier.productId,
-          platform: Platform.OS as 'ios' | 'android',
+          platform: Platform.OS as "ios" | "android",
           receipt_data: receiptData,
           transaction_id: transactionId,
           duration_days: tier.durationDays,
         },
         {
           onSuccess: () => {
-            showToast('success', 'Boosted', 'Your post is now being boosted!');
+            showToast("success", "Boosted", "Your post is now being boosted!");
             navigation.goBack();
           },
           onError: (error) => {
-            showToast('error', 'Error', error.message || 'Failed to activate boost');
+            showToast(
+              "error",
+              "Error",
+              error.message || "Failed to activate boost",
+            );
           },
           onSettled: () => setPurchasing(false),
         },
       );
     } catch (error) {
       setPurchasing(false);
-      const message = error instanceof Error ? error.message : 'An error occurred';
-      if (message.includes('cancelled')) {
+      const message =
+        error instanceof Error ? error.message : "An error occurred";
+      if (message.includes("cancelled")) {
         return;
       }
-      showToast('error', 'Purchase Failed', message);
+      showToast("error", "Purchase Failed", message);
     }
   };
 
@@ -90,23 +122,43 @@ export default function BoostPostScreen() {
             key={tier.productId}
             onPress={() => setSelectedTier(tier.productId)}
             className={`p-4 rounded-xl mb-3 border-2 ${
-              selectedTier === tier.productId ? 'border-primary bg-primary/5' : 'border-border bg-surface'
+              selectedTier === tier.productId
+                ? "border-primary bg-primary/5"
+                : "border-border bg-surface"
             }`}
           >
             <View className="flex-row items-center justify-between">
-              <Text className="text-lg font-bold text-textPrimary">{tier.name}</Text>
+              <Text className="text-lg font-bold text-textPrimary">
+                {tier.name}
+              </Text>
               {selectedTier === tier.productId && (
-                <Ionicons name="checkmark-circle" size={24} color={colors.primary.DEFAULT} />
+                <Ionicons
+                  name="checkmark-circle"
+                  size={24}
+                  color={colors.primary.DEFAULT}
+                />
               )}
             </View>
             <View className="flex-row mt-2 gap-4">
               <View className="flex-row items-center">
-                <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
-                <Text className="text-sm text-textSecondary ml-1">{tier.duration}</Text>
+                <Ionicons
+                  name="time-outline"
+                  size={16}
+                  color={colors.textSecondary}
+                />
+                <Text className="text-sm text-textSecondary ml-1">
+                  {tier.duration}
+                </Text>
               </View>
               <View className="flex-row items-center">
-                <Ionicons name="people-outline" size={16} color={colors.textSecondary} />
-                <Text className="text-sm text-textSecondary ml-1">{tier.reach} reach</Text>
+                <Ionicons
+                  name="people-outline"
+                  size={16}
+                  color={colors.textSecondary}
+                />
+                <Text className="text-sm text-textSecondary ml-1">
+                  {tier.reach} reach
+                </Text>
               </View>
             </View>
           </Pressable>

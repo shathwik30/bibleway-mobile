@@ -1,4 +1,4 @@
-import * as LocalAuthentication from 'expo-local-authentication';
+import * as LocalAuthentication from "expo-local-authentication";
 
 export async function isBiometricAvailable(): Promise<boolean> {
   const compatible = await LocalAuthentication.hasHardwareAsync();
@@ -9,8 +9,8 @@ export async function isBiometricAvailable(): Promise<boolean> {
 
 export async function authenticateWithBiometrics(): Promise<boolean> {
   const result = await LocalAuthentication.authenticateAsync({
-    promptMessage: 'Authenticate to access BibleWay',
-    cancelLabel: 'Cancel',
+    promptMessage: "Authenticate to access BibleWay",
+    cancelLabel: "Cancel",
     disableDeviceFallback: false,
   });
   return result.success;
