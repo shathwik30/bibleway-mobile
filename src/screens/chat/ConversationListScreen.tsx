@@ -22,15 +22,17 @@ import type { Conversation } from "@/types/models";
 
 type Nav = NativeStackNavigationProp<ChatStackParamList>;
 
-export default function ConversationListScreen() {
+export default function ConversationListScreen(): React.JSX.Element {
   const navigation = useNavigation<Nav>();
   const conversationsQuery = useConversations();
   useChatUnreadCount();
 
-  const allConversations = flattenPages(conversationsQuery.data);
+  const allConversations: Conversation[] = flattenPages(
+    conversationsQuery.data,
+  );
 
   const handlePress = useCallback(
-    (conversation: Conversation) => {
+    (conversation: Conversation): void => {
       navigation.navigate("ChatRoom", {
         conversationId: conversation.id,
         otherUser: conversation.other_user,
@@ -40,16 +42,13 @@ export default function ConversationListScreen() {
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: Conversation }) => (
-      <ConversationItem
-        conversation={item}
-        onPress={() => handlePress(item)}
-      />
+    ({ item }: { item: Conversation }): React.JSX.Element => (
+      <ConversationItem conversation={item} onPress={() => handlePress(item)} />
     ),
     [handlePress],
   );
 
-  const handleEndReached = useCallback(() => {
+  const handleEndReached = useCallback((): void => {
     if (
       conversationsQuery.hasNextPage &&
       !conversationsQuery.isFetchingNextPage
@@ -91,7 +90,7 @@ export default function ConversationListScreen() {
           </Pressable>
         }
       />
-      <FlatList
+      <FlatList<Conversation>
         data={allConversations}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
@@ -133,4 +132,4 @@ export default function ConversationListScreen() {
   );
 }
 
-const keyExtractor = (item: Conversation) => item.id;
+const keyExtractor = (item: Conversation): string => item.id;

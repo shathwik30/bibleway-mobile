@@ -3,7 +3,6 @@ import { View, Text, Pressable } from "react-native";
 import { formatDistanceToNowStrict } from "date-fns";
 import Avatar from "@/components/ui/Avatar";
 import { isSticker } from "@/constants/stickers";
-import { colors } from "@/theme/colors";
 import type { Conversation } from "@/types/models";
 
 interface ConversationItemProps {
@@ -14,7 +13,7 @@ interface ConversationItemProps {
 export default React.memo(function ConversationItem({
   conversation,
   onPress,
-}: ConversationItemProps) {
+}: ConversationItemProps): React.JSX.Element {
   const {
     other_user,
     last_message_text,
@@ -23,19 +22,21 @@ export default React.memo(function ConversationItem({
     unread_count,
   } = conversation;
 
-  const previewText = () => {
+  const previewText = (): string => {
     if (!last_message_text) return "";
     if (isSticker(last_message_text)) {
       return last_message_is_mine ? "You sent a sticker" : "Sent a sticker";
     }
-    const prefix = last_message_is_mine ? "You: " : "";
-    const text = last_message_text;
+    const prefix: string = last_message_is_mine ? "You: " : "";
     return (
-      prefix + (text.length > 50 ? text.slice(0, 50) + "..." : text)
+      prefix +
+      (last_message_text.length > 50
+        ? last_message_text.slice(0, 50) + "..."
+        : last_message_text)
     );
   };
 
-  const timeAgo = last_message_at
+  const timeAgo: string = last_message_at
     ? formatDistanceToNowStrict(new Date(last_message_at), {
         addSuffix: false,
       })

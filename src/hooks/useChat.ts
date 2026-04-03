@@ -3,6 +3,7 @@ import {
   useQuery,
   useMutation,
   useQueryClient,
+  type InfiniteData,
 } from "@tanstack/react-query";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
@@ -13,9 +14,15 @@ import type { PaginatedResponse, CursorPaginatedResponse } from "@/types/api";
 import type { Conversation, ChatMessage } from "@/types/models";
 
 export function useConversations() {
-  return useInfiniteQuery({
+  return useInfiniteQuery<
+    PaginatedResponse<Conversation>,
+    Error,
+    InfiniteData<PaginatedResponse<Conversation>>,
+    string[],
+    number
+  >({
     queryKey: ["conversations"],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam }) =>
       api.get<PaginatedResponse<Conversation>>(ENDPOINTS.chat.conversations, {
         page: pageParam,
       }),
@@ -27,14 +34,20 @@ export function useConversations() {
 }
 
 export function useMessages(conversationId: string) {
-  return useInfiniteQuery({
+  return useInfiniteQuery<
+    CursorPaginatedResponse<ChatMessage>,
+    Error,
+    InfiniteData<CursorPaginatedResponse<ChatMessage>>,
+    string[],
+    string | undefined
+  >({
     queryKey: ["chatMessages", conversationId],
     queryFn: ({ pageParam }) =>
       api.get<CursorPaginatedResponse<ChatMessage>>(
         ENDPOINTS.chat.messages(conversationId),
         pageParam ? { cursor: pageParam } : {},
       ),
-    initialPageParam: undefined as string | undefined,
+    initialPageParam: undefined,
     getNextPageParam: cursorNextPage,
     refetchInterval: 3000,
     ...CACHE_DURATIONS.chatMessages,
@@ -44,7 +57,7 @@ export function useMessages(conversationId: string) {
 export function useCreateConversation() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<Conversation, Error, string>({
     mutationFn: (userId: string) =>
       api.post<Conversation>(ENDPOINTS.chat.conversations, {
         user_id: userId,
@@ -58,7 +71,7 @@ export function useCreateConversation() {
 export function useSendMessage(conversationId: string) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<ChatMessage, Error, string>({
     mutationFn: (text: string) =>
       api.post<ChatMessage>(ENDPOINTS.chat.messages(conversationId), { text }),
     onSuccess: () => {
@@ -73,13 +86,13 @@ export function useSendMessage(conversationId: string) {
 export function useChatUnreadCount() {
   const setUnreadCount = useChatStore((s) => s.setUnreadCount);
 
-  return useQuery({
+  return useQuery<number, Error>({
     queryKey: ["chatUnreadCount"],
-    queryFn: async () => {
+    queryFn: async (): Promise<number> => {
       const res = await api.get<{ unread_count: number }>(
         ENDPOINTS.chat.unreadCount,
       );
-      const count = res.unread_count ?? 0;
+      const count: number = res.unread_count ?? 0;
       setUnreadCount(count);
       return count;
     },
@@ -91,9 +104,8 @@ export function useChatUnreadCount() {
 export function useMarkMessagesRead(conversationId: string) {
   const queryClient = useQueryClient();
 
-  const markRead = useMutation({
-    mutationFn: () =>
-      api.post(ENDPOINTS.chat.markRead(conversationId), {}),
+  return useMutation<unknown, Error, void>({
+    mutationFn: () => api.post(ENDPOINTS.chat.markRead(conversationId), {}),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["chatMessages", conversationId],
@@ -102,6 +114,4 @@ export function useMarkMessagesRead(conversationId: string) {
       queryClient.invalidateQueries({ queryKey: ["conversations"] });
     },
   });
-
-  return markRead;
 }

@@ -12,11 +12,14 @@ interface MessageBubbleProps {
   isMine: boolean;
 }
 
-function MessageBubble({ message, isMine }: MessageBubbleProps) {
-  const timestamp = format(new Date(message.created_at), "h:mm a");
-  const stickerContent = isSticker(message.text);
+function MessageBubble({
+  message,
+  isMine,
+}: MessageBubbleProps): React.JSX.Element {
+  const timestamp: string = format(new Date(message.created_at), "h:mm a");
+  const isStickerMsg: boolean = isSticker(message.text);
 
-  if (stickerContent) {
+  if (isStickerMsg) {
     return (
       <View
         className={`my-1 px-4 ${isMine ? "items-end" : "items-start"}`}
@@ -31,9 +34,7 @@ function MessageBubble({ message, isMine }: MessageBubbleProps) {
               name={message.is_read ? "checkmark-done" : "checkmark"}
               size={14}
               color={
-                message.is_read
-                  ? colors.primary.DEFAULT
-                  : colors.textTertiary
+                message.is_read ? colors.primary.DEFAULT : colors.textTertiary
               }
               style={{ marginLeft: 4 }}
             />

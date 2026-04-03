@@ -17,7 +17,10 @@ export default function ChatStackNavigator() {
           animation: "slide_from_right",
         }}
       >
-        <Stack.Screen name="ConversationList" component={ConversationListScreen} />
+        <Stack.Screen
+          name="ConversationList"
+          component={ConversationListScreen}
+        />
         <Stack.Screen name="ChatRoom" component={ChatRoomScreen} />
         <Stack.Screen name="NewChat" component={NewChatScreen} />
       </Stack.Navigator>

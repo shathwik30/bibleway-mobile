@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import { View, FlatList, ActivityIndicator } from "react-native";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import { useRoute, type RouteProp } from "@react-navigation/native";
 import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
@@ -20,11 +20,11 @@ import { flattenPages } from "@/lib/pages";
 import type { ChatStackParamList } from "@/types/navigation";
 import type { ChatMessage } from "@/types/models";
 
-export default function ChatRoomScreen() {
+export default function ChatRoomScreen(): React.JSX.Element {
   const route = useRoute<RouteProp<ChatStackParamList, "ChatRoom">>();
   const { conversationId, otherUser } = route.params;
-  const currentUserId = useAuthStore((s) => s.user?.id);
-  const flatListRef = useRef<FlatList>(null);
+  const currentUserId: string | undefined = useAuthStore((s) => s.user?.id);
+  const flatListRef = useRef<FlatList<ChatMessage>>(null);
 
   const messagesQuery = useMessages(conversationId);
   const sendMessageMutation = useSendMessage(conversationId);
@@ -34,12 +34,12 @@ export default function ChatRoomScreen() {
     markReadMutation.mutate();
   }, [conversationId]);
 
-  const allMessages = flattenPages(messagesQuery.data);
+  const allMessages: ChatMessage[] = flattenPages(messagesQuery.data);
 
   const handleSend = useCallback(
-    (text: string) => {
+    (text: string): void => {
       sendMessageMutation.mutate(text, {
-        onError: (error) => {
+        onError: (error: Error) => {
           showToast(
             "error",
             "Error",
@@ -52,16 +52,13 @@ export default function ChatRoomScreen() {
   );
 
   const renderMessage = useCallback(
-    ({ item }: { item: ChatMessage }) => (
-      <MessageBubble
-        message={item}
-        isMine={item.sender.id === currentUserId}
-      />
+    ({ item }: { item: ChatMessage }): React.JSX.Element => (
+      <MessageBubble message={item} isMine={item.sender.id === currentUserId} />
     ),
     [currentUserId],
   );
 
-  const handleEndReached = useCallback(() => {
+  const handleEndReached = useCallback((): void => {
     if (messagesQuery.hasNextPage && !messagesQuery.isFetchingNextPage) {
       messagesQuery.fetchNextPage();
     }
@@ -95,7 +92,7 @@ export default function ChatRoomScreen() {
       <ScreenHeader title={otherUser.full_name} />
       <KeyboardAvoidingWrapper>
         <View className="flex-1">
-          <FlatList
+          <FlatList<ChatMessage>
             ref={flatListRef}
             data={allMessages}
             renderItem={renderMessage}
@@ -133,4 +130,4 @@ export default function ChatRoomScreen() {
   );
 }
 
-const keyExtractor = (item: ChatMessage) => item.id;
+const keyExtractor = (item: ChatMessage): string => item.id;

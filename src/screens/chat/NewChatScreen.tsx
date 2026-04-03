@@ -22,14 +22,14 @@ import type { Author } from "@/types/models";
 
 type Nav = NativeStackNavigationProp<ChatStackParamList>;
 
-export default function NewChatScreen() {
+export default function NewChatScreen(): React.JSX.Element {
   const navigation = useNavigation<Nav>();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
   const searchQuery = useSearchUsers(query);
   const createConversation = useCreateConversation();
 
   const handleSelect = useCallback(
-    (user: Author) => {
+    (user: Author): void => {
       createConversation.mutate(user.id, {
         onSuccess: (conversation) => {
           navigation.replace("ChatRoom", {
@@ -42,7 +42,7 @@ export default function NewChatScreen() {
             },
           });
         },
-        onError: (error) => {
+        onError: (error: Error) => {
           showToast(
             "error",
             "Error",
@@ -55,7 +55,7 @@ export default function NewChatScreen() {
   );
 
   const renderUser = useCallback(
-    ({ item }: { item: Author }) => (
+    ({ item }: { item: Author }): React.JSX.Element => (
       <Pressable
         onPress={() => handleSelect(item)}
         disabled={createConversation.isPending}
@@ -72,7 +72,7 @@ export default function NewChatScreen() {
     [handleSelect, createConversation.isPending],
   );
 
-  const results = (searchQuery.data as Author[]) ?? [];
+  const results: Author[] = (searchQuery.data ?? []) as Author[];
 
   return (
     <SafeAreaScreen>
@@ -90,7 +90,7 @@ export default function NewChatScreen() {
           <ActivityIndicator size="small" color={colors.primary.DEFAULT} />
         </View>
       )}
-      <FlatList
+      <FlatList<Author>
         data={results}
         renderItem={renderUser}
         keyExtractor={keyExtractor}
@@ -103,7 +103,10 @@ export default function NewChatScreen() {
               message="Type at least 2 characters to find people"
             />
           ) : query.length < 2 ? (
-            <EmptyState title="Keep typing..." message="At least 2 characters needed" />
+            <EmptyState
+              title="Keep typing..."
+              message="At least 2 characters needed"
+            />
           ) : !searchQuery.isLoading ? (
             <EmptyState
               title="No users found"
@@ -117,4 +120,4 @@ export default function NewChatScreen() {
   );
 }
 
-const keyExtractor = (item: Author) => item.id;
+const keyExtractor = (item: Author): string => item.id;

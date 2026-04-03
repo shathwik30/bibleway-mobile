@@ -64,9 +64,7 @@ export default React.memo(function ChatInput({
           <Ionicons
             name={showStickers ? "close-circle-outline" : "happy-outline"}
             size={24}
-            color={
-              showStickers ? colors.primary.DEFAULT : colors.textSecondary
-            }
+            color={showStickers ? colors.primary.DEFAULT : colors.textSecondary}
           />
         </Pressable>
         <TextInput
