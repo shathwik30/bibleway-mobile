@@ -194,7 +194,7 @@ export default function BibleVerseScreen() {
         <View className="h-24" />
       </ScrollView>
 
-      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-border px-4 py-3">
+      <View className="absolute bottom-0 left-0 right-0 bg-surfaceContainerLowest px-4 py-3">
         <ReadAloudControls text={displayContent} language={selectedLang} />
       </View>
     </SafeAreaScreen>
@@ -230,7 +230,7 @@ function LanguagePickerModal({
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View className="flex-1 bg-black/40 justify-end">
-        <View className="bg-white rounded-t-3xl max-h-[75%]">
+        <View className="bg-surfaceContainerLowest rounded-t-3xl max-h-[75%]">
           <View className="flex-row items-center justify-between px-5 pt-5 pb-3">
             <Text className="text-lg font-bold text-textPrimary">
               Select Language
@@ -240,8 +240,8 @@ function LanguagePickerModal({
             </Pressable>
           </View>
 
-          <View className="mx-5 mb-3 bg-gray-100 rounded-xl flex-row items-center px-3">
-            <Ionicons name="search" size={18} color="#9CA3AF" />
+          <View className="mx-5 mb-3 bg-surfaceContainerHigh rounded-xl flex-row items-center px-3">
+            <Ionicons name="search" size={18} color="#897173" />
             <TextInput
               className="flex-1 py-2.5 px-2 text-sm text-textPrimary"
               placeholder="Search languages..."
@@ -259,8 +259,10 @@ function LanguagePickerModal({
             renderItem={({ item }) => (
               <Pressable
                 onPress={() => onSelect(item.code)}
-                className={`flex-row items-center justify-between px-5 py-3.5 border-b border-gray-100 ${
-                  selectedCode === item.code ? "bg-primary/5" : ""
+                className={`flex-row items-center justify-between px-5 py-3.5 ${
+                  selectedCode === item.code
+                    ? "bg-primary/5"
+                    : "bg-surfaceContainerLowest"
                 }`}
               >
                 <View className="flex-1">

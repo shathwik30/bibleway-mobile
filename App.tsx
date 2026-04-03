@@ -4,6 +4,18 @@ import { StatusBar } from "expo-status-bar";
 import { View, Image } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import {
+  useFonts,
+  PlayfairDisplay_400Regular,
+  PlayfairDisplay_400Regular_Italic,
+  PlayfairDisplay_700Bold,
+} from "@expo-google-fonts/playfair-display";
+import {
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+} from "@expo-google-fonts/inter";
 import AppProviders from "@/providers/AppProviders";
 import RootNavigator from "@/navigation/RootNavigator";
 import { initStorage } from "@/lib/storage";
@@ -29,18 +41,28 @@ function AppContent() {
 export default function App() {
   const [storageReady, setStorageReady] = useState(false);
 
+  const [fontsLoaded] = useFonts({
+    PlayfairDisplay_400Regular,
+    PlayfairDisplay_400Regular_Italic,
+    PlayfairDisplay_700Bold,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+  });
+
   useEffect(() => {
     initStorage().then(() => setStorageReady(true));
   }, []);
 
-  if (!storageReady) {
+  if (!storageReady || !fontsLoaded) {
     return (
       <View
         style={{
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#fcf9f8",
         }}
       >
         <Image

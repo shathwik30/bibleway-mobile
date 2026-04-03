@@ -71,13 +71,14 @@ export default function UserProfileScreen() {
           />
         </View>
       )}
-      <View className="flex-row border-b border-border">
+      <View className="flex-row bg-surfaceContainerLow">
         <Pressable
           onPress={() => setActiveTab("posts")}
           className={`flex-1 items-center py-3 ${activeTab === "posts" ? "border-b-2 border-primary" : ""}`}
         >
           <Text
-            className={`text-sm font-semibold ${activeTab === "posts" ? "text-primary" : "text-textSecondary"}`}
+            className={`text-sm ${activeTab === "posts" ? "text-primary" : "text-textSecondary"}`}
+            style={{ fontFamily: "Inter_700Bold" }}
           >
             Posts
           </Text>
@@ -87,7 +88,8 @@ export default function UserProfileScreen() {
           className={`flex-1 items-center py-3 ${activeTab === "prayers" ? "border-b-2 border-primary" : ""}`}
         >
           <Text
-            className={`text-sm font-semibold ${activeTab === "prayers" ? "text-primary" : "text-textSecondary"}`}
+            className={`text-sm ${activeTab === "prayers" ? "text-primary" : "text-textSecondary"}`}
+            style={{ fontFamily: "Inter_700Bold" }}
           >
             Prayers
           </Text>

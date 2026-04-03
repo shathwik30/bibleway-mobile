@@ -534,8 +534,8 @@ export default function CountryPicker({
       )}
       <Pressable
         onPress={() => setVisible(true)}
-        className={`flex-row items-center justify-between border rounded-lg px-3 py-3 bg-white ${
-          error ? "border-error" : "border-border"
+        className={`flex-row items-center justify-between rounded-xl px-3 py-3 ${
+          error ? "bg-error-container" : "bg-surfaceContainerHigh"
         }`}
       >
         <Text
@@ -559,8 +559,8 @@ export default function CountryPicker({
           onPress={() => setVisible(false)}
           className="flex-1 bg-black/40"
         />
-        <View className="bg-white rounded-t-2xl" style={{ maxHeight: "70%" }}>
-          <View className="px-4 py-3 border-b border-border">
+        <View className="bg-surfaceContainerLowest rounded-t-2xl" style={{ maxHeight: "70%" }}>
+          <View className="px-4 py-3 bg-surfaceContainerLow">
             <View className="flex-row items-center justify-between mb-3">
               <Text className="text-lg font-bold text-textPrimary">
                 Select Country
@@ -569,7 +569,7 @@ export default function CountryPicker({
                 <Ionicons name="close" size={24} color={colors.textPrimary} />
               </Pressable>
             </View>
-            <View className="flex-row items-center bg-surface border border-border rounded-lg px-3 py-2">
+            <View className="flex-row items-center bg-surfaceContainerHigh rounded-xl px-3 py-2">
               <Ionicons
                 name="search-outline"
                 size={18}
@@ -596,7 +596,7 @@ export default function CountryPicker({
                   setSearch("");
                   setVisible(false);
                 }}
-                className={`flex-row items-center justify-between px-4 py-3 border-b border-border/50 ${
+                className={`flex-row items-center justify-between px-4 py-3 ${
                   value === item.name ? "bg-primary/5" : ""
                 }`}
               >

@@ -162,8 +162,11 @@ export default function CommentsScreen() {
           />
         </View>
         {replyingToCommentId && (
-          <View className="flex-row items-center px-4 py-2 bg-surface border-t border-border">
-            <Text className="flex-1 text-sm text-textSecondary">
+          <View className="flex-row items-center px-4 py-2 bg-surfaceContainerLow">
+            <Text
+              className="flex-1 text-sm text-textSecondary"
+              style={{ fontFamily: "Inter_400Regular" }}
+            >
               Replying to comment
             </Text>
             <Pressable

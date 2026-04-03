@@ -10,9 +10,14 @@ export const fontSize = {
 } as const;
 
 export const fontFamily = {
-  regular: "System",
-  medium: "System",
-  bold: "System",
+  regular: "Inter_400Regular",
+  medium: "Inter_500Medium",
+  semibold: "Inter_600SemiBold",
+  bold: "Inter_700Bold",
+  headline: "PlayfairDisplay_700Bold",
+  headlineRegular: "PlayfairDisplay_400Regular",
+  headlineItalic: "PlayfairDisplay_400Regular_Italic",
+  system: "System",
 } as const;
 
 export const typography = {

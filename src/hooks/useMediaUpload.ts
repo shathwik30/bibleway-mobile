@@ -66,10 +66,11 @@ export function useMediaUpload() {
       for (let i = 0; i < media.length; i++) {
         const item = media[i];
         const ext = item.type === "video" ? "mp4" : "jpg";
+        const uniqueId = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
         formData.append("files", {
           uri: item.uri,
           type: item.type === "video" ? "video/mp4" : "image/jpeg",
-          name: `media_${i}.${ext}`,
+          name: `media_${uniqueId}_${i}.${ext}`,
         } as unknown as Blob);
       }
 

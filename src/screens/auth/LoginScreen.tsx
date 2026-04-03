@@ -105,7 +105,10 @@ export default function LoginScreen() {
               style={{ width: 220, height: 80 }}
               resizeMode="contain"
             />
-            <Text className="text-sm text-textSecondary mt-1">
+            <Text
+              className="text-sm text-textSecondary mt-1"
+              style={{ fontFamily: "PlayfairDisplay_400Regular_Italic" }}
+            >
               Faith-centered community
             </Text>
           </View>
@@ -145,7 +148,10 @@ export default function LoginScreen() {
             onPress={() => navigation.navigate("ForgotPassword")}
             className="self-end mb-6"
           >
-            <Text className="text-sm text-primary font-medium">
+            <Text
+              className="text-sm text-primary font-medium"
+              style={{ fontFamily: "Inter_500Medium" }}
+            >
               {t("auth.forgotPassword")}
             </Text>
           </Pressable>
@@ -160,27 +166,41 @@ export default function LoginScreen() {
 
           <View className="flex-row items-center my-6">
             <View className="flex-1 h-px bg-border" />
-            <Text className="text-sm text-textSecondary mx-4">or</Text>
+            <Text
+              className="text-sm text-textSecondary mx-4"
+              style={{ fontFamily: "Inter_400Regular" }}
+            >
+              or
+            </Text>
             <View className="flex-1 h-px bg-border" />
           </View>
 
           <Pressable
             onPress={handleGoogleSignIn}
             disabled={googleAuthMutation.isPending}
-            className="flex-row items-center justify-center border border-border rounded-xl py-3.5 bg-white"
+            className="flex-row items-center justify-center rounded-xl py-3.5 bg-surfaceContainerHigh"
           >
             <GoogleLogo size={20} />
-            <Text className="text-base font-medium text-textPrimary ml-3">
+            <Text
+              className="text-base font-medium text-textPrimary ml-3"
+              style={{ fontFamily: "Inter_500Medium" }}
+            >
               Continue with Google
             </Text>
           </Pressable>
 
           <View className="flex-row justify-center mt-6">
-            <Text className="text-sm text-textSecondary">
+            <Text
+              className="text-sm text-textSecondary"
+              style={{ fontFamily: "Inter_400Regular" }}
+            >
               {t("auth.noAccount")}{" "}
             </Text>
             <Pressable onPress={() => navigation.navigate("Register")}>
-              <Text className="text-sm text-primary font-semibold">
+              <Text
+                className="text-sm text-primary font-semibold"
+                style={{ fontFamily: "Inter_500Medium" }}
+              >
                 {t("auth.signUpLink")}
               </Text>
             </Pressable>

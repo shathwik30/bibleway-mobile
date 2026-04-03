@@ -14,7 +14,7 @@ interface IconButtonProps {
 export default function IconButton({
   name,
   size = 24,
-  color = "#1A1A2E",
+  color = "#1c1b1b",
   onPress,
   disabled = false,
 }: IconButtonProps) {

@@ -4,9 +4,10 @@ import Button from "../Button";
 
 jest.mock("@/theme/colors", () => ({
   colors: {
-    primary: { DEFAULT: "#4A6FA5", light: "#7B9FD4", dark: "#2D4A7A" },
-    secondary: "#D4A373",
-    error: "#EF4444",
+    primary: { DEFAULT: "#59021a", light: "#ffb2b9", dark: "#781c2e", container: "#781c2e" },
+    onPrimary: "#ffffff",
+    secondary: { DEFAULT: "#4e5f7c" },
+    error: "#ba1a1a",
   },
 }));
 

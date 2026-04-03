@@ -40,7 +40,7 @@ export default function HomeFeedScreen() {
 
   return (
     <SafeAreaScreen>
-      <View className="flex-row items-center justify-between px-4 py-3">
+      <View className="flex-row items-center justify-between px-4 py-3 bg-surfaceContainerLowest">
         <Image
           source={require("../../../assets/logo.png")}
           style={{ width: 120, height: 36 }}
@@ -52,7 +52,7 @@ export default function HomeFeedScreen() {
             className="relative p-2"
             accessibilityLabel="Notifications"
           >
-            <Ionicons name="notifications-outline" size={24} color="#1A1A2E" />
+            <Ionicons name="notifications-outline" size={24} color="#1c1b1b" />
             {unreadCount > 0 && (
               <View className="absolute top-1 right-1">
                 <Badge count={unreadCount} />

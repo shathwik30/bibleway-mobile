@@ -12,8 +12,8 @@ jest.mock("@expo/vector-icons", () => {
 
 jest.mock("@/theme/colors", () => ({
   colors: {
-    primary: { DEFAULT: "#4A6FA5", light: "#7B9FD4", dark: "#2D4A7A" },
-    textTertiary: "#9CA3AF",
+    primary: { DEFAULT: "#59021a", light: "#ffb2b9", dark: "#781c2e" },
+    textTertiary: "#897173",
   },
 }));
 

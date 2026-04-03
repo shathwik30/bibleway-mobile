@@ -114,7 +114,7 @@ export default function ProductDetailScreen() {
           />
         )}
         <View className="px-4 pt-4">
-          <Text className="text-xl font-bold text-textPrimary">
+          <Text className="text-xl text-textPrimary" style={{ fontFamily: "PlayfairDisplay_700Bold" }}>
             {product.title}
           </Text>
           <Text className="text-lg font-semibold text-primary mt-2">
@@ -127,7 +127,7 @@ export default function ProductDetailScreen() {
         <View className="h-24" />
       </ScrollView>
 
-      <View className="absolute bottom-0 left-0 right-0 bg-background border-t border-border px-4 py-4">
+      <View className="absolute bottom-0 left-0 right-0 bg-surface px-4 py-4">
         <PurchaseButton
           isFree={product.is_free}
           isPurchased={!!product.download_url}

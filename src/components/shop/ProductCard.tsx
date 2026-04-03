@@ -3,6 +3,7 @@ import { View, Text, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
 import AnimatedPressable from "../ui/AnimatedPressable";
+import { useSignedUrl } from "@/hooks/useSignedUrl";
 import type { ProductListItem } from "@/types/models";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -14,6 +15,7 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
   const navigation = useNavigation();
+  const signedCover = useSignedUrl(product.cover_image);
 
   return (
     <AnimatedPressable
@@ -24,7 +26,7 @@ function ProductCard({ product }: ProductCardProps) {
       className="mb-4"
     >
       <Image
-        source={{ uri: product.cover_image }}
+        source={signedCover ? { uri: signedCover } : undefined}
         style={{
           width: CARD_WIDTH,
           height: CARD_WIDTH * 1.2,

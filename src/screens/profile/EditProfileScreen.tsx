@@ -192,7 +192,7 @@ export default function EditProfileScreen() {
             ) : (
               <Avatar source={null} name={profile?.full_name || ""} size={96} />
             )}
-            <View className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full items-center justify-center border-2 border-white">
+            <View className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full items-center justify-center border-2 border-surfaceContainerLowest">
               <Ionicons name="camera" size={16} color="#FFFFFF" />
             </View>
           </Pressable>
@@ -225,7 +225,7 @@ export default function EditProfileScreen() {
           </Text>
           <Pressable
             onPress={() => setShowDatePicker(true)}
-            className="flex-row items-center justify-between bg-surface border border-border rounded-xl px-4 py-3"
+            className="flex-row items-center justify-between bg-surfaceContainerLowest rounded-xl px-4 py-3"
           >
             <Text
               className={`text-base ${dateOfBirth ? "text-textPrimary" : "text-textTertiary"}`}
@@ -245,7 +245,7 @@ export default function EditProfileScreen() {
                 </Text>
               </View>
             ) : (
-              <Ionicons name="calendar-outline" size={20} color="#9CA3AF" />
+              <Ionicons name="calendar-outline" size={20} color="#897173" />
             )}
           </Pressable>
           {showDatePicker && (

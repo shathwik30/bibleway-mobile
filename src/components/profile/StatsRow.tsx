@@ -22,25 +22,25 @@ export default function StatsRow({
   return (
     <View className="flex-row mt-4 w-full justify-around">
       <View className="items-center">
-        <Text className="text-lg font-bold text-textPrimary">{posts}</Text>
+        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{posts}</Text>
         <Text className="text-xs text-textSecondary">Posts</Text>
       </View>
       <View className="items-center">
-        <Text className="text-lg font-bold text-textPrimary">{prayers}</Text>
+        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{prayers}</Text>
         <Text className="text-xs text-textSecondary">Prayers</Text>
       </View>
       <Pressable
         onPress={() => navigation.navigate("Followers", { userId })}
         className="items-center"
       >
-        <Text className="text-lg font-bold text-textPrimary">{followers}</Text>
+        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{followers}</Text>
         <Text className="text-xs text-textSecondary">Followers</Text>
       </Pressable>
       <Pressable
         onPress={() => navigation.navigate("Following", { userId })}
         className="items-center"
       >
-        <Text className="text-lg font-bold text-textPrimary">{following}</Text>
+        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{following}</Text>
         <Text className="text-xs text-textSecondary">Following</Text>
       </Pressable>
     </View>

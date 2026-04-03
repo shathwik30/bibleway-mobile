@@ -37,8 +37,8 @@ export default function SelectPicker({
       )}
       <Pressable
         onPress={() => setVisible(true)}
-        className={`flex-row items-center justify-between border rounded-lg px-3 py-3 bg-white ${
-          error ? "border-error" : "border-border"
+        className={`flex-row items-center justify-between rounded-xl px-3 py-3 ${
+          error ? "bg-error-container" : "bg-surfaceContainerHigh"
         }`}
       >
         <Text
@@ -60,8 +60,8 @@ export default function SelectPicker({
           onPress={() => setVisible(false)}
           className="flex-1 bg-black/40"
         />
-        <View className="bg-white rounded-t-2xl max-h-[60%]">
-          <View className="flex-row items-center justify-between px-4 py-3 border-b border-border">
+        <View className="bg-surfaceContainerLowest rounded-t-2xl max-h-[60%]">
+          <View className="flex-row items-center justify-between px-4 py-3 bg-surfaceContainerLow">
             <Text className="text-lg font-bold text-textPrimary">
               {label || "Select"}
             </Text>
@@ -78,7 +78,7 @@ export default function SelectPicker({
                   onChange(item.value);
                   setVisible(false);
                 }}
-                className={`flex-row items-center justify-between px-4 py-3.5 border-b border-border/50 ${
+                className={`flex-row items-center justify-between px-4 py-3.5 ${
                   value === item.value ? "bg-primary/5" : ""
                 }`}
               >

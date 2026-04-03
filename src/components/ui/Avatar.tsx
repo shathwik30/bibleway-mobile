@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Image } from "expo-image";
+import { useSignedUrl } from "@/hooks/useSignedUrl";
 
 interface AvatarProps {
   source: string | null;
@@ -19,10 +20,12 @@ function getInitials(name: string | undefined | null): string {
 }
 
 function Avatar({ source, name, size = 40 }: AvatarProps) {
-  if (source) {
+  const signedUrl = useSignedUrl(source);
+
+  if (signedUrl) {
     return (
       <Image
-        source={{ uri: source }}
+        source={{ uri: signedUrl }}
         style={{ width: size, height: size, borderRadius: size / 2 }}
         contentFit="cover"
         transition={200}

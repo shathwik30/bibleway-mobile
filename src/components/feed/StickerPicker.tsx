@@ -29,7 +29,7 @@ function StickerPickerComponent({ onSelect }: StickerPickerProps) {
   );
 
   return (
-    <View style={{ height: 260 }} className="bg-surface border-t border-border">
+    <View style={{ height: 260 }} className="bg-surfaceContainerLow">
       <FlatList
         data={STICKERS}
         renderItem={renderItem}

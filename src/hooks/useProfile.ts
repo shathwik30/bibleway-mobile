@@ -52,8 +52,13 @@ export function useUpdateProfile() {
 export function useSearchUsers(query: string) {
   return useQuery({
     queryKey: ["users", "search", query],
-    queryFn: () =>
-      api.get<UserListItem[]>(ENDPOINTS.profile.userSearch, { q: query }),
+    queryFn: async () => {
+      const res = await api.get<PaginatedResponse<UserListItem>>(
+        ENDPOINTS.profile.userSearch,
+        { q: query },
+      );
+      return res.results;
+    },
     enabled: query.length >= 2,
   });
 }

@@ -113,7 +113,7 @@ export default function SettingsScreen() {
               item.onPress ||
               (() => item.screen && navigation.navigate(item.screen))
             }
-            className="flex-row items-center p-4 bg-surface rounded-xl mb-2"
+            className="flex-row items-center p-4 bg-surfaceContainerLowest rounded-xl mb-2"
           >
             <Ionicons
               name={item.icon}

@@ -61,7 +61,7 @@ const GameCard = React.memo(function GameCard({ game }: { game: GameItem }) {
   return (
     <AnimatedPressable
       onPress={() => navigation.navigate(game.screen)}
-      className="mx-4 mb-3 p-4 rounded-xl border border-border bg-white flex-row items-center"
+      className="mx-4 mb-3 p-4 rounded-xl bg-surfaceContainerLowest flex-row items-center"
     >
       <View className="w-14 h-14 rounded-xl bg-primary/10 items-center justify-center mr-4">
         <Ionicons name={game.icon} size={28} color={colors.primary.DEFAULT} />

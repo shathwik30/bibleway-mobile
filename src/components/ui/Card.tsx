@@ -14,7 +14,7 @@ export default function Card({
 }: CardProps & { className?: string }) {
   return (
     <View
-      className={`bg-white rounded-xl border border-border ${padding ? "p-4" : ""} ${className}`}
+      className={`bg-surfaceContainerLowest rounded-xl ${padding ? "p-4" : ""} ${className}`}
       {...props}
     >
       {children}

@@ -108,7 +108,8 @@ export default function SegregatedPageDetailScreen() {
           <ScrollView className="flex-1 px-4 pt-4">
             <Text
               selectable={true}
-              className="text-xl font-bold text-textPrimary mb-4"
+              className="text-xl text-textPrimary mb-4"
+              style={{ fontFamily: "PlayfairDisplay_700Bold" }}
             >
               {page.title}
             </Text>
@@ -124,11 +125,11 @@ export default function SegregatedPageDetailScreen() {
             <View className="h-32" />
           </ScrollView>
 
-          <View className="absolute bottom-14 left-0 right-0 bg-background border-t border-border px-4 py-2">
+          <View className="absolute bottom-14 left-0 right-0 bg-surfaceContainerLow px-4 py-2">
             <ReadAloudControls text={page.content || ""} />
           </View>
 
-          <View className="flex-row items-end px-4 py-2 border-t border-border bg-white">
+          <View className="flex-row items-end px-4 py-2 bg-surfaceContainerLowest">
             <TextInput
               value={comment}
               onChangeText={setComment}
@@ -136,7 +137,7 @@ export default function SegregatedPageDetailScreen() {
               placeholderTextColor={colors.textTertiary}
               multiline
               maxLength={1000}
-              className="flex-1 text-base text-textPrimary bg-surface rounded-2xl px-4 py-2 max-h-20"
+              className="flex-1 text-base text-textPrimary bg-surfaceContainerHigh rounded-xl px-4 py-2 max-h-20"
             />
             <Pressable
               onPress={handleSubmitComment}

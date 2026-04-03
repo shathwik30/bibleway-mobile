@@ -17,12 +17,12 @@ export default function AnalyticsCard({
   color = colors.primary.DEFAULT,
 }: AnalyticsCardProps) {
   return (
-    <View className="bg-white border border-border rounded-xl p-4 flex-1 mx-1">
+    <View className="bg-surfaceContainerLowest rounded-xl p-4 flex-1 mx-1">
       <View className="flex-row items-center mb-2">
         <Ionicons name={icon} size={20} color={color} />
         <Text className="text-xs text-textSecondary ml-1.5">{title}</Text>
       </View>
-      <Text className="text-2xl font-bold text-textPrimary">{value}</Text>
+      <Text className="text-2xl text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{value}</Text>
     </View>
   );
 }

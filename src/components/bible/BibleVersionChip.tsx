@@ -14,10 +14,10 @@ export default function BibleVersionChip({
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row items-center bg-surface border border-border rounded-full px-3 py-1.5"
+      className="flex-row items-center bg-surfaceContainerHigh rounded-full px-3 py-1.5"
     >
       <Text className="text-sm font-semibold text-primary mr-1">{version}</Text>
-      <Ionicons name="chevron-down" size={14} color="#4A6FA5" />
+      <Ionicons name="chevron-down" size={14} color="#59021a" />
     </Pressable>
   );
 }

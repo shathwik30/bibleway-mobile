@@ -95,7 +95,7 @@ function LevelSelect({
                 onPress={() => !locked && onSelectLevel(level.id)}
                 disabled={locked}
                 style={{ opacity: locked ? 0.4 : 1, marginBottom: 10 }}
-                className="flex-row items-center bg-surface rounded-2xl p-4 border border-border"
+                className="flex-row items-center bg-surfaceContainerLow rounded-2xl p-4"
               >
                 <View
                   style={{
@@ -106,8 +106,8 @@ function LevelSelect({
                     borderColor: completed
                       ? "#22C55E"
                       : locked
-                        ? "#D1D5DB"
-                        : "#4A6FA5",
+                        ? "#e5e2e1"
+                        : "#59021a",
                     backgroundColor: completed ? "#ECFDF5" : "#FFFFFF",
                   }}
                   className="items-center justify-center mr-3"
@@ -115,7 +115,7 @@ function LevelSelect({
                   {completed ? (
                     <Ionicons name="checkmark" size={22} color="#22C55E" />
                   ) : locked ? (
-                    <Ionicons name="lock-closed" size={16} color="#9CA3AF" />
+                    <Ionicons name="lock-closed" size={16} color="#897173" />
                   ) : (
                     <Text className="text-base font-bold text-primary">
                       {level.id}
@@ -154,7 +154,7 @@ function LevelSelect({
                     <Ionicons
                       name={completed ? "refresh" : "play"}
                       size={16}
-                      color={completed ? "#22C55E" : "#4A6FA5"}
+                      color={completed ? "#22C55E" : "#59021a"}
                     />
                   </View>
                 )}
@@ -279,7 +279,7 @@ export default function BibleQuizScreen() {
         >
           <View className="bg-primary/5 rounded-2xl p-5 mb-6">
             <View className="flex-row items-center mb-3">
-              <Ionicons name="book-outline" size={18} color="#4A6FA5" />
+              <Ionicons name="book-outline" size={18} color="#59021a" />
               <Text className="text-sm font-bold text-primary ml-2">Story</Text>
             </View>
             <Text className="text-base text-textPrimary leading-7">
@@ -331,7 +331,7 @@ export default function BibleQuizScreen() {
               ))}
             </View>
 
-            <View className="bg-surface rounded-2xl px-10 py-5 items-center mb-8 border border-border">
+            <View className="bg-surfaceContainerLow rounded-2xl px-10 py-5 items-center mb-8">
               <Text className="text-4xl font-bold text-primary">
                 {correctCount}/{level.questions.length}
               </Text>
@@ -355,10 +355,10 @@ export default function BibleQuizScreen() {
 
             <Pressable
               onPress={() => startLevel(levelId)}
-              className="rounded-2xl py-4 mb-3 border border-border flex-row items-center justify-center"
+              className="rounded-2xl py-4 mb-3 bg-surfaceContainerLow flex-row items-center justify-center"
               style={{ width: SW - 80, gap: 8 }}
             >
-              <Ionicons name="refresh-outline" size={18} color="#6B7280" />
+              <Ionicons name="refresh-outline" size={18} color="#564243" />
               <Text className="text-textSecondary font-semibold">
                 Play Again
               </Text>
@@ -377,12 +377,12 @@ export default function BibleQuizScreen() {
     if (!answered) {
       return selected === optIdx
         ? "border-primary bg-primary/5"
-        : "border-border bg-white";
+        : "border-surfaceContainerHigh bg-surfaceContainerLowest";
     }
     if (optIdx === question.correctIndex)
       return "border-success bg-highlight-green";
     if (optIdx === selected) return "border-error bg-red-50";
-    return "border-border bg-white";
+    return "border-surfaceContainerHigh bg-surfaceContainerLowest";
   };
 
   const getOptionIcon = (optIdx: number) => {
@@ -390,7 +390,7 @@ export default function BibleQuizScreen() {
     if (optIdx === question.correctIndex)
       return <Ionicons name="checkmark-circle" size={22} color="#22C55E" />;
     if (optIdx === selected)
-      return <Ionicons name="close-circle" size={22} color="#EF4444" />;
+      return <Ionicons name="close-circle" size={22} color="#ba1a1a" />;
     return null;
   };
 
@@ -411,7 +411,7 @@ export default function BibleQuizScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View className="px-4 py-3">
-          <View className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <View className="h-1.5 bg-surfaceContainerHigh rounded-full overflow-hidden">
             <View
               className="h-full bg-primary rounded-full"
               style={{
@@ -452,8 +452,8 @@ export default function BibleQuizScreen() {
                       answered && i === question.correctIndex
                         ? "#22C55E"
                         : answered && i === selected
-                          ? "#EF4444"
-                          : "#D1D5DB",
+                          ? "#ba1a1a"
+                          : "#e5e2e1",
                     backgroundColor:
                       answered && i === question.correctIndex
                         ? "#ECFDF5"
@@ -470,8 +470,8 @@ export default function BibleQuizScreen() {
                         answered && i === question.correctIndex
                           ? "#22C55E"
                           : answered && i === selected
-                            ? "#EF4444"
-                            : "#6B7280",
+                            ? "#ba1a1a"
+                            : "#564243",
                     }}
                   >
                     {String.fromCharCode(65 + i)}

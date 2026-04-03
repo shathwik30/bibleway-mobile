@@ -109,13 +109,24 @@ export default function GoogleCompleteProfileScreen() {
         >
           <View className="items-center mb-6">
             <Avatar source={profilePhoto || null} name={fullName} size={80} />
-            <Text className="text-lg font-bold text-textPrimary mt-3">
+            <Text
+              className="text-lg font-bold text-textPrimary mt-3"
+              style={{ fontFamily: "PlayfairDisplay_700Bold" }}
+            >
               {fullName}
             </Text>
-            <Text className="text-sm text-textSecondary">{email}</Text>
+            <Text
+              className="text-sm text-textSecondary"
+              style={{ fontFamily: "Inter_400Regular" }}
+            >
+              {email}
+            </Text>
           </View>
 
-          <Text className="text-base text-textSecondary mb-6 text-center">
+          <Text
+            className="text-base text-textSecondary mb-6 text-center"
+            style={{ fontFamily: "Inter_400Regular" }}
+          >
             We need a few more details to set up your account
           </Text>
 

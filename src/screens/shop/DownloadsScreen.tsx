@@ -20,7 +20,7 @@ export default function DownloadsScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ padding: 16 }}
         renderItem={({ item }) => (
-          <View className="flex-row items-center p-4 bg-surface rounded-xl mb-3">
+          <View className="flex-row items-center p-4 bg-surfaceContainerLowest rounded-xl mb-3">
             <Ionicons
               name="document-outline"
               size={24}

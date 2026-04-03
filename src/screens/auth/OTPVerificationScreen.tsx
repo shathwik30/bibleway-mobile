@@ -82,10 +82,16 @@ export default function OTPVerificationScreen() {
     <SafeAreaScreen>
       <ScreenHeader title={t("auth.otpTitle")} />
       <View className="flex-1 px-6 pt-8">
-        <Text className="text-base text-textSecondary text-center mb-2">
+        <Text
+          className="text-base text-textSecondary text-center mb-2"
+          style={{ fontFamily: "Inter_400Regular" }}
+        >
           {t("auth.otpSubtitle")}
         </Text>
-        <Text className="text-base font-semibold text-textPrimary text-center mb-8">
+        <Text
+          className="text-base font-semibold text-textPrimary text-center mb-8"
+          style={{ fontFamily: "Inter_500Medium" }}
+        >
           {email}
         </Text>
 
@@ -99,7 +105,7 @@ export default function OTPVerificationScreen() {
           keyboardType="number-pad"
           maxLength={6}
           autoFocus={true}
-          className="text-3xl text-center font-bold text-textPrimary tracking-[12px] border-b-2 border-border pb-3 mb-8"
+          className="text-3xl text-center font-bold text-textPrimary tracking-[12px] bg-surfaceContainerHigh rounded-xl py-4 mb-8"
         />
 
         <Button

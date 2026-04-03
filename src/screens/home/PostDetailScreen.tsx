@@ -39,7 +39,12 @@ export default function PostDetailScreen() {
       <SafeAreaScreen>
         <ScreenHeader title="Post" />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-base text-textSecondary">Post not found</Text>
+          <Text
+            className="text-base text-textSecondary"
+            style={{ fontFamily: "Inter_400Regular" }}
+          >
+            Post not found
+          </Text>
         </View>
       </SafeAreaScreen>
     );
@@ -58,7 +63,7 @@ export default function PostDetailScreen() {
               objectId: post.id,
             })
           }
-          className="flex-row items-center justify-between mx-4 mt-2 p-4 bg-surface rounded-xl"
+          className="flex-row items-center justify-between mx-4 mt-2 p-4 bg-surfaceContainerLow rounded-xl"
         >
           <View className="flex-row items-center">
             <Ionicons
@@ -66,7 +71,10 @@ export default function PostDetailScreen() {
               size={20}
               color={colors.textSecondary}
             />
-            <Text className="text-base text-textSecondary ml-2">
+            <Text
+              className="text-base text-textSecondary ml-2"
+              style={{ fontFamily: "Inter_500Medium" }}
+            >
               {post.comment_count ?? 0} Comments
             </Text>
           </View>

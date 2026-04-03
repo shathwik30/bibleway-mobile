@@ -38,7 +38,7 @@ export default function Skeleton({
           width: width as ViewStyle["width"],
           height,
           borderRadius,
-          backgroundColor: "#E5E7EB",
+          backgroundColor: "#e5e2e1",
         },
         animatedStyle,
         style,
@@ -52,8 +52,7 @@ export function PostCardSkeleton() {
     <View
       style={{
         padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: "#E5E7EB",
+        marginBottom: 8,
       }}
     >
       <View
@@ -196,8 +195,7 @@ export function ListItemSkeleton() {
         flexDirection: "row",
         alignItems: "center",
         padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: "#E5E7EB",
+        marginBottom: 8,
       }}
     >
       <Skeleton width={40} height={40} borderRadius={20} />

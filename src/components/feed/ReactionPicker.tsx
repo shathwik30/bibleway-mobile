@@ -13,7 +13,7 @@ export default function ReactionPicker({
   selectedType,
 }: ReactionPickerProps) {
   return (
-    <View className="flex-row bg-white rounded-full shadow-lg px-2 py-1.5 border border-border">
+    <View className="flex-row bg-surfaceContainerLowest rounded-full px-2 py-1.5" style={{ shadowColor: "#121212", shadowOffset: { width: 0, height: 20 }, shadowOpacity: 0.04, shadowRadius: 40, elevation: 4 }}>
       {REACTIONS.map((r) => (
         <Pressable
           key={r.type}

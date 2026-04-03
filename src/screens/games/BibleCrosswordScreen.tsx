@@ -146,7 +146,7 @@ function LevelSelect({
                 onPress={() => !locked && onSelectLevel(level.id)}
                 disabled={locked}
                 style={{ opacity: locked ? 0.4 : 1, marginBottom: 10 }}
-                className="flex-row items-center bg-surface rounded-2xl p-4 border border-border"
+                className="flex-row items-center bg-surfaceContainerLow rounded-2xl p-4"
               >
                 <View
                   style={{
@@ -157,8 +157,8 @@ function LevelSelect({
                     borderColor: completed
                       ? "#22C55E"
                       : locked
-                        ? "#D1D5DB"
-                        : "#4A6FA5",
+                        ? "#e5e2e1"
+                        : "#59021a",
                     backgroundColor: completed ? "#ECFDF5" : "#FFFFFF",
                   }}
                   className="items-center justify-center mr-3"
@@ -166,7 +166,7 @@ function LevelSelect({
                   {completed ? (
                     <Ionicons name="checkmark" size={22} color="#22C55E" />
                   ) : locked ? (
-                    <Ionicons name="lock-closed" size={16} color="#9CA3AF" />
+                    <Ionicons name="lock-closed" size={16} color="#897173" />
                   ) : (
                     <Text className="text-base font-bold text-primary">
                       {level.id}
@@ -196,7 +196,7 @@ function LevelSelect({
                     <Ionicons
                       name={completed ? "refresh" : "play"}
                       size={16}
-                      color={completed ? "#22C55E" : "#4A6FA5"}
+                      color={completed ? "#22C55E" : "#59021a"}
                     />
                   </View>
                 )}
@@ -262,7 +262,7 @@ function LevelCompleteScreen({
           </View>
 
           <View
-            className="flex-row items-center bg-surface rounded-2xl border border-border mb-8"
+            className="flex-row items-center bg-surfaceContainerLow rounded-2xl mb-8"
             style={{ width: screenWidth - 80 }}
           >
             <View className="flex-1 items-center py-4">
@@ -272,7 +272,7 @@ function LevelCompleteScreen({
               </Text>
               <Text className="text-xs text-textSecondary">Points</Text>
             </View>
-            <View style={{ width: 1, height: 40 }} className="bg-border" />
+            <View style={{ width: 1, height: 40 }} className="bg-surfaceContainerHigh" />
             <View className="flex-1 items-center py-4">
               <Ionicons
                 name="checkmark-circle-outline"
@@ -299,10 +299,10 @@ function LevelCompleteScreen({
 
           <Pressable
             onPress={onReplay}
-            className="rounded-2xl py-4 mb-3 border border-border flex-row items-center justify-center"
+            className="rounded-2xl py-4 mb-3 bg-surfaceContainerLow flex-row items-center justify-center"
             style={{ width: screenWidth - 80, gap: 8 }}
           >
-            <Ionicons name="refresh-outline" size={18} color="#6B7280" />
+            <Ionicons name="refresh-outline" size={18} color="#564243" />
             <Text className="text-textSecondary font-semibold">Play Again</Text>
           </Pressable>
 
@@ -531,7 +531,7 @@ export default function BibleCrosswordScreen() {
             <View
               key={k}
               style={{ width: CELL, height: CELL }}
-              className="bg-gray-100"
+              className="bg-surfaceContainerHigh"
             />,
           );
         } else {
@@ -542,7 +542,7 @@ export default function BibleCrosswordScreen() {
                 width: CELL,
                 height: CELL,
                 borderWidth: 1.5,
-                borderColor: isDone ? "#22C55E" : isCur ? "#4A6FA5" : "#E5E7EB",
+                borderColor: isDone ? "#22C55E" : isCur ? "#59021a" : "#e5e2e1",
                 backgroundColor: isDone
                   ? "#ECFDF5"
                   : isCur
@@ -593,7 +593,7 @@ export default function BibleCrosswordScreen() {
             borderRadius: 12,
             opacity: tile.used ? 0.3 : 1,
           }}
-          className={`items-center justify-center ${tile.used ? "bg-gray-100" : "bg-primary"}`}
+          className={`items-center justify-center ${tile.used ? "bg-surfaceContainerHigh" : "bg-primary"}`}
         >
           <Text
             style={{ fontSize: TILE_SIZE * 0.4 }}
@@ -631,7 +631,7 @@ export default function BibleCrosswordScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-row items-center px-4 py-2" style={{ gap: 8 }}>
-          <View className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <View className="flex-1 h-1.5 bg-surfaceContainerHigh rounded-full overflow-hidden">
             <View
               className="h-full bg-primary rounded-full"
               style={{ width: `${(solved.size / level.words.length) * 100}%` }}
@@ -669,8 +669,8 @@ export default function BibleCrosswordScreen() {
                   borderColor: isSolved
                     ? "#22C55E"
                     : isActive
-                      ? "#4A6FA5"
-                      : "#E5E7EB",
+                      ? "#59021a"
+                      : "#e5e2e1",
                   backgroundColor: isSolved
                     ? "#ECFDF5"
                     : isActive
@@ -689,8 +689,8 @@ export default function BibleCrosswordScreen() {
                     color: isSolved
                       ? "#22C55E"
                       : isActive
-                        ? "#4A6FA5"
-                        : "#6B7280",
+                        ? "#59021a"
+                        : "#564243",
                   }}
                 >
                   {w.word.length} letters · {w.direction}
@@ -708,7 +708,7 @@ export default function BibleCrosswordScreen() {
               borderRadius: 16,
               gap: CELL_GAP,
             }}
-            className="bg-gray-100"
+            className="bg-surfaceContainerHigh"
           >
             {renderGrid()}
           </View>
@@ -754,10 +754,10 @@ export default function BibleCrosswordScreen() {
               feedback === "correct"
                 ? "#22C55E"
                 : feedback === "wrong"
-                  ? "#EF4444"
+                  ? "#ba1a1a"
                   : isFilled
-                    ? "#4A6FA5"
-                    : "#E5E7EB";
+                    ? "#59021a"
+                    : "#e5e2e1";
             const bgColor =
               feedback === "correct"
                 ? "#ECFDF5"
@@ -802,18 +802,18 @@ export default function BibleCrosswordScreen() {
         <View className="flex-row px-4 mb-4" style={{ gap: 10 }}>
           <Pressable
             onPress={del}
-            className="flex-row items-center justify-center h-12 rounded-2xl bg-surface border border-border"
+            className="flex-row items-center justify-center h-12 rounded-2xl bg-surfaceContainerLow"
             style={{ flex: 1, gap: 6 }}
           >
-            <Ionicons name="backspace-outline" size={20} color="#6B7280" />
+            <Ionicons name="backspace-outline" size={20} color="#564243" />
           </Pressable>
 
           <Pressable
             onPress={clearAll}
-            className="flex-row items-center justify-center h-12 rounded-2xl bg-surface border border-border"
+            className="flex-row items-center justify-center h-12 rounded-2xl bg-surfaceContainerLow"
             style={{ flex: 1, gap: 6 }}
           >
-            <Ionicons name="close-outline" size={20} color="#6B7280" />
+            <Ionicons name="close-outline" size={20} color="#564243" />
             <Text className="text-sm font-semibold text-textSecondary">
               Clear
             </Text>

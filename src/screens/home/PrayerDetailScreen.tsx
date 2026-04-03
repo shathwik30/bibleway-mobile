@@ -22,7 +22,10 @@ export default function PrayerDetailScreen() {
       <SafeAreaScreen>
         <ScreenHeader title="Prayer Request" />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-base text-textSecondary">
+          <Text
+            className="text-base text-textSecondary"
+            style={{ fontFamily: "Inter_400Regular" }}
+          >
             Prayer request not found
           </Text>
         </View>

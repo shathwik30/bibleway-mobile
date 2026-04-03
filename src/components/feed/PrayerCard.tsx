@@ -29,7 +29,7 @@ function PrayerCard({ prayer }: PrayerCardProps) {
       onPress={() =>
         navigation.navigate("PrayerDetail", { prayerId: prayer.id })
       }
-      className="bg-white border-b border-border"
+      className="bg-surfaceContainerLow mb-2 rounded-xl mx-4"
     >
       <View className="px-4 pt-3">
         <View className="flex-row items-center mb-2">

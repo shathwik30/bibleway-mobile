@@ -4,15 +4,35 @@ import { Platform } from "react-native";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
 import { mmkvStorage } from "@/lib/storage";
+import { useChatStore } from "@/stores/chatStore";
 
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
+  handleNotification: async (notification) => {
+    const data = notification.request.content.data;
+    const activeConversationId = useChatStore.getState().activeConversationId;
+
+    if (
+      data?.type === "new_message" &&
+      data?.conversation_id &&
+      data.conversation_id === activeConversationId
+    ) {
+      return {
+        shouldShowAlert: false,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+        shouldShowBanner: false,
+        shouldShowList: false,
+      };
+    }
+
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    };
+  },
 });
 
 export async function registerForPushNotifications(): Promise<string | null> {

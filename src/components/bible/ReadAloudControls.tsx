@@ -59,7 +59,7 @@ export default function ReadAloudControls({
         <Ionicons
           name={isPlaying ? "pause-circle" : "play-circle"}
           size={28}
-          color="#4A6FA5"
+          color="#59021a"
         />
       </Pressable>
       <Text

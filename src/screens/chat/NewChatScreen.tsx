@@ -59,7 +59,7 @@ export default function NewChatScreen(): React.JSX.Element {
       <Pressable
         onPress={() => handleSelect(item)}
         disabled={createConversation.isPending}
-        className="flex-row items-center px-4 py-3 bg-white border-b border-border"
+        className="flex-row items-center px-4 py-3 bg-surfaceContainerLowest"
         accessibilityRole="button"
         accessibilityLabel={`Start conversation with ${item.full_name}`}
       >

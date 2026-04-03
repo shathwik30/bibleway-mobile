@@ -12,11 +12,10 @@
       "backgroundColor": "#FFFFFF",
       "translucent": false
     },
-    "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#4A6FA5"
+      "backgroundColor": "#59021a"
     },
     "ios": {
       "supportsTablet": true,
@@ -35,7 +34,6 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "navigationBarColor": "#FFFFFF",
       "softwareKeyboardLayoutMode": "pan",
       "googleServicesFile": "./google-services.json",
       "package": "com.bibleway.io",
@@ -60,7 +58,8 @@
       "react-native-iap",
       "@react-native-google-signin/google-signin",
       "@react-native-firebase/app",
-      "@react-native-firebase/auth"
+      "@react-native-firebase/auth",
+      "expo-font"
     ],
     "extra": {
       "eas": {

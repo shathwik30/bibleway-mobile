@@ -9,6 +9,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import SearchBar from "@/components/ui/SearchBar";
+
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
 import { useBibleVersions } from "@/hooks/useBible";
@@ -52,19 +53,11 @@ export default function BibleVersionSelectScreen() {
 
   return (
     <View className="flex-1">
-      <View className="flex-row items-center px-4 pt-2 pb-1 gap-2">
-        <View className="flex-1">
-          <SearchBar
-            onSearch={setSearch}
-            placeholder="Search versions, languages..."
-          />
-        </View>
-        <Pressable
-          onPress={() => navigation.navigate("BibleSearch")}
-          className="p-2.5 bg-surface rounded-xl"
-        >
-          <Ionicons name="search" size={22} color={colors.primary.DEFAULT} />
-        </Pressable>
+      <View className="px-4 pt-2 pb-1">
+        <SearchBar
+          onSearch={setSearch}
+          placeholder="Search versions, languages..."
+        />
       </View>
 
       <FlatList

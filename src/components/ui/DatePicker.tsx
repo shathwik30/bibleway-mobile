@@ -49,8 +49,8 @@ export default function DatePicker({
         )}
         <Pressable
           onPress={() => setShow(true)}
-          className={`flex-row items-center justify-between border rounded-lg px-3 py-3 bg-white ${
-            error ? "border-error" : "border-border"
+          className={`flex-row items-center justify-between rounded-xl px-3 py-3 ${
+            error ? "bg-error-container" : "bg-surfaceContainerHigh"
           }`}
         >
           <Text
@@ -76,8 +76,8 @@ export default function DatePicker({
             onPress={() => setShow(false)}
             className="flex-1 bg-black/40"
           />
-          <View className="bg-white rounded-t-2xl pb-8">
-            <View className="flex-row items-center justify-between px-4 py-3 border-b border-border">
+          <View className="bg-surfaceContainerLowest rounded-t-2xl pb-8">
+            <View className="flex-row items-center justify-between px-4 py-3 bg-surfaceContainerLow">
               <Text className="text-lg font-bold text-textPrimary">
                 {label || "Select Date"}
               </Text>
@@ -111,12 +111,12 @@ export default function DatePicker({
       )}
       <Pressable
         onPress={() => setShow(true)}
-        className={`flex-row items-center justify-between border rounded-lg px-3 py-3 bg-white ${
-          error ? "border-error" : "border-border"
+        className={`flex-row items-center justify-between rounded-xl px-3 py-3 ${
+          error ? "bg-error-container" : "bg-surfaceContainerHigh"
         }`}
       >
         <Text
-          className={`text-base ${value ? "text-textPrimary" : "text-gray-400"}`}
+          className={`text-base ${value ? "text-textPrimary" : "text-textTertiary"}`}
         >
           {displayText || "Select date..."}
         </Text>

@@ -9,7 +9,6 @@ import BibleStackNavigator from "./BibleStackNavigator";
 import ShopStackNavigator from "./ShopStackNavigator";
 import GamesStackNavigator from "./GamesStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
-import { useNotificationStore } from "@/stores/notificationStore";
 import { useChatStore } from "@/stores/chatStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -18,7 +17,6 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 
 export default function MainTabNavigator() {
   const { t } = useTranslation();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const chatUnreadCount = useChatStore((s) => s.unreadCount);
   const insets = useSafeAreaInsets();
 
@@ -34,19 +32,20 @@ export default function MainTabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#4A6FA5",
-        tabBarInactiveTintColor: "#6B7280",
+        tabBarActiveTintColor: "#59021a",
+        tabBarInactiveTintColor: "#897173",
         tabBarStyle: {
-          backgroundColor: "#FFFFFF",
-          borderTopColor: "#E5E7EB",
-          borderTopWidth: 1,
+          backgroundColor: "#ffffff",
+          borderTopWidth: 0,
           paddingBottom: Math.max(insets.bottom, 4),
           paddingTop: 4,
           height: tabBarHeight,
+          elevation: 0,
+          shadowOpacity: 0,
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: "600",
+          fontFamily: "Inter_600SemiBold",
         },
       }}
     >
@@ -58,7 +57,6 @@ export default function MainTabNavigator() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
-          tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
         }}
         listeners={hapticListeners}
       />

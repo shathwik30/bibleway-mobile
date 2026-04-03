@@ -20,12 +20,12 @@ export default function VerseOfDayBanner() {
         />
       ) : null}
       <LinearGradient
-        colors={["rgba(45,74,122,0.85)", "rgba(74,111,165,0.9)"]}
+        colors={["rgba(89,2,26,0.88)", "rgba(120,28,46,0.92)"]}
         className="p-5"
       >
         <View className="flex-row items-center mb-2">
-          <Ionicons name="sunny-outline" size={16} color="#D4A373" />
-          <Text className="text-secondary text-xs font-semibold ml-1">
+          <Ionicons name="sunny-outline" size={16} color="#ffdf9e" />
+          <Text className="text-tertiary-fixed text-xs font-semibold ml-1">
             VERSE OF THE DAY
           </Text>
         </View>

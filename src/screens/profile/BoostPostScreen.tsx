@@ -121,14 +121,14 @@ export default function BoostPostScreen() {
           <Pressable
             key={tier.productId}
             onPress={() => setSelectedTier(tier.productId)}
-            className={`p-4 rounded-xl mb-3 border-2 ${
+            className={`p-4 rounded-xl mb-3 ${
               selectedTier === tier.productId
-                ? "border-primary bg-primary/5"
-                : "border-border bg-surface"
+                ? "bg-primary/10"
+                : "bg-surfaceContainerLowest"
             }`}
           >
             <View className="flex-row items-center justify-between">
-              <Text className="text-lg font-bold text-textPrimary">
+              <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>
                 {tier.name}
               </Text>
               {selectedTier === tier.productId && (

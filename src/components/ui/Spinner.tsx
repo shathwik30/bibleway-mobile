@@ -13,7 +13,7 @@ export default function Spinner({
 }: SpinnerProps) {
   if (fullScreen) {
     return (
-      <View className="flex-1 items-center justify-center bg-white">
+      <View className="flex-1 items-center justify-center bg-surface">
         <ActivityIndicator size={size} color={colors.primary.DEFAULT} />
       </View>
     );

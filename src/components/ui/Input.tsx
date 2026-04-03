@@ -24,17 +24,20 @@ export default function Input({
   return (
     <View className="mb-4">
       {label && (
-        <Text className="text-sm font-medium text-textPrimary mb-1.5">
+        <Text
+          className="text-sm text-textPrimary mb-1.5"
+          style={{ fontFamily: "Inter_500Medium" }}
+        >
           {label}
         </Text>
       )}
       <View
-        className={`flex-row items-center border rounded-lg px-3 py-2.5 bg-white ${
+        className={`flex-row items-center rounded-xl px-3 py-2.5 ${
           error
-            ? "border-error"
+            ? "bg-error-container"
             : isFocused
-              ? "border-primary"
-              : "border-border"
+              ? "bg-surfaceContainerLowest border border-tertiary-fixedDim"
+              : "bg-surfaceContainerHigh"
         }`}
       >
         {leftIcon && <View className="mr-2">{leftIcon}</View>}
@@ -46,6 +49,7 @@ export default function Input({
           accessibilityLabel={label}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          style={{ fontFamily: "Inter_400Regular" }}
         />
         {secureTextEntry && (
           <Pressable onPress={() => setIsSecure(!isSecure)} className="ml-2">

@@ -73,7 +73,8 @@ export default function CreatePrayerScreen() {
           onChangeText={setTitle}
           placeholder="Prayer title"
           placeholderTextColor={colors.textTertiary}
-          className="text-lg font-semibold text-textPrimary p-3 bg-surface rounded-xl mb-3"
+          className="text-lg font-semibold text-textPrimary p-3 bg-surfaceContainerHigh rounded-xl mb-3"
+          style={{ fontFamily: "Inter_600SemiBold" }}
         />
 
         <TextInput
@@ -83,7 +84,8 @@ export default function CreatePrayerScreen() {
           placeholderTextColor={colors.textTertiary}
           multiline
           textAlignVertical="top"
-          className="flex-1 text-base text-textPrimary p-3 bg-surface rounded-xl min-h-[120px]"
+          className="flex-1 text-base text-textPrimary p-3 bg-surfaceContainerHigh rounded-xl min-h-[120px]"
+          style={{ fontFamily: "Inter_400Regular" }}
         />
 
         {media.length > 0 && (

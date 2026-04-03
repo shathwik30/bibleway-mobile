@@ -1,52 +1,52 @@
-import React, { useState, useCallback } from "react";
-import { View, Text, Pressable, ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text } from "react-native";
 import { format } from "date-fns";
 import StickerMessage from "@/components/feed/StickerMessage";
 import { isSticker } from "@/constants/stickers";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
-import { useTranslateMessage } from "@/hooks/useChat";
-import { useAppStore } from "@/stores/appStore";
-import { SUPPORTED_LANGUAGES } from "@/constants/languages";
+import { translateText } from "@/lib/translate";
 import type { ChatMessage } from "@/types/models";
 
 interface MessageBubbleProps {
   message: ChatMessage;
   isMine: boolean;
+  translateLang?: string | null;
 }
 
 function MessageBubble({
   message,
   isMine,
+  translateLang = null,
 }: MessageBubbleProps): React.JSX.Element {
   const timestamp: string = format(new Date(message.created_at), "h:mm a");
   const isStickerMsg: boolean = isSticker(message.text);
 
   const [translatedText, setTranslatedText] = useState<string | null>(null);
-  const [showTranslation, setShowTranslation] = useState(false);
-  const translateMutation = useTranslateMessage();
-  const userLanguage = useAppStore((s) => s.language);
+  const [translatingFor, setTranslatingFor] = useState<string | null>(null);
 
-  const languageName =
-    SUPPORTED_LANGUAGES.find((l) => l.code === userLanguage)?.nativeName ??
-    userLanguage;
-
-  const handleTranslate = useCallback(() => {
-    if (translatedText) {
-      setShowTranslation((prev) => !prev);
+  useEffect(() => {
+    if (!translateLang || isStickerMsg) {
+      setTranslatedText(null);
+      setTranslatingFor(null);
       return;
     }
 
-    translateMutation.mutate(
-      { messageId: message.id, targetLanguage: userLanguage },
-      {
-        onSuccess: (data) => {
-          setTranslatedText(data.translated_text);
-          setShowTranslation(true);
-        },
-      },
-    );
-  }, [translatedText, translateMutation, message.id, userLanguage]);
+    if (translatingFor === translateLang && translatedText) return;
+
+    let cancelled = false;
+    setTranslatingFor(translateLang);
+
+    translateText(message.text, translateLang, "auto").then((result) => {
+      if (!cancelled) setTranslatedText(result);
+    }).catch(() => {
+      if (!cancelled) setTranslatedText(null);
+    });
+
+    return () => { cancelled = true; };
+  }, [translateLang, message.text]);
+
+  const showTranslation = !!translateLang && !!translatedText;
 
   if (isStickerMsg) {
     return (
@@ -81,7 +81,7 @@ function MessageBubble({
     >
       <View
         className={`rounded-2xl px-4 py-2.5 max-w-[80%] ${
-          isMine ? "bg-primary rounded-br-sm" : "bg-surface rounded-bl-sm"
+          isMine ? "bg-primary rounded-br-sm" : "bg-surfaceContainerLow rounded-bl-sm"
         }`}
       >
         <Text
@@ -91,17 +91,12 @@ function MessageBubble({
           {message.text}
         </Text>
 
-        {showTranslation && translatedText && (
+        {showTranslation && (
           <View
-            className={`mt-2 pt-2 ${isMine ? "border-t border-white/20" : "border-t border-border"}`}
+            className={`mt-2 pt-2 ${isMine ? "border-t border-white/20" : ""}`}
           >
             <Text
-              className={`text-xs mb-1 ${isMine ? "text-white/60" : "text-textTertiary"}`}
-            >
-              {languageName}
-            </Text>
-            <Text
-              className={`text-base ${isMine ? "text-white" : "text-textPrimary"}`}
+              className={`text-base ${isMine ? "text-white/90" : "text-textPrimary"}`}
               selectable
             >
               {translatedText}
@@ -121,29 +116,6 @@ function MessageBubble({
             }
           />
         )}
-        <Pressable
-          onPress={handleTranslate}
-          hitSlop={8}
-          disabled={translateMutation.isPending}
-          accessibilityLabel={
-            showTranslation ? "Hide translation" : "Translate message"
-          }
-          accessibilityRole="button"
-        >
-          {translateMutation.isPending ? (
-            <ActivityIndicator size={12} color={colors.primary.DEFAULT} />
-          ) : (
-            <Ionicons
-              name={showTranslation ? "language" : "language-outline"}
-              size={14}
-              color={
-                showTranslation
-                  ? colors.primary.DEFAULT
-                  : colors.textTertiary
-              }
-            />
-          )}
-        </Pressable>
       </View>
     </View>
   );

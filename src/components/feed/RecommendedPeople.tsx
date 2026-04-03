@@ -11,7 +11,7 @@ export default function RecommendedPeople({ users }: RecommendedPeopleProps) {
   if (users.length === 0) return null;
 
   return (
-    <View className="py-3 border-b border-border">
+    <View className="py-3 bg-surfaceContainerLow">
       <Text className="text-sm font-semibold text-textSecondary px-4 mb-2">
         People you may know
       </Text>

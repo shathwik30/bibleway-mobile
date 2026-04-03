@@ -27,10 +27,13 @@ export default function Modal({
       >
         <Pressable
           onPress={() => {}}
-          className="bg-white rounded-2xl w-full max-w-sm p-6"
+          className="bg-surfaceContainerLowest rounded-2xl w-full max-w-sm p-6"
         >
           {title && (
-            <Text className="text-lg font-bold text-textPrimary mb-4">
+            <Text
+              className="text-lg text-textPrimary mb-4"
+              style={{ fontFamily: "Inter_700Bold" }}
+            >
               {title}
             </Text>
           )}

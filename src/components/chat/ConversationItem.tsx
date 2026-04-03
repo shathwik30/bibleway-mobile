@@ -45,7 +45,7 @@ export default React.memo(function ConversationItem({
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row items-center px-4 py-3 bg-white border-b border-border"
+      className="flex-row items-center px-4 py-3 bg-surfaceContainerLowest mb-1 mx-3 rounded-xl"
       accessibilityRole="button"
       accessibilityLabel={`Chat with ${other_user.full_name}`}
     >

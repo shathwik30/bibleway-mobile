@@ -38,7 +38,7 @@ export function useUnreadCount() {
       setUnreadCount(count);
       return count;
     },
-    refetchInterval: 30000,
+    refetchInterval: 5000,
     ...CACHE_DURATIONS.unreadCount,
   });
 }

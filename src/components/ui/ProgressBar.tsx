@@ -8,7 +8,7 @@ interface ProgressBarProps {
 
 export default function ProgressBar({
   progress,
-  color = "#4A6FA5",
+  color = "#59021a",
 }: ProgressBarProps) {
   const clampedProgress = Math.min(Math.max(progress, 0), 1);
 

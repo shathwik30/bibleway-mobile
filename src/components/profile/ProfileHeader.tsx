@@ -20,7 +20,10 @@ function ProfileHeader({
   return (
     <View className="items-center pt-6 pb-4 px-4">
       <Avatar source={user.profile_photo} name={user.full_name} size={80} />
-      <Text className="text-xl font-bold text-textPrimary mt-3">
+      <Text
+        className="text-xl text-textPrimary mt-3"
+        style={{ fontFamily: "PlayfairDisplay_700Bold" }}
+      >
         {user.full_name}
       </Text>
       {user.age ? (

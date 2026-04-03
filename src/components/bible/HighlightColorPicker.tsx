@@ -26,10 +26,10 @@ export default function HighlightColorPicker({
           key={c.key}
           onPress={() => onSelect(c.key)}
           style={{ backgroundColor: c.value }}
-          className="w-8 h-8 rounded-full mx-1.5 items-center justify-center border border-border"
+          className="w-8 h-8 rounded-full mx-1.5 items-center justify-center"
         >
           {selected === c.key && (
-            <Ionicons name="checkmark" size={16} color="#1A1A2E" />
+            <Ionicons name="checkmark" size={16} color="#1c1b1b" />
           )}
         </Pressable>
       ))}

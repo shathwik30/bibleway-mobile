@@ -27,7 +27,7 @@ function PostCard({ post }: PostCardProps) {
   return (
     <AnimatedPressable
       onPress={() => navigation.navigate("PostDetail", { postId: post.id })}
-      className="bg-white border-b border-border"
+      className="bg-surfaceContainerLowest mb-2 rounded-xl mx-4"
     >
       <View className="px-4 pt-3">
         <View className="flex-row items-center mb-2">

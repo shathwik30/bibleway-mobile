@@ -215,11 +215,17 @@ export default function RegisterScreen() {
           />
         </View>
         <View className="flex-row justify-center mb-6">
-          <Text className="text-sm text-textSecondary">
+          <Text
+            className="text-sm text-textSecondary"
+            style={{ fontFamily: "Inter_400Regular" }}
+          >
             {t("auth.hasAccount")}{" "}
           </Text>
           <Pressable onPress={() => navigation.goBack()}>
-            <Text className="text-sm text-primary font-semibold">
+            <Text
+              className="text-sm text-primary font-semibold"
+              style={{ fontFamily: "Inter_500Medium" }}
+            >
               {t("auth.loginLink")}
             </Text>
           </Pressable>

@@ -83,11 +83,14 @@ export default function BoostAnalyticsScreen() {
           </View>
         </View>
 
-        <Text className="text-lg font-bold text-textPrimary mb-3">
+        <Text
+          className="text-lg text-textPrimary mb-3"
+          style={{ fontFamily: "Inter_700Bold" }}
+        >
           Daily Snapshots
         </Text>
         {snapshots.map((snapshot) => (
-          <View key={snapshot.id} className="p-4 bg-surface rounded-xl mb-2">
+          <View key={snapshot.id} className="p-4 bg-surfaceContainerLowest rounded-xl mb-2">
             <Text className="text-sm font-semibold text-primary mb-2">
               {new Date(snapshot.snapshot_date).toLocaleDateString()}
             </Text>

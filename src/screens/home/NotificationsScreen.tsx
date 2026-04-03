@@ -62,13 +62,36 @@ export default function NotificationsScreen() {
             objectId: String(data.prayer_id),
           });
         break;
+      case "new_message":
+      case "missed_call":
+        if (data.conversation_id && data.sender) {
+          const sender = data.sender as {
+            id: string;
+            full_name: string;
+            profile_photo?: string | null;
+            age?: number;
+          };
+          (navigation as any).navigate("ChatTab", {
+            screen: "ChatRoom",
+            params: {
+              conversationId: String(data.conversation_id),
+              otherUser: {
+                id: sender.id,
+                full_name: sender.full_name,
+                profile_photo: sender.profile_photo ?? null,
+                age: sender.age ?? 0,
+              },
+            },
+          });
+        }
+        break;
     }
   };
 
   const renderItem = ({ item }: { item: Notification }) => (
     <Pressable
       onPress={() => handlePress(item)}
-      className={`flex-row items-center px-4 py-3 border-b border-border ${!item.is_read ? "bg-primary/5" : ""}`}
+      className={`flex-row items-center px-4 py-3 mb-px ${!item.is_read ? "bg-surfaceContainerLow" : "bg-surfaceContainerLowest"}`}
     >
       <Avatar
         source={item.sender?.profile_photo ?? null}
@@ -76,13 +99,22 @@ export default function NotificationsScreen() {
         size={40}
       />
       <View className="flex-1 ml-3">
-        <Text className="text-sm text-textPrimary">
-          <Text className="font-semibold">
+        <Text
+          className="text-sm text-textPrimary"
+          style={{ fontFamily: "Inter_400Regular" }}
+        >
+          <Text
+            className="font-semibold"
+            style={{ fontFamily: "Inter_600SemiBold" }}
+          >
             {item.sender?.full_name ?? "System"}
           </Text>{" "}
           {item.title}
         </Text>
-        <Text className="text-xs text-textSecondary mt-0.5">
+        <Text
+          className="text-xs text-textSecondary mt-0.5"
+          style={{ fontFamily: "Inter_400Regular" }}
+        >
           {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}
         </Text>
       </View>
@@ -96,7 +128,10 @@ export default function NotificationsScreen() {
         title={t("notifications.notifications")}
         rightAction={
           <Pressable onPress={() => markRead.mutate(undefined)}>
-            <Text className="text-sm text-primary font-medium">
+            <Text
+              className="text-sm text-primary font-medium"
+              style={{ fontFamily: "Inter_500Medium" }}
+            >
               {t("notifications.markAllRead")}
             </Text>
           </Pressable>

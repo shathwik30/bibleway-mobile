@@ -49,7 +49,10 @@ export default function ForgotPasswordScreen() {
     <SafeAreaScreen>
       <ScreenHeader title={t("auth.forgotPasswordTitle")} />
       <View className="flex-1 px-6 pt-8">
-        <Text className="text-base text-textSecondary text-center mb-8">
+        <Text
+          className="text-base text-textSecondary text-center mb-8"
+          style={{ fontFamily: "Inter_400Regular" }}
+        >
           {t("auth.forgotPasswordSubtitle")}
         </Text>
         <Controller

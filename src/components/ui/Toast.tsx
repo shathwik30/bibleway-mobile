@@ -85,7 +85,7 @@ function CustomToast({
         </View>
 
         <Pressable onPress={props.hide} className="p-1 ml-2" hitSlop={8}>
-          <Ionicons name="close" size={16} color="#9CA3AF" />
+          <Ionicons name="close" size={16} color="#897173" />
         </Pressable>
       </Pressable>
     </Animated.View>

@@ -28,7 +28,7 @@ export function useConversations() {
       }),
     initialPageParam: 1,
     getNextPageParam: pageNumberNextPage,
-    refetchInterval: 30000,
+    refetchInterval: 5000,
     ...CACHE_DURATIONS.chat,
   });
 }
@@ -49,7 +49,7 @@ export function useMessages(conversationId: string) {
       ),
     initialPageParam: undefined,
     getNextPageParam: cursorNextPage,
-    refetchInterval: 3000,
+    refetchInterval: 2000,
     ...CACHE_DURATIONS.chatMessages,
   });
 }
@@ -96,7 +96,7 @@ export function useChatUnreadCount() {
       setUnreadCount(count);
       return count;
     },
-    refetchInterval: 30000,
+    refetchInterval: 5000,
     ...CACHE_DURATIONS.chat,
   });
 }

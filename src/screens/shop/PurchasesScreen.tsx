@@ -33,7 +33,7 @@ export default function PurchasesScreen() {
                 productId: item.product.id,
               })
             }
-            className="flex-row items-center p-4 bg-surface rounded-xl mb-3"
+            className="flex-row items-center p-4 bg-surfaceContainerLowest rounded-xl mb-3"
           >
             <View className="flex-1">
               <Text className="text-base font-semibold text-textPrimary">

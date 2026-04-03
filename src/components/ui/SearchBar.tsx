@@ -32,8 +32,8 @@ export default function SearchBar({
   };
 
   return (
-    <View className="flex-row items-center bg-surface border border-border rounded-lg px-3 py-2">
-      <Ionicons name="search-outline" size={20} color="#6B7280" />
+    <View className="flex-row items-center bg-surfaceContainerHigh rounded-xl px-3 py-2">
+      <Ionicons name="search-outline" size={20} color="#897173" />
       <TextInput
         value={value}
         onChangeText={handleChange}
@@ -41,10 +41,11 @@ export default function SearchBar({
         placeholderTextColor={colors.textTertiary}
         className="flex-1 ml-2 text-base text-textPrimary"
         returnKeyType="search"
+        style={{ fontFamily: "Inter_400Regular" }}
       />
       {value.length > 0 && (
         <Pressable onPress={handleClear}>
-          <Ionicons name="close-circle" size={20} color="#9CA3AF" />
+          <Ionicons name="close-circle" size={20} color={colors.textTertiary} />
         </Pressable>
       )}
     </View>

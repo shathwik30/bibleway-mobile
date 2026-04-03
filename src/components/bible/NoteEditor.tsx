@@ -29,7 +29,7 @@ export default function NoteEditor({
         placeholder="Write your note..."
         placeholderTextColor={colors.textTertiary}
         multiline
-        className="text-base text-textPrimary bg-surface rounded-xl p-3 min-h-[120px] border border-border"
+        className="text-base text-textPrimary bg-surfaceContainerHigh rounded-xl p-3 min-h-[120px]"
         textAlignVertical="top"
       />
       <View className="flex-row justify-end mt-3 gap-2">

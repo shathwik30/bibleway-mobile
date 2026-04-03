@@ -53,8 +53,8 @@ export default function LanguageSettingsScreen() {
     <SafeAreaScreen>
       <ScreenHeader title="Language" />
 
-      <View className="mx-4 mt-2 mb-3 bg-gray-100 rounded-xl flex-row items-center px-3">
-        <Ionicons name="search" size={18} color="#9CA3AF" />
+      <View className="mx-4 mt-2 mb-3 bg-surfaceContainerHigh rounded-xl flex-row items-center px-3">
+        <Ionicons name="search" size={18} color="#897173" />
         <TextInput
           className="flex-1 py-2.5 px-2 text-sm text-textPrimary"
           placeholder="Search languages..."
@@ -64,7 +64,7 @@ export default function LanguageSettingsScreen() {
         />
         {search.length > 0 && (
           <Pressable onPress={() => setSearch("")}>
-            <Ionicons name="close-circle" size={18} color="#9CA3AF" />
+            <Ionicons name="close-circle" size={18} color="#897173" />
           </Pressable>
         )}
       </View>
@@ -76,8 +76,8 @@ export default function LanguageSettingsScreen() {
         renderItem={({ item }) => (
           <Pressable
             onPress={() => handleSelectLanguage(item.code)}
-            className={`flex-row items-center justify-between p-4 bg-surface rounded-xl mb-2 ${
-              currentLanguage === item.code ? "border border-primary/30" : ""
+            className={`flex-row items-center justify-between p-4 rounded-xl mb-2 ${
+              currentLanguage === item.code ? "bg-primary/5" : "bg-surfaceContainerLowest"
             }`}
           >
             <View className="flex-1 mr-3">

@@ -49,7 +49,7 @@ export default function CommentInput({
 
   return (
     <View>
-      <View className="flex-row items-end px-4 py-2 border-t border-border bg-white">
+      <View className="flex-row items-end px-4 py-2 bg-surfaceContainerLowest">
         <Pressable onPress={toggleStickers} className="p-2 mr-1">
           <Ionicons
             name={showStickers ? "close-circle-outline" : "happy-outline"}

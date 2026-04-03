@@ -115,10 +115,10 @@ function CellButton({
           if (!value && !disabled) onPress();
         }}
         disabled={disabled}
-        className={`w-24 h-24 rounded-xl items-center justify-center border border-border ${bgClass}`}
+        className={`w-24 h-24 rounded-xl items-center justify-center ${bgClass}`}
       >
-        {value === "X" && <Ionicons name="add" size={48} color="#4A6FA5" />}
-        {value === "O" && <Ionicons name="star" size={36} color="#D4A373" />}
+        {value === "X" && <Ionicons name="add" size={48} color="#59021a" />}
+        {value === "O" && <Ionicons name="star" size={36} color="#eac16a" />}
       </Pressable>
     </View>
   );
@@ -132,7 +132,7 @@ function ModeToggle({
   onToggle: (m: GameMode) => void;
 }) {
   return (
-    <View className="flex-row bg-surface rounded-xl border border-border overflow-hidden mb-5">
+    <View className="flex-row bg-surfaceContainerLow rounded-xl overflow-hidden mb-5">
       <Pressable
         onPress={() => onToggle("1P")}
         className={`flex-1 flex-row items-center justify-center py-2.5 px-4 ${
@@ -142,7 +142,7 @@ function ModeToggle({
         <Ionicons
           name="person-outline"
           size={16}
-          color={mode === "1P" ? "#FFFFFF" : "#6B7280"}
+          color={mode === "1P" ? "#FFFFFF" : "#564243"}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
@@ -161,7 +161,7 @@ function ModeToggle({
         <Ionicons
           name="people-outline"
           size={16}
-          color={mode === "2P" ? "#FFFFFF" : "#6B7280"}
+          color={mode === "2P" ? "#FFFFFF" : "#564243"}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
@@ -303,7 +303,7 @@ export default function TicTacToeScreen() {
         title="Tic Tac Toe"
         rightAction={
           <Pressable onPress={resetScores} className="p-1">
-            <Ionicons name="refresh-outline" size={22} color="#1A1A2E" />
+            <Ionicons name="refresh-outline" size={22} color="#1c1b1b" />
           </Pressable>
         }
       />
@@ -311,10 +311,10 @@ export default function TicTacToeScreen() {
       <View className="flex-1 items-center justify-center px-4">
         <ModeToggle mode={mode} onToggle={handleModeChange} />
 
-        <View className="flex-row items-center mb-6 bg-white rounded-xl border border-border overflow-hidden">
+        <View className="flex-row items-center mb-6 bg-surfaceContainerLowest rounded-xl overflow-hidden">
           <View className="items-center px-6 py-3">
             <View className="flex-row items-center mb-1">
-              <Ionicons name="add" size={18} color="#4A6FA5" />
+              <Ionicons name="add" size={18} color="#59021a" />
               <Text className="text-xs font-semibold text-primary ml-0.5">
                 {youLabel}
               </Text>
@@ -323,14 +323,14 @@ export default function TicTacToeScreen() {
               {scores.X}
             </Text>
           </View>
-          <View className="w-px h-12 bg-border" />
+          <View className="w-px h-12 bg-surfaceContainerHigh" />
           <View className="items-center px-5 py-3">
             <Text className="text-sm font-semibold text-textSecondary">VS</Text>
           </View>
-          <View className="w-px h-12 bg-border" />
+          <View className="w-px h-12 bg-surfaceContainerHigh" />
           <View className="items-center px-6 py-3">
             <View className="flex-row items-center mb-1">
-              <Ionicons name="star" size={14} color="#D4A373" />
+              <Ionicons name="star" size={14} color="#eac16a" />
               <Text className="text-xs font-semibold text-secondary ml-1">
                 {opponentLabel}
               </Text>

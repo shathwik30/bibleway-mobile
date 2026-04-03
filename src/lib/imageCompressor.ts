@@ -8,7 +8,7 @@ import {
 export async function compressImage(uri: string): Promise<string> {
   const result = await ImageManipulator.manipulateAsync(
     uri,
-    [{ resize: { width: IMAGE_MAX_WIDTH, height: IMAGE_MAX_HEIGHT } }],
+    [{ resize: { width: IMAGE_MAX_WIDTH } }],
     {
       compress: IMAGE_QUALITY,
       format: ImageManipulator.SaveFormat.JPEG,

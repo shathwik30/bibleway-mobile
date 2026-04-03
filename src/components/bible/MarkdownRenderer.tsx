@@ -7,32 +7,37 @@ interface MarkdownRendererProps {
 }
 
 const markdownStyles = {
-  body: { color: "#1A1A2E", fontSize: 16, lineHeight: 26 },
+  body: {
+    color: "#1c1b1b",
+    fontSize: 16,
+    lineHeight: 26,
+    fontFamily: "Inter_400Regular",
+  },
   heading1: {
     fontSize: 24,
-    fontWeight: "bold" as const,
-    color: "#1A1A2E",
+    fontFamily: "PlayfairDisplay_700Bold",
+    color: "#1c1b1b",
     marginBottom: 8,
   },
   heading2: {
     fontSize: 20,
-    fontWeight: "bold" as const,
-    color: "#1A1A2E",
+    fontFamily: "PlayfairDisplay_700Bold",
+    color: "#1c1b1b",
     marginBottom: 6,
   },
   heading3: {
     fontSize: 18,
-    fontWeight: "600" as const,
-    color: "#1A1A2E",
+    fontFamily: "Inter_600SemiBold",
+    color: "#1c1b1b",
     marginBottom: 4,
   },
   paragraph: { marginBottom: 12 },
   listItem: { marginBottom: 4 },
-  link: { color: "#4A6FA5" },
+  link: { color: "#59021a" },
   blockquote: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "#f6f3f2",
     borderLeftWidth: 4,
-    borderLeftColor: "#4A6FA5",
+    borderLeftColor: "#59021a",
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginBottom: 12,

@@ -160,9 +160,9 @@ function LevelSelect({
                     borderColor: completed
                       ? "#22C55E"
                       : locked
-                        ? "#E5E7EB"
-                        : "#4A6FA5",
-                    backgroundColor: completed ? "#ECFDF5" : "#F8F9FA",
+                        ? "#e5e2e1"
+                        : "#59021a",
+                    backgroundColor: completed ? "#ECFDF5" : "#fcf9f8",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
@@ -174,7 +174,7 @@ function LevelSelect({
                       color="#22C55E"
                     />
                   ) : locked ? (
-                    <Ionicons name="lock-closed" size={24} color="#9CA3AF" />
+                    <Ionicons name="lock-closed" size={24} color="#897173" />
                   ) : (
                     <Text className="text-xl font-bold text-primary">
                       {level.id}
@@ -186,8 +186,8 @@ function LevelSelect({
                       color: completed
                         ? "#22C55E"
                         : locked
-                          ? "#9CA3AF"
-                          : "#4A6FA5",
+                          ? "#897173"
+                          : "#59021a",
                     }}
                   >
                     {level.title}
@@ -326,10 +326,10 @@ export default function FindDifferenceScreen() {
 
             <Pressable
               onPress={() => startLevel(levelId)}
-              className="rounded-2xl py-4 mb-3 border border-border flex-row items-center justify-center"
+              className="rounded-2xl py-4 mb-3 bg-surfaceContainerLow flex-row items-center justify-center"
               style={{ width: SW - 80, gap: 8 }}
             >
-              <Ionicons name="refresh-outline" size={18} color="#6B7280" />
+              <Ionicons name="refresh-outline" size={18} color="#564243" />
               <Text className="text-textSecondary font-semibold">
                 Play Again
               </Text>
@@ -350,13 +350,13 @@ export default function FindDifferenceScreen() {
 
     if (!submitted) {
       return {
-        borderColor: isSelected ? "#4A6FA5" : "#E5E7EB",
+        borderColor: isSelected ? "#59021a" : "#e5e2e1",
         backgroundColor: isSelected ? "#EFF6FF" : "#FFFFFF",
-        iconColor: isSelected ? "#4A6FA5" : "#D1D5DB",
+        iconColor: isSelected ? "#59021a" : "#e5e2e1",
         iconName: isSelected
           ? ("checkbox" as const)
           : ("square-outline" as const),
-        textColor: isSelected ? "#4A6FA5" : "#1A1A2E",
+        textColor: isSelected ? "#59021a" : "#1c1b1b",
       };
     }
 
@@ -380,19 +380,19 @@ export default function FindDifferenceScreen() {
     }
     if (!isCorrect && isSelected) {
       return {
-        borderColor: "#EF4444",
+        borderColor: "#ba1a1a",
         backgroundColor: "#FEF2F2",
-        iconColor: "#EF4444",
+        iconColor: "#ba1a1a",
         iconName: "close-circle" as const,
         textColor: "#991B1B",
       };
     }
     return {
-      borderColor: "#E5E7EB",
+      borderColor: "#e5e2e1",
       backgroundColor: "#FFFFFF",
-      iconColor: "#D1D5DB",
+      iconColor: "#e5e2e1",
       iconName: "square-outline" as const,
-      textColor: "#6B7280",
+      textColor: "#564243",
     };
   };
 
@@ -482,7 +482,7 @@ export default function FindDifferenceScreen() {
               className="flex-row items-center"
               style={{ gap: 3 }}
             >
-              <Ionicons name="expand-outline" size={14} color="#4A6FA5" />
+              <Ionicons name="expand-outline" size={14} color="#59021a" />
               <Text className="text-xs font-semibold text-primary">Zoom</Text>
             </Pressable>
           </View>
@@ -494,7 +494,7 @@ export default function FindDifferenceScreen() {
                 height: imgHeight,
                 borderRadius: 12,
                 borderWidth: 1.5,
-                borderColor: "#E5E7EB",
+                borderColor: "#e5e2e1",
               }}
               resizeMode="cover"
             />
@@ -511,7 +511,7 @@ export default function FindDifferenceScreen() {
               className="flex-row items-center"
               style={{ gap: 3 }}
             >
-              <Ionicons name="expand-outline" size={14} color="#4A6FA5" />
+              <Ionicons name="expand-outline" size={14} color="#59021a" />
               <Text className="text-xs font-semibold text-primary">Zoom</Text>
             </Pressable>
           </View>
@@ -523,7 +523,7 @@ export default function FindDifferenceScreen() {
                 height: imgHeight,
                 borderRadius: 12,
                 borderWidth: 1.5,
-                borderColor: "#E5E7EB",
+                borderColor: "#e5e2e1",
               }}
               resizeMode="cover"
             />

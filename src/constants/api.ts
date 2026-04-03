@@ -9,8 +9,8 @@ export const API_BASE_URL =
 export const API_TIMEOUT = 30000;
 
 export const CACHE_DURATIONS = {
-  feed: { staleTime: 30 * 1000, gcTime: 5 * 60 * 1000 },
-  profile: { staleTime: 5 * 60 * 1000, gcTime: 30 * 60 * 1000 },
+  feed: { staleTime: 0, gcTime: 5 * 60 * 1000 },
+  profile: { staleTime: 0, gcTime: 30 * 60 * 1000 },
   verseOfDay: { staleTime: 60 * 60 * 1000, gcTime: 24 * 60 * 60 * 1000 },
   bibleVersions: {
     staleTime: 24 * 60 * 60 * 1000,
@@ -21,9 +21,9 @@ export const CACHE_DURATIONS = {
     gcTime: 30 * 24 * 60 * 60 * 1000,
   },
   segregatedPages: { staleTime: 30 * 60 * 1000, gcTime: 2 * 60 * 60 * 1000 },
-  shopProducts: { staleTime: 10 * 60 * 1000, gcTime: 60 * 60 * 1000 },
-  notifications: { staleTime: 10 * 1000, gcTime: 5 * 60 * 1000 },
-  unreadCount: { staleTime: 10 * 1000, gcTime: 60 * 1000 },
-  chat: { staleTime: 5 * 1000, gcTime: 5 * 60 * 1000 },
-  chatMessages: { staleTime: 3 * 1000, gcTime: 5 * 60 * 1000 },
+  shopProducts: { staleTime: 0, gcTime: 60 * 60 * 1000 },
+  notifications: { staleTime: 0, gcTime: 5 * 60 * 1000 },
+  unreadCount: { staleTime: 0, gcTime: 60 * 1000 },
+  chat: { staleTime: 0, gcTime: 5 * 60 * 1000 },
+  chatMessages: { staleTime: 0, gcTime: 5 * 60 * 1000 },
 } as const;

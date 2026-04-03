@@ -11,7 +11,7 @@ export default function SafeAreaScreen({
   edges = ["top"],
 }: SafeAreaScreenProps) {
   return (
-    <SafeAreaView edges={edges} className="flex-1 bg-white">
+    <SafeAreaView edges={edges} className="flex-1 bg-surface">
       {children}
     </SafeAreaView>
   );

@@ -14,7 +14,7 @@ interface TabBarProps {
 
 export default function TabBar({ tabs, activeTab, onTabChange }: TabBarProps) {
   return (
-    <View className="flex-row border-b border-border">
+    <View className="flex-row bg-surfaceContainerLow">
       {tabs.map((tab) => (
         <Pressable
           key={tab.key}
@@ -24,9 +24,15 @@ export default function TabBar({ tabs, activeTab, onTabChange }: TabBarProps) {
           }`}
         >
           <Text
-            className={`text-sm font-semibold ${
+            className={`text-sm ${
               activeTab === tab.key ? "text-primary" : "text-textSecondary"
             }`}
+            style={{
+              fontFamily:
+                activeTab === tab.key
+                  ? "Inter_600SemiBold"
+                  : "Inter_500Medium",
+            }}
           >
             {tab.label}
           </Text>

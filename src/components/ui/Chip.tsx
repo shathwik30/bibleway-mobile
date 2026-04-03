@@ -12,7 +12,7 @@ export default function Chip({ label, selected = false, onPress }: ChipProps) {
     <Pressable
       onPress={onPress}
       className={`px-3 py-1.5 rounded-full mr-2 mb-2 ${
-        selected ? "bg-primary" : "bg-surface border border-border"
+        selected ? "bg-primary" : "bg-surfaceContainerLow"
       }`}
     >
       <Text
