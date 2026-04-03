@@ -13,7 +13,7 @@ import Button from "@/components/ui/Button";
 import { useLogin, useGoogleAuth } from "@/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { successHaptic } from "@/lib/haptics";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { signInWithGoogle, getFirebaseIdToken } from "@/lib/firebase";
 import GoogleLogo from "@/components/ui/GoogleLogo";
 import { AuthStackParamList } from "@/types/navigation";
 
@@ -42,20 +42,11 @@ export default function LoginScreen() {
 
   const handleGoogleSignIn = async () => {
     try {
-      await GoogleSignin.hasPlayServices();
-      const response = await GoogleSignin.signIn();
+      const userCredential = await signInWithGoogle();
+      const firebaseIdToken = await getFirebaseIdToken();
 
-      if (response.type === "cancelled") {
-        return;
-      }
-
-      const idToken = response.data?.idToken;
-      if (!idToken) {
-        showToast("error", "Error", "Failed to get Google credentials");
-        return;
-      }
       googleAuthMutation.mutate(
-        { id_token: idToken },
+        { id_token: firebaseIdToken },
         {
           onSuccess: (data) => {
             if (data.is_new_user && data.google_user) {
@@ -63,7 +54,7 @@ export default function LoginScreen() {
                 email: data.google_user.email,
                 fullName: data.google_user.full_name,
                 profilePhoto: data.google_user.profile_photo,
-                idToken,
+                idToken: firebaseIdToken,
               });
             } else {
               successHaptic();
@@ -79,6 +70,7 @@ export default function LoginScreen() {
         },
       );
     } catch (error) {
+      if (error instanceof Error && error.message === "cancelled") return;
       const message =
         error instanceof Error ? error.message : "Google sign-in failed";
       showToast("error", "Error", message);

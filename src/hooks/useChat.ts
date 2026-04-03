@@ -115,3 +115,24 @@ export function useMarkMessagesRead(conversationId: string) {
     },
   });
 }
+
+interface TranslateResult {
+  translated_text: string;
+  source_language: string;
+  target_language: string;
+}
+
+interface TranslateRequest {
+  messageId: string;
+  targetLanguage: string;
+}
+
+export function useTranslateMessage() {
+  return useMutation<TranslateResult, Error, TranslateRequest>({
+    mutationFn: ({ messageId, targetLanguage }: TranslateRequest) =>
+      api.post<TranslateResult>(ENDPOINTS.chat.translateMessage, {
+        message_id: messageId,
+        target_language: targetLanguage,
+      }),
+  });
+}

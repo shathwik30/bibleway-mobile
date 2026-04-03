@@ -91,5 +91,6 @@ export const ENDPOINTS = {
     markRead: (conversationId: string) =>
       `/chat/conversations/${conversationId}/messages/mark-read/`,
     unreadCount: "/chat/unread-count/",
+    translateMessage: "/chat/messages/translate/",
   },
 } as const;

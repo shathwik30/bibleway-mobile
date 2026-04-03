@@ -9,6 +9,7 @@ import {
 } from "@/lib/secureStorage";
 import { mmkvStorage } from "@/lib/storage";
 import { deregisterPushNotifications } from "@/lib/pushNotifications";
+import { firebaseSignOut } from "@/lib/firebase";
 import { AuthTokens } from "@/types/api";
 
 interface AuthState {
@@ -62,6 +63,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     }
     await deleteSecureValue("refresh_token");
+    await firebaseSignOut().catch(() => {});
     set({
       accessToken: null,
       user: null,

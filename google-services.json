@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "464428453684",
+    "project_id": "bibleway-b520d",
+    "storage_bucket": "bibleway-b520d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464428453684:android:1933b4973ddea5d2011f61",
+        "android_client_info": {
+          "package_name": "com.bibleway.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "464428453684-12jr7morc15106gqsijle1af159053dq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bibleway.io",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "464428453684-egdgbumo7n5g0mv55b4p7s2mcfrjvunp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBczIw_UXPyzrhrsxSPEvRgFBArTgUpLcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "464428453684-egdgbumo7n5g0mv55b4p7s2mcfrjvunp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "464428453684-vnnlnam9b71sj246h32q2t914958a3jd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bibleway.io"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

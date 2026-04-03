@@ -16,6 +16,7 @@ import CountryPicker from "@/components/ui/CountryPicker";
 import { useGoogleAuth } from "@/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { successHaptic } from "@/lib/haptics";
+import { getFirebaseIdToken } from "@/lib/firebase";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import type { AuthStackParamList } from "@/types/navigation";
 
@@ -66,26 +67,36 @@ export default function GoogleCompleteProfileScreen() {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    googleAuth.mutate(
-      {
-        id_token: idToken,
-        date_of_birth: data.date_of_birth,
-        gender: data.gender,
-        country: data.country,
-        preferred_language: data.preferred_language,
-      },
-      {
-        onSuccess: (result) => {
-          if (!result.is_new_user) {
-            successHaptic();
-          }
+  const onSubmit = async (data: FormData) => {
+    try {
+      // Get a fresh Firebase token in case the original expired
+      const freshToken = await getFirebaseIdToken();
+      googleAuth.mutate(
+        {
+          id_token: freshToken,
+          date_of_birth: data.date_of_birth,
+          gender: data.gender,
+          country: data.country,
+          preferred_language: data.preferred_language,
         },
-        onError: (error) => {
-          showToast("error", "Error", error.message || "Something went wrong");
+        {
+          onSuccess: (result) => {
+            if (!result.is_new_user) {
+              successHaptic();
+            }
+          },
+          onError: (error) => {
+            showToast(
+              "error",
+              "Error",
+              error.message || "Something went wrong",
+            );
+          },
         },
-      },
-    );
+      );
+    } catch {
+      showToast("error", "Error", "Session expired. Please try again.");
+    }
   };
 
   return (
