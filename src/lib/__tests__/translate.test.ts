@@ -1,6 +1,5 @@
 import { translateText } from "../translate";
 
-// Mock the global fetch function
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
@@ -13,8 +12,6 @@ function makeFetchResponse(segments: string[][]) {
 
 beforeEach(() => {
   mockFetch.mockReset();
-  // Clear the module-level cache by re-requiring
-  // Since translateText uses a module-level Map, we need to isolate between test groups
 });
 
 describe("translateText", () => {
@@ -80,16 +77,14 @@ describe("translateText", () => {
 
   describe("caching", () => {
     it("returns cached result on second call with same params", async () => {
-      mockFetch.mockResolvedValueOnce(
-        makeFetchResponse([["Ciao", "Hello"]]),
-      );
+      mockFetch.mockResolvedValueOnce(makeFetchResponse([["Ciao", "Hello"]]));
 
       const first = await translateText("Hello", "it", "en");
       const second = await translateText("Hello", "it", "en");
 
       expect(first).toBe("Ciao");
       expect(second).toBe("Ciao");
-      // Only one fetch call for both invocations
+
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
 
@@ -107,16 +102,13 @@ describe("translateText", () => {
 
   describe("chunk splitting", () => {
     it("sends a single chunk for short text", async () => {
-      mockFetch.mockResolvedValueOnce(
-        makeFetchResponse([["Corto", "Short"]]),
-      );
+      mockFetch.mockResolvedValueOnce(makeFetchResponse([["Corto", "Short"]]));
 
       await translateText("Short", "es", "en");
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
 
     it("splits long text into multiple chunks and joins results", async () => {
-      // Create text longer than 4000 characters
       const longText = "A".repeat(4500);
 
       mockFetch

@@ -1,13 +1,9 @@
-/* global jest */
-
-// ---- expo-secure-store ----
 jest.mock("expo-secure-store", () => ({
   getItemAsync: jest.fn().mockResolvedValue(null),
   setItemAsync: jest.fn().mockResolvedValue(undefined),
   deleteItemAsync: jest.fn().mockResolvedValue(undefined),
 }));
 
-// ---- expo-haptics ----
 jest.mock("expo-haptics", () => ({
   impactAsync: jest.fn().mockResolvedValue(undefined),
   notificationAsync: jest.fn().mockResolvedValue(undefined),
@@ -24,12 +20,10 @@ jest.mock("expo-haptics", () => ({
   },
 }));
 
-// ---- expo-image ----
 jest.mock("expo-image", () => ({
   Image: "ExpoImage",
 }));
 
-// ---- expo-video ----
 jest.mock("expo-video", () => ({
   VideoView: "VideoView",
   useVideoPlayer: jest.fn(() => ({
@@ -41,7 +35,6 @@ jest.mock("expo-video", () => ({
   })),
 }));
 
-// ---- @react-navigation/native ----
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(() => ({
     navigate: jest.fn(),
@@ -61,7 +54,6 @@ jest.mock("@react-navigation/native", () => ({
   })),
 }));
 
-// ---- react-native-reanimated ----
 jest.mock("react-native-reanimated", () => {
   const { View } = require("react-native");
   return {
@@ -102,7 +94,6 @@ jest.mock("react-native-reanimated", () => {
   };
 });
 
-// ---- react-native-toast-message ----
 jest.mock("react-native-toast-message", () => {
   const show = jest.fn();
   const hide = jest.fn();
@@ -115,7 +106,6 @@ jest.mock("react-native-toast-message", () => {
   };
 });
 
-// ---- @react-native-async-storage/async-storage ----
 jest.mock("@react-native-async-storage/async-storage", () => ({
   getItem: jest.fn().mockResolvedValue(null),
   setItem: jest.fn().mockResolvedValue(undefined),
@@ -125,7 +115,6 @@ jest.mock("@react-native-async-storage/async-storage", () => ({
   clear: jest.fn().mockResolvedValue(undefined),
 }));
 
-// ---- suppress noisy warnings in test output ----
 const originalWarn = console.warn;
 console.warn = (...args) => {
   if (

@@ -2,7 +2,6 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 import Button from "../Button";
 
-// Mock the theme colors used in Button
 jest.mock("@/theme/colors", () => ({
   colors: {
     primary: { DEFAULT: "#4A6FA5", light: "#7B9FD4", dark: "#2D4A7A" },
@@ -64,7 +63,7 @@ describe("Button", () => {
   describe("loading state", () => {
     it("shows an ActivityIndicator when loading is true", () => {
       render(<Button {...defaultProps} loading />);
-      // The title text should NOT be rendered when loading
+
       expect(screen.queryByText("Press Me")).toBeNull();
     });
 

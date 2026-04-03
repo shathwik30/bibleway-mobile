@@ -58,7 +58,12 @@ export default function GoogleCompleteProfileScreen() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { date_of_birth: "", gender: "", country: "", preferred_language: "en" },
+    defaultValues: {
+      date_of_birth: "",
+      gender: "",
+      country: "",
+      preferred_language: "en",
+    },
   });
 
   const onSubmit = (data: FormData) => {

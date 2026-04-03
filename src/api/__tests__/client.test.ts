@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosHeaders } from "axios";
 
-// Mock all dependencies the client uses
 jest.mock("@/constants/api", () => ({
   API_BASE_URL: "http://localhost:8000/api/v1",
   API_TIMEOUT: 30000,
@@ -29,7 +28,6 @@ jest.mock("@/api/endpoints", () => ({
   },
 }));
 
-// We need to mock axios.create to return an instance we can control
 const mockInterceptorsRequest = {
   use: jest.fn(),
   eject: jest.fn(),
@@ -80,16 +78,10 @@ describe("API Client", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Re-require the module to capture interceptors
     jest.isolateModules(() => {
       require("../client");
     });
 
-    // The client registers:
-    //   1. request interceptor (token injection + deduplication)
-    //   2. response interceptor #1 (deduplication cleanup)
-    //   3. response interceptor #2 (network retry)
-    //   4. response interceptor #3 (envelope unwrap + token refresh)
     expect(mockInterceptorsRequest.use).toHaveBeenCalledTimes(1);
     expect(mockInterceptorsResponse.use).toHaveBeenCalledTimes(3);
 
@@ -97,8 +89,7 @@ describe("API Client", () => {
       mockInterceptorsRequest.use.mock.calls[0];
     [responseDeduplicationInterceptor, deduplicationErrorHandler] =
       mockInterceptorsResponse.use.mock.calls[0];
-    [, networkRetryErrorHandler] =
-      mockInterceptorsResponse.use.mock.calls[1];
+    [, networkRetryErrorHandler] = mockInterceptorsResponse.use.mock.calls[1];
     [responseEnvelopeInterceptor, envelopeAndRefreshErrorHandler] =
       mockInterceptorsResponse.use.mock.calls[2];
   });
@@ -171,7 +162,6 @@ describe("API Client", () => {
         logout: jest.fn(),
       });
 
-      // First request
       const config1 = {
         headers: new AxiosHeaders(),
         method: "get",
@@ -181,7 +171,6 @@ describe("API Client", () => {
       const result1 = requestInterceptor(config1);
       const controller1Signal = result1.signal;
 
-      // Second identical request should abort the first
       const config2 = {
         headers: new AxiosHeaders(),
         method: "get",
@@ -190,7 +179,6 @@ describe("API Client", () => {
       };
       requestInterceptor(config2);
 
-      // The first controller's signal should be aborted
       expect(controller1Signal.aborted).toBe(true);
     });
 
@@ -236,7 +224,6 @@ describe("API Client", () => {
       };
       requestInterceptor(config2);
 
-      // First request should NOT be aborted since params differ
       expect(result1.signal.aborted).toBe(false);
     });
   });
@@ -263,7 +250,7 @@ describe("API Client", () => {
       const config = {
         method: "get",
         url: "/test",
-        _networkRetry: 3, // Already at max
+        _networkRetry: 3,
       };
       Object.assign(networkError, { config });
 
@@ -329,7 +316,7 @@ describe("API Client", () => {
       };
 
       const result = responseEnvelopeInterceptor(response);
-      // Should not unwrap because there's no 'message' key
+
       expect(result.data).toEqual({ data: { id: 1 } });
     });
   });
@@ -380,7 +367,6 @@ describe("API Client", () => {
         config: { method: "get", url: "/items", params: { page: 1 } },
       };
 
-      // Should not throw
       const result = responseDeduplicationInterceptor(response);
       expect(result.data).toEqual({ ok: true });
     });
@@ -388,7 +374,6 @@ describe("API Client", () => {
     it("cleans up pending requests on error response", async () => {
       const error = { config: { method: "get", url: "/items" } };
 
-      // The error handler re-rejects the error
       await expect(deduplicationErrorHandler(error)).rejects.toEqual(error);
     });
   });

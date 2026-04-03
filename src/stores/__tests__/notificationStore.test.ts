@@ -2,7 +2,6 @@ import { useNotificationStore } from "../notificationStore";
 
 describe("notificationStore", () => {
   beforeEach(() => {
-    // Reset store to defaults before each test
     useNotificationStore.setState({ unreadCount: 0 });
   });
 

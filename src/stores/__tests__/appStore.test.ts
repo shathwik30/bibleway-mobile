@@ -1,4 +1,3 @@
-// Mock dependencies before importing the store
 jest.mock("@/lib/storage", () => {
   const store: Record<string, string> = {};
   return {

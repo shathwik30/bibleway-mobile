@@ -1,4 +1,3 @@
-// Mock all external dependencies before importing the store
 jest.mock("@/api/client", () => ({
   api: {
     get: jest.fn(),
@@ -97,7 +96,6 @@ const fakeUser: UserProfile = {
 
 describe("authStore", () => {
   beforeEach(() => {
-    // Reset the store to its default state
     useAuthStore.setState({
       accessToken: null,
       user: null,

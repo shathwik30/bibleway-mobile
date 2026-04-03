@@ -9,7 +9,7 @@ describe("Avatar", () => {
         <Avatar source="https://example.com/photo.jpg" name="John Doe" />,
       );
       const tree = toJSON();
-      // The component renders ExpoImage (mocked as a string component name)
+
       expect(tree).toBeTruthy();
     });
 
@@ -22,7 +22,7 @@ describe("Avatar", () => {
         />,
       );
       const tree = toJSON() as any;
-      // expo-image is rendered as "ExpoImage" via the mock, check the style prop
+
       expect(tree.props.style).toEqual(
         expect.objectContaining({
           width: 60,

@@ -1,12 +1,12 @@
-import './global.css';
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { View, Image } from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import AppProviders from '@/providers/AppProviders';
-import RootNavigator from '@/navigation/RootNavigator';
-import { initStorage } from '@/lib/storage';
+import "./global.css";
+import React, { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { View, Image } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import AppProviders from "@/providers/AppProviders";
+import RootNavigator from "@/navigation/RootNavigator";
+import { initStorage } from "@/lib/storage";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,9 +35,16 @@ export default function App() {
 
   if (!storageReady) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#FFFFFF",
+        }}
+      >
         <Image
-          source={require('./assets/logo.png')}
+          source={require("./assets/logo.png")}
           style={{ width: 220, height: 80 }}
           resizeMode="contain"
         />
