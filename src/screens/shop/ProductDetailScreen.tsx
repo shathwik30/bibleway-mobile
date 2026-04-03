@@ -13,6 +13,7 @@ import {
 } from "@/hooks/useShop";
 import { initIAP, teardownIAP, purchaseShopProduct } from "@/lib/iap";
 import { showToast } from "@/components/ui/Toast";
+import { useSignedUrl } from "@/hooks/useSignedUrl";
 import type { ShopStackParamList } from "@/types/navigation";
 
 export default function ProductDetailScreen() {
@@ -22,6 +23,7 @@ export default function ProductDetailScreen() {
   const purchaseMutation = useCreatePurchase();
   const { refetch: fetchDownload } = useDownload(productId);
   const [purchasing, setPurchasing] = useState(false);
+  const signedCover = useSignedUrl(product?.cover_image);
 
   useEffect(() => {
     initIAP().catch(() => {});
@@ -104,9 +106,9 @@ export default function ProductDetailScreen() {
     <SafeAreaScreen>
       <ScreenHeader title={product.title} />
       <ScrollView className="flex-1">
-        {product.cover_image && (
+        {signedCover && (
           <Image
-            source={{ uri: product.cover_image }}
+            source={{ uri: signedCover }}
             placeholder={{ blurhash: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH" }}
             className="w-full h-64"
             contentFit="cover"
