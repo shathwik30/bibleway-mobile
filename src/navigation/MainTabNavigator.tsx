@@ -4,11 +4,13 @@ import { useTranslation } from "react-i18next";
 import * as Haptics from "expo-haptics";
 import { MainTabParamList } from "@/types/navigation";
 import HomeStackNavigator from "./HomeStackNavigator";
+import ChatStackNavigator from "./ChatStackNavigator";
 import BibleStackNavigator from "./BibleStackNavigator";
 import ShopStackNavigator from "./ShopStackNavigator";
 import GamesStackNavigator from "./GamesStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import { useNotificationStore } from "@/stores/notificationStore";
+import { useChatStore } from "@/stores/chatStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -17,6 +19,7 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 export default function MainTabNavigator() {
   const { t } = useTranslation();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
+  const chatUnreadCount = useChatStore((s) => s.unreadCount);
   const insets = useSafeAreaInsets();
 
   const hapticListeners = () => ({
@@ -56,6 +59,18 @@ export default function MainTabNavigator() {
             <Ionicons name="home-outline" size={size} color={color} />
           ),
           tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
+        }}
+        listeners={hapticListeners}
+      />
+      <Tab.Screen
+        name="ChatTab"
+        component={ChatStackNavigator}
+        options={{
+          tabBarLabel: t("chat.chat", { defaultValue: "Chat" }),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="chatbubble-outline" size={size} color={color} />
+          ),
+          tabBarBadge: chatUnreadCount > 0 ? chatUnreadCount : undefined,
         }}
         listeners={hapticListeners}
       />

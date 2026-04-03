@@ -84,4 +84,12 @@ export const ENDPOINTS = {
     today: "/verse-of-day/today/",
     byDate: (dateStr: string) => `/verse-of-day/${dateStr}/`,
   },
+  chat: {
+    conversations: "/chat/conversations/",
+    messages: (conversationId: string) =>
+      `/chat/conversations/${conversationId}/messages/`,
+    markRead: (conversationId: string) =>
+      `/chat/conversations/${conversationId}/messages/mark-read/`,
+    unreadCount: "/chat/unread-count/",
+  },
 } as const;

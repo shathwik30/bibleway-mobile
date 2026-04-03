@@ -24,4 +24,6 @@ export const CACHE_DURATIONS = {
   shopProducts: { staleTime: 10 * 60 * 1000, gcTime: 60 * 60 * 1000 },
   notifications: { staleTime: 10 * 1000, gcTime: 5 * 60 * 1000 },
   unreadCount: { staleTime: 10 * 1000, gcTime: 60 * 1000 },
+  chat: { staleTime: 5 * 1000, gcTime: 5 * 60 * 1000 },
+  chatMessages: { staleTime: 3 * 1000, gcTime: 5 * 60 * 1000 },
 } as const;

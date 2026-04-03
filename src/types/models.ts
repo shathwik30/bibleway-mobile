@@ -451,3 +451,22 @@ export interface BoostAnalyticSnapshot {
   snapshot_date: string;
   created_at: string;
 }
+
+export interface Conversation {
+  id: string;
+  other_user: Author;
+  last_message_text: string;
+  last_message_at: string | null;
+  last_message_is_mine: boolean;
+  unread_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  sender: Author;
+  text: string;
+  is_read: boolean;
+  created_at: string;
+}

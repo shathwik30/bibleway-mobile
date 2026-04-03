@@ -71,8 +71,15 @@ export type ProfileStackParamList = {
   BoostAnalytics: { boostId: string };
 };
 
+export type ChatStackParamList = {
+  ConversationList: undefined;
+  ChatRoom: { conversationId: string; otherUser: { id: string; full_name: string; profile_photo: string | null; age: number } };
+  NewChat: undefined;
+};
+
 export type MainTabParamList = {
   HomeTab: undefined;
+  ChatTab: undefined;
   BibleTab: undefined;
   ShopTab: undefined;
   GamesTab: undefined;
@@ -92,6 +99,7 @@ declare global {
         BibleStackParamList,
         ShopStackParamList,
         GamesStackParamList,
-        ProfileStackParamList {}
+        ProfileStackParamList,
+        ChatStackParamList {}
   }
 }
