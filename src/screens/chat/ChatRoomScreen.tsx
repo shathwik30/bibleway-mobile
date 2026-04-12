@@ -89,10 +89,10 @@ export default function ChatRoomScreen(): React.JSX.Element {
   );
 
   const navigateToProfile = useCallback(() => {
-    (navigation as any).navigate("HomeTab", {
+    navigation.navigate("HomeTab", {
       screen: "UserProfile",
       params: { userId: otherUser.id },
-    });
+    } as never);
   }, [navigation, otherUser.id]);
 
   const handleTranslatePress = () => {

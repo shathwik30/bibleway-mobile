@@ -71,7 +71,7 @@ export default function NotificationsScreen() {
             profile_photo?: string | null;
             age?: number;
           };
-          (navigation as any).navigate("ChatTab", {
+          navigation.navigate("ChatTab", {
             screen: "ChatRoom",
             params: {
               conversationId: String(data.conversation_id),
