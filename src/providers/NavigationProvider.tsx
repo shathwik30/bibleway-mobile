@@ -38,6 +38,7 @@ export default function NavigationProvider({
         const data = response.notification.request.content.data;
         if (!data?.type) return;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- nested navigator params across Main/Tab/Stack levels are too deep for a clean type without a helper. Runtime keys validated by the switch above.
         const nav = navigationRef as any;
 
         switch (data.type) {

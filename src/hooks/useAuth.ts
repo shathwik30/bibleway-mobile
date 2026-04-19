@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
 import { useAuthStore } from "@/stores/authStore";
+import { logger } from "@/utils/logger";
 import { AuthTokens } from "@/types/api";
 import { UserProfile } from "@/types/models";
 
@@ -55,7 +56,9 @@ export function useLogin() {
       try {
         const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
         setUser(profile);
-      } catch {}
+      } catch (err) {
+        logger.warn("[auth] failed to load profile after login", err);
+      }
     },
   });
 }
@@ -73,7 +76,9 @@ export function useGoogleAuth() {
         try {
           const profile = await api.get<UserProfile>(ENDPOINTS.profile.me);
           setUser(profile);
-        } catch {}
+        } catch (err) {
+          logger.warn("[auth] failed to load profile after google auth", err);
+        }
       }
     },
   });

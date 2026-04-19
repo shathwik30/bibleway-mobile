@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { translateText } from "./translate";
+import { logger } from "@/utils/logger";
 
 const CACHE_PREFIX = "i18n_locale_";
 const CACHE_VERSION = 1;
@@ -17,7 +18,9 @@ export async function translateLocale(
   try {
     const cached = await AsyncStorage.getItem(cacheKey);
     if (cached) return JSON.parse(cached) as LocaleObject;
-  } catch {}
+  } catch (err) {
+    logger.debug("[i18n] locale cache read failed", err);
+  }
 
   const flat = flatten(source);
   const keys = Object.keys(flat);
@@ -44,7 +47,9 @@ export async function translateLocale(
 
   try {
     await AsyncStorage.setItem(cacheKey, JSON.stringify(result));
-  } catch {}
+  } catch (err) {
+    logger.warn("[i18n] locale cache write failed", err);
+  }
 
   return result;
 }
