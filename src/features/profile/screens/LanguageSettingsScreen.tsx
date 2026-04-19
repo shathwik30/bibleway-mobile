@@ -12,7 +12,7 @@ import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
-import { useAppStore } from "@/stores/appStore";
+import { useAppStore } from "@/store/appStore";
 import { showToast } from "@/components/ui/Toast";
 
 const BUNDLED_CODES = new Set(["en", "es", "fr", "pt", "hi", "ar", "sw"]);

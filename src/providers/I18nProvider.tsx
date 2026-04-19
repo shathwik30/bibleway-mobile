@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { I18nManager } from "react-native";
-import { useAppStore } from "@/stores/appStore";
+import { useAppStore } from "@/store/appStore";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import { translateLocale, getCachedLocale } from "@/lib/i18nTranslate";
 
