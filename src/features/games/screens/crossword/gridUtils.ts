@@ -1,4 +1,4 @@
-import type { LevelData, WordData } from "@/constants/crosswordLevels";
+import type { LevelData, WordData } from "@/features/games/data/crosswordLevels";
 import type { CellInfo, LetterTile } from "./types";
 
 const DISTRACTOR_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

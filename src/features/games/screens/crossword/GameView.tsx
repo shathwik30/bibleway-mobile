@@ -19,7 +19,7 @@ import * as Haptics from "expo-haptics";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import { colors } from "@/theme/colors";
-import type { LevelData } from "@/constants/crosswordLevels";
+import type { LevelData } from "@/features/games/data/crosswordLevels";
 import { buildGrid, getWordKeys, makeBank } from "./gridUtils";
 import type { Feedback, LetterTile } from "./types";
 import GameGrid from "./GameGrid";

@@ -4,7 +4,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
-import { QUIZ_LEVELS } from "@/constants/quizLevels";
+import { LEVELS } from "@/features/games/data/crosswordLevels";
 import { colors } from "@/theme/colors";
 
 const COMPLETED_BG = colors.feedback.successBg;
@@ -13,33 +13,29 @@ const ACTIVE_ACTION_BG = colors.feedback.infoBg;
 interface LevelSelectProps {
   unlockedLevel: number;
   completedLevels: Set<number>;
-  highScores: Record<number, number>;
   onSelectLevel: (id: number) => void;
 }
 
 export default function LevelSelect({
   unlockedLevel,
   completedLevels,
-  highScores,
   onSelectLevel,
 }: LevelSelectProps) {
   return (
     <SafeAreaScreen>
-      <ScreenHeader title="Bible Quiz" />
+      <ScreenHeader title="Bible Crossword" />
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
         <Text className="text-sm text-textSecondary text-center mb-4">
-          Journey through 30 Bible stories from Creation to the Great Commission
+          Solve crossword puzzles across 10 biblical themes
         </Text>
 
-        {QUIZ_LEVELS.map((level, i) => {
+        {LEVELS.map((level, i) => {
           const locked = level.id > unlockedLevel;
           const completed = completedLevels.has(level.id);
-          const best = highScores[level.id];
-
           const badgeBorder = completed
             ? colors.success
             : locked
@@ -60,7 +56,7 @@ export default function LevelSelect({
                 accessibilityLabel={
                   locked
                     ? `Level ${level.id} ${level.theme}. Locked.`
-                    : `Level ${level.id} ${level.theme}. ${level.questions.length} questions.${best !== undefined ? ` Best: ${best}.` : ""}`
+                    : `Level ${level.id} ${level.theme}. ${level.words.length} words.`
                 }
                 accessibilityRole="button"
                 accessibilityState={{ disabled: locked }}
@@ -94,18 +90,9 @@ export default function LevelSelect({
                     {level.theme}
                   </Text>
                   <Text className="text-xs text-textSecondary mt-0.5">
-                    {level.title} · {level.questions.length} questions
+                    {level.title} · {level.words.length} words
                   </Text>
                 </View>
-
-                {best !== undefined && (
-                  <View className="flex-row items-center mr-2">
-                    <Ionicons name="star" size={12} color={colors.warning} />
-                    <Text className="text-xs font-bold text-textSecondary ml-1">
-                      {best}/{level.questions.length}
-                    </Text>
-                  </View>
-                )}
 
                 {!locked && (
                   <View

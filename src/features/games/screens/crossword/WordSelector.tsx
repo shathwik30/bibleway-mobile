@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Pressable, ScrollView, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
-import type { WordData } from "@/constants/crosswordLevels";
+import type { WordData } from "@/features/games/data/crosswordLevels";
 
 const ACTIVE_BG = colors.feedback.infoBg;
 const SOLVED_BG = colors.feedback.successBg;

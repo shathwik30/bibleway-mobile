@@ -1,5 +1,5 @@
 import { mmkvStorage } from "@/lib/storage";
-import { GAME_STORAGE_KEYS } from "@/constants/games/storageKeys";
+import { GAME_STORAGE_KEYS } from "@/features/games/constants/storageKeys";
 import { logger } from "@/utils/logger";
 
 const KEYS = GAME_STORAGE_KEYS.crossword;

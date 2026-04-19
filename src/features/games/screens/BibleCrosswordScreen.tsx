@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useWindowDimensions } from "react-native";
-import { LEVELS } from "@/constants/crosswordLevels";
+import { LEVELS } from "@/features/games/data/crosswordLevels";
 import LevelSelect from "./crossword/LevelSelect";
 import LevelComplete from "./crossword/LevelComplete";
 import GameView from "./crossword/GameView";

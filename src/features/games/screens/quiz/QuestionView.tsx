@@ -13,7 +13,7 @@ import * as Haptics from "expo-haptics";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import { colors } from "@/theme/colors";
-import type { QuizLevel } from "@/constants/quizLevels";
+import type { QuizLevel } from "@/features/games/data/quizLevels";
 
 const OPTION_CORRECT_BG = colors.feedback.successBg;
 const OPTION_WRONG_BG = colors.feedback.errorBg;

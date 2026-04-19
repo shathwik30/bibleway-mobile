@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import { colors } from "@/theme/colors";
-import type { QuizLevel } from "@/constants/quizLevels";
+import type { QuizLevel } from "@/features/games/data/quizLevels";
 
 interface StoryViewProps {
   level: QuizLevel;

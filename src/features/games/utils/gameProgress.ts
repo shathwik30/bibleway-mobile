@@ -1,4 +1,4 @@
-import { mmkvStorage } from "./storage";
+import { mmkvStorage } from "@/lib/storage";
 
 export interface GameProgressManager {
   getUnlockedLevel(): number;

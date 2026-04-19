@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { FTD_LEVELS } from "@/constants/findDifferenceLevels";
+import { FTD_LEVELS } from "@/features/games/data/findDifferenceLevels";
 import LevelSelect from "./findDifference/LevelSelect";
 import GameView from "./findDifference/GameView";
 import ResultView from "./findDifference/ResultView";

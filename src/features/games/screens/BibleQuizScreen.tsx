@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import * as Haptics from "expo-haptics";
-import { QUIZ_LEVELS } from "@/constants/quizLevels";
+import { QUIZ_LEVELS } from "@/features/games/data/quizLevels";
 import LevelSelect from "./quiz/LevelSelect";
 import StoryView from "./quiz/StoryView";
 import QuestionView from "./quiz/QuestionView";

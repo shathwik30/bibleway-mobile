@@ -2,11 +2,11 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GamesStackParamList } from "@/types/navigation";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
-import GamesListScreen from "@/screens/games/GamesListScreen";
-import TicTacToeScreen from "@/screens/games/TicTacToeScreen";
-import BibleCrosswordScreen from "@/screens/games/BibleCrosswordScreen";
-import BibleQuizScreen from "@/screens/games/BibleQuizScreen";
-import FindDifferenceScreen from "@/screens/games/FindDifferenceScreen";
+import GamesListScreen from "@/features/games/screens/GamesListScreen";
+import TicTacToeScreen from "@/features/games/screens/TicTacToeScreen";
+import BibleCrosswordScreen from "@/features/games/screens/BibleCrosswordScreen";
+import BibleQuizScreen from "@/features/games/screens/BibleQuizScreen";
+import FindDifferenceScreen from "@/features/games/screens/FindDifferenceScreen";
 
 const Stack = createNativeStackNavigator<GamesStackParamList>();
 

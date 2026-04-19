@@ -4,7 +4,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
-import { FTD_LEVELS } from "@/constants/findDifferenceLevels";
+import { FTD_LEVELS } from "@/features/games/data/findDifferenceLevels";
 import { colors } from "@/theme/colors";
 
 const COMPLETED_BG = colors.feedback.successBg;

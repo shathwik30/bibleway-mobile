@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { colors } from "@/theme/colors";
-import type { LevelData } from "@/constants/crosswordLevels";
+import type { LevelData } from "@/features/games/data/crosswordLevels";
 import type { CellInfo } from "./types";
 
 const ACTIVE_BG = colors.feedback.infoBg;

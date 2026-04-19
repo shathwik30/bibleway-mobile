@@ -6,7 +6,7 @@ import Animated, { FadeIn } from "react-native-reanimated";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import { mmkvStorage } from "@/lib/storage";
-import { GAME_STORAGE_KEYS } from "@/constants/games/storageKeys";
+import { GAME_STORAGE_KEYS } from "@/features/games/constants/storageKeys";
 import { logger } from "@/utils/logger";
 import { colors } from "@/theme/colors";
 

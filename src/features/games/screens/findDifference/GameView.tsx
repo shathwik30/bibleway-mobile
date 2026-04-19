@@ -14,7 +14,7 @@ import * as Haptics from "expo-haptics";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import { colors } from "@/theme/colors";
-import type { FTDLevel } from "@/constants/findDifferenceLevels";
+import type { FTDLevel } from "@/features/games/data/findDifferenceLevels";
 import { IMG1_MAP, IMG2_MAP, IMG_ASPECT } from "./imageMap";
 import { getOptionStyle } from "./optionStyle";
 import ZoomModal from "./ZoomModal";
