@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useRef } from "react";
+import { StyleSheet } from "react-native";
 import GorhomBottomSheet, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -41,12 +42,16 @@ export default function BottomSheet({
       enablePanDownToClose
       backdropComponent={renderBackdrop}
       onClose={onClose}
-      backgroundStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
-      handleIndicatorStyle={{ backgroundColor: colors.outlineVariant, width: 40 }}
+      backgroundStyle={styles.background}
+      handleIndicatorStyle={styles.handleIndicator}
     >
-      <BottomSheetView style={{ flex: 1, padding: 16 }}>
-        {children}
-      </BottomSheetView>
+      <BottomSheetView style={styles.content}>{children}</BottomSheetView>
     </GorhomBottomSheet>
   );
 }
+
+const styles = StyleSheet.create({
+  background: { borderTopLeftRadius: 20, borderTopRightRadius: 20 },
+  handleIndicator: { backgroundColor: colors.outlineVariant, width: 40 },
+  content: { flex: 1, padding: 16 },
+});

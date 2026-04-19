@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, Platform, Modal } from "react-native";
+import { View, Text, Pressable, Platform, Modal, StyleSheet } from "react-native";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -94,7 +94,7 @@ export default function DatePicker({
               onChange={handleChange}
               maximumDate={maximumDate}
               minimumDate={minimumDate}
-              style={{ height: 200 }}
+              style={styles.iosSpinner}
             />
           </View>
         </Modal>
@@ -141,3 +141,7 @@ export default function DatePicker({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  iosSpinner: { height: 200 },
+});

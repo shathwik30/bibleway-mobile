@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, Text, ActivityIndicator, View } from "react-native";
+import { Pressable, Text, ActivityIndicator, View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
   useSharedValue,
@@ -62,7 +62,7 @@ export default function Button({
         <>
           {leftIcon && <View className="mr-2">{leftIcon}</View>}
           <Text
-            style={{ color: textColor, fontFamily: "Inter_600SemiBold" }}
+            style={[styles.label, { color: textColor }]}
             className={`${sStyle.text}`}
           >
             {title}
@@ -143,3 +143,7 @@ export default function Button({
     </Animated.View>
   );
 }
+
+const styles = StyleSheet.create({
+  label: { fontFamily: "Inter_600SemiBold" },
+});
