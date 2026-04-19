@@ -4,9 +4,9 @@ import { useRoute, RouteProp } from "@react-navigation/native";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import LoadingScreen from "@/components/layout/LoadingScreen";
-import PrayerCard from "@/components/feed/PrayerCard";
-import { usePrayerDetail } from "@/hooks/useSocial";
-import { useRecordView } from "@/hooks/useAnalytics";
+import PrayerCard from "@/features/feed/components/PrayerCard";
+import { usePrayerDetail } from "@/features/feed/hooks/useSocial";
+import { useRecordView } from "@/features/feed/hooks/useAnalytics";
 import type { HomeStackParamList } from "@/types/navigation";
 import { fonts } from "@/theme/fonts";
 

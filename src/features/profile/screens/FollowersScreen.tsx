@@ -5,7 +5,7 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import EmptyState from "@/components/ui/EmptyState";
-import UserListItem from "@/components/feed/UserListItem";
+import UserListItem from "@/features/feed/components/UserListItem";
 import { useFollowers } from "@/features/profile/hooks/useProfile";
 import { flattenPages } from "@/lib/pages";
 import type { HomeStackParamList } from "@/types/navigation";

@@ -5,7 +5,7 @@ import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import AnalyticsCard from "@/features/profile/components/AnalyticsCard";
-import { usePostAnalytics } from "@/hooks/useAnalytics";
+import { usePostAnalytics } from "@/features/feed/hooks/useAnalytics";
 import type { ProfileStackParamList } from "@/types/navigation";
 
 export default function PostAnalyticsScreen() {

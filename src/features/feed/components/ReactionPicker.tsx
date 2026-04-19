@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
-import { REACTIONS } from "@/constants/reactions";
+import { REACTIONS } from "@/features/feed/constants/reactions";
 import { colors } from "@/theme/colors";
 import type { EmojiType } from "@/types/enums";
 

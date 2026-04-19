@@ -8,11 +8,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { REACTIONS, REACTION_EMOJI_MAP } from "@/constants/reactions";
+import { REACTIONS, REACTION_EMOJI_MAP } from "@/features/feed/constants/reactions";
 import { selectionHaptic } from "@/lib/haptics";
 import { generateDeepLink, shareContent } from "@/lib/share";
-import { useToggleReaction } from "@/hooks/useSocial";
-import { useRecordShare } from "@/hooks/useAnalytics";
+import { useToggleReaction } from "@/features/feed/hooks/useSocial";
+import { useRecordShare } from "@/features/feed/hooks/useAnalytics";
 import type { EmojiType } from "@/types/enums";
 import { ROUTES } from "@/navigation/routes";
 

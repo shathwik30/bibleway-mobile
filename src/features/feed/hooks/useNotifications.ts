@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
-import { useNotificationStore } from "@/stores/notificationStore";
+import { useNotificationStore } from "@/features/feed/store/notificationStore";
 import { CACHE_DURATIONS } from "@/constants/api";
 import { pageNumberNextPage } from "@/api/pagination";
 import type { PaginatedResponse } from "@/types/api";

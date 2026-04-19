@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Image } from "expo-image";
-import { parseStickerText, getStickerSource } from "@/constants/stickers";
+import { parseStickerText, getStickerSource } from "@/features/feed/constants/stickers";
 
 interface StickerMessageProps {
   text: string;

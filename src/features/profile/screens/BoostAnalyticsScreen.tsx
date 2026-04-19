@@ -5,7 +5,7 @@ import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import AnalyticsCard from "@/features/profile/components/AnalyticsCard";
-import { useBoostAnalytics } from "@/hooks/useAnalytics";
+import { useBoostAnalytics } from "@/features/feed/hooks/useAnalytics";
 import type { BoostAnalyticSnapshot } from "@/types/models";
 import type { ProfileStackParamList } from "@/types/navigation";
 import { fonts } from "@/theme/fonts";

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { format } from "date-fns";
-import StickerMessage from "@/components/feed/StickerMessage";
-import { isSticker } from "@/constants/stickers";
+import StickerMessage from "@/features/feed/components/StickerMessage";
+import { isSticker } from "@/features/feed/constants/stickers";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
 import { translateText } from "@/lib/translate";

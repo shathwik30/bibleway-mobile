@@ -15,7 +15,7 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import Avatar from "@/components/ui/Avatar";
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
-import { useNotifications, useMarkRead } from "@/hooks/useNotifications";
+import { useNotifications, useMarkRead } from "@/features/feed/hooks/useNotifications";
 import { flattenPages } from "@/lib/pages";
 import type { Notification } from "@/types/models";
 import { ROUTES } from "@/navigation/routes";

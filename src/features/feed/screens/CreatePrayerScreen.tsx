@@ -6,25 +6,25 @@ import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import Button from "@/components/ui/Button";
-import { useCreatePost } from "@/hooks/useSocial";
-import { useMediaUpload } from "@/hooks/useMediaUpload";
+import { useCreatePrayer } from "@/features/feed/hooks/useSocial";
+import { useMediaUpload } from "@/features/feed/hooks/useMediaUpload";
 import { showToast } from "@/components/ui/Toast";
 import { parseError } from "@/utils/parseError";
 import { logger } from "@/utils/logger";
 import { fonts } from "@/theme/fonts";
 
-export default function CreatePostScreen() {
+export default function CreatePrayerScreen() {
   const navigation = useNavigation();
-  const [textContent, setTextContent] = useState("");
-  const createMutation = useCreatePost();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const createMutation = useCreatePrayer();
   const { media, uploading, pickImages, removeMedia, uploadMedia } =
     useMediaUpload();
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    const text = textContent.trim();
-    if (!text && media.length === 0) {
-      showToast("error", "Error", "Please add some content");
+    if (!title.trim()) {
+      showToast("error", "Error", "Please add a title");
       return;
     }
 
@@ -39,17 +39,18 @@ export default function CreatePostScreen() {
       }
 
       await createMutation.mutateAsync({
-        text_content: text,
+        title: title.trim(),
+        description: description.trim(),
         ...(mediaKeys.length > 0 && {
           media_keys: mediaKeys,
           media_types: mediaTypes,
         }),
       });
 
-      showToast("success", "Posted", "Your post has been shared");
+      showToast("success", "Submitted", "Your prayer request has been shared");
       navigation.goBack();
     } catch (err) {
-      logger.error("[CreatePost] submit failed", err);
+      logger.error("[CreatePrayer] submit failed", err);
       showToast("error", "Error", parseError(err));
     } finally {
       setSubmitting(false);
@@ -60,12 +61,21 @@ export default function CreatePostScreen() {
 
   return (
     <SafeAreaScreen>
-      <ScreenHeader title="Create Post" />
+      <ScreenHeader title="Prayer Request" />
       <View className="flex-1 px-4 pt-4">
         <TextInput
-          value={textContent}
-          onChangeText={setTextContent}
-          placeholder="What's on your heart today?"
+          value={title}
+          onChangeText={setTitle}
+          placeholder="Prayer title"
+          placeholderTextColor={colors.textTertiary}
+          className="text-lg font-semibold text-textPrimary p-3 bg-surfaceContainerHigh rounded-xl mb-3"
+          style={fonts.semibold}
+        />
+
+        <TextInput
+          value={description}
+          onChangeText={setDescription}
+          placeholder="Describe your prayer request..."
           placeholderTextColor={colors.textTertiary}
           multiline
           textAlignVertical="top"
@@ -99,10 +109,10 @@ export default function CreatePostScreen() {
             />
           </Pressable>
           <Button
-            title="Post"
+            title="Submit"
             onPress={handleSubmit}
             loading={isLoading}
-            disabled={(!textContent.trim() && media.length === 0) || isLoading}
+            disabled={!title.trim() || isLoading}
           />
         </View>
       </View>

@@ -6,7 +6,7 @@ import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import Button from "@/components/ui/Button";
-import { useCreateBoost } from "@/hooks/useAnalytics";
+import { useCreateBoost } from "@/features/feed/hooks/useAnalytics";
 import { showToast } from "@/components/ui/Toast";
 import {
   initIAP,

@@ -13,16 +13,16 @@ import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import KeyboardAvoidingWrapper from "@/components/layout/KeyboardAvoidingWrapper";
-import CommentItem from "@/components/feed/CommentItem";
-import ReplyItem from "@/components/feed/ReplyItem";
-import CommentInput from "@/components/feed/CommentInput";
+import CommentItem from "@/features/feed/components/CommentItem";
+import ReplyItem from "@/features/feed/components/ReplyItem";
+import CommentInput from "@/features/feed/components/CommentInput";
 import EmptyState from "@/components/ui/EmptyState";
 import {
   useComments,
   useCreateComment,
   useReplies,
   useCreateReply,
-} from "@/hooks/useSocial";
+} from "@/features/feed/hooks/useSocial";
 import { showToast } from "@/components/ui/Toast";
 import { flattenPages } from "@/lib/pages";
 import type { HomeStackParamList } from "@/types/navigation";

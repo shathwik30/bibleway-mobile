@@ -7,14 +7,14 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import ProfileHeader from "@/features/profile/components/ProfileHeader";
 import FollowButton from "@/features/profile/components/FollowButton";
 import InfiniteList from "@/components/layout/InfiniteList";
-import PostCard from "@/components/feed/PostCard";
-import PrayerCard from "@/components/feed/PrayerCard";
+import PostCard from "@/features/feed/components/PostCard";
+import PrayerCard from "@/features/feed/components/PrayerCard";
 import {
   useUserProfile,
   useFollowUser,
   useUnfollowUser,
 } from "@/features/profile/hooks/useProfile";
-import { useUserPosts, useUserPrayers } from "@/hooks/useSocial";
+import { useUserPosts, useUserPrayers } from "@/features/feed/hooks/useSocial";
 import type { HomeStackParamList } from "@/types/navigation";
 import type { Post, Prayer } from "@/types/models";
 import { fonts } from "@/theme/fonts";

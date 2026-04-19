@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { Image } from "expo-image";
-import { STICKERS, type Sticker } from "@/constants/stickers";
+import { STICKERS, type Sticker } from "@/features/feed/constants/stickers";
 
 interface StickerPickerProps {
   onSelect: (stickerId: number) => void;

@@ -17,14 +17,14 @@ jest.mock("@/theme/colors", () => ({
   },
 }));
 
-jest.mock("@/components/feed/StickerMessage", () => {
+jest.mock("@/features/feed/components/StickerMessage", () => {
   const { Text } = require("react-native");
   return function MockStickerMessage({ text }: { text: string }) {
     return <Text testID="sticker-message">{text}</Text>;
   };
 });
 
-jest.mock("@/constants/stickers", () => ({
+jest.mock("@/features/feed/constants/stickers", () => ({
   isSticker: (text: string) => /^\[sticker:\d+\]$/.test(text),
 }));
 

@@ -2,86 +2,81 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { formatDistanceToNow } from "date-fns";
-import Avatar from "../ui/Avatar";
-import AnimatedPressable from "../ui/AnimatedPressable";
+import Avatar from "@/components/ui/Avatar";
+import AnimatedPressable from "@/components/ui/AnimatedPressable";
 import MediaCarousel from "./MediaCarousel";
 import ReactionBar from "./ReactionBar";
+import BoostedBadge from "./BoostedBadge";
 import { FEED_TEXT_TRUNCATE_LENGTH } from "@/constants/app";
 import { ROUTES } from "@/navigation/routes";
-import type { Prayer } from "@/types/models";
+import type { Post } from "@/types/models";
 
-interface PrayerCardProps {
-  prayer: Prayer;
+interface PostCardProps {
+  post: Post;
 }
 
-function PrayerCard({ prayer }: PrayerCardProps) {
+function PostCard({ post }: PostCardProps) {
   const navigation = useNavigation();
   const [expanded, setExpanded] = React.useState(false);
 
-  const description = prayer.description ?? "";
-  const shouldTruncate = description.length > FEED_TEXT_TRUNCATE_LENGTH;
+  const shouldTruncate = post.text_content.length > FEED_TEXT_TRUNCATE_LENGTH;
   const displayText =
     shouldTruncate && !expanded
-      ? description.slice(0, FEED_TEXT_TRUNCATE_LENGTH) + "..."
-      : description;
+      ? post.text_content.slice(0, FEED_TEXT_TRUNCATE_LENGTH) + "..."
+      : post.text_content;
 
   return (
     <AnimatedPressable
-      onPress={() =>
-        navigation.navigate(ROUTES.PrayerDetail, { prayerId: prayer.id })
-      }
-      accessibilityLabel={`Open prayer request: ${prayer.title}`}
+      onPress={() => navigation.navigate(ROUTES.PostDetail, { postId: post.id })}
+      accessibilityLabel={`Open post by ${post.author.full_name}`}
       accessibilityRole="button"
-      className="bg-surfaceContainerLow mb-2 rounded-xl mx-4"
+      className="bg-surfaceContainerLowest mb-2 rounded-xl mx-4"
     >
       <View className="px-4 pt-3">
         <View className="flex-row items-center mb-2">
           <Pressable
             onPress={() =>
-              navigation.navigate(ROUTES.UserProfile, { userId: prayer.author.id })
+              navigation.navigate(ROUTES.UserProfile, { userId: post.author.id })
             }
-            accessibilityLabel={`View ${prayer.author.full_name}'s profile`}
+            accessibilityLabel={`View ${post.author.full_name}'s profile`}
             accessibilityRole="button"
             className="flex-row items-center flex-1"
           >
             <Avatar
-              source={prayer.author.profile_photo}
-              name={prayer.author.full_name}
+              source={post.author.profile_photo}
+              name={post.author.full_name}
               size={40}
             />
             <View className="ml-3 flex-1">
               <View className="flex-row items-center">
                 <Text className="text-sm font-semibold text-textPrimary">
-                  {prayer.author.full_name}
+                  {post.author.full_name}
                 </Text>
-                {prayer.author.age ? (
+                {post.author.age ? (
                   <Text className="text-xs text-textTertiary ml-1.5">
-                    · {prayer.author.age}y
+                    · {post.author.age}y
                   </Text>
                 ) : null}
               </View>
               <Text className="text-xs text-textSecondary">
-                {formatDistanceToNow(new Date(prayer.created_at), {
+                {formatDistanceToNow(new Date(post.created_at), {
                   addSuffix: true,
                 })}
               </Text>
             </View>
           </Pressable>
+          {post.is_boosted && <BoostedBadge />}
         </View>
 
-        <Text className="text-base font-bold text-textPrimary mb-1">
-          {prayer.title}
-        </Text>
-
-        {prayer.description ? (
+        {post.text_content ? (
           <View className="mb-2">
-            <Text className="text-sm text-textPrimary leading-5">
+            <Text className="text-base text-textPrimary leading-6">
               {displayText}
             </Text>
             {shouldTruncate && !expanded && (
               <Pressable
                 onPress={() => setExpanded(true)}
-                accessibilityLabel="Show full prayer description"
+                accessibilityLabel="Show full post text"
                 accessibilityRole="button"
               >
                 <Text className="text-primary text-sm font-medium mt-1">
@@ -93,19 +88,19 @@ function PrayerCard({ prayer }: PrayerCardProps) {
         ) : null}
       </View>
 
-      {prayer.media.length > 0 && <MediaCarousel media={prayer.media} />}
+      {post.media.length > 0 && <MediaCarousel media={post.media} />}
 
       <View className="px-4 py-2">
         <ReactionBar
-          contentType="prayer"
-          objectId={prayer.id}
-          reactionCount={prayer.reaction_count}
-          commentCount={prayer.comment_count}
-          userReaction={prayer.user_reaction}
+          contentType="post"
+          objectId={post.id}
+          reactionCount={post.reaction_count}
+          commentCount={post.comment_count}
+          userReaction={post.user_reaction}
         />
       </View>
     </AnimatedPressable>
   );
 }
 
-export default React.memo(PrayerCard);
+export default React.memo(PostCard);

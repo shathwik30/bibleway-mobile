@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { formatDistanceToNowStrict } from "date-fns";
 import Avatar from "@/components/ui/Avatar";
-import { isSticker } from "@/constants/stickers";
+import { isSticker } from "@/features/feed/constants/stickers";
 import type { Conversation } from "@/types/models";
 
 interface ConversationItemProps {

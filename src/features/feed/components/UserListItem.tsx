@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Avatar from "../ui/Avatar";
+import Avatar from "@/components/ui/Avatar";
 import type { UserListItem as UserListItemType } from "@/types/models";
 import { ROUTES } from "@/navigation/routes";
 

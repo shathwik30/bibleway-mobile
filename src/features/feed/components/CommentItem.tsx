@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { formatDistanceToNow } from "date-fns";
-import Avatar from "../ui/Avatar";
+import Avatar from "@/components/ui/Avatar";
 import StickerMessage from "./StickerMessage";
-import { isSticker } from "@/constants/stickers";
+import { isSticker } from "@/features/feed/constants/stickers";
 import type { Comment } from "@/types/models";
 import { ROUTES } from "@/navigation/routes";
 

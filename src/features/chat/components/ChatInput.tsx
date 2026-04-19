@@ -3,7 +3,7 @@ import { View, TextInput, Pressable, Keyboard } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
 import { lightHaptic } from "@/lib/haptics";
-import StickerPicker from "@/components/feed/StickerPicker";
+import StickerPicker from "@/features/feed/components/StickerPicker";
 
 interface ChatInputProps {
   onSubmit: (text: string) => void;

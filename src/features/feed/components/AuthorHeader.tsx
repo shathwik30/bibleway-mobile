@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { formatDistanceToNow } from "date-fns";
-import Avatar from "../ui/Avatar";
+import Avatar from "@/components/ui/Avatar";
 import { ROUTES } from "@/navigation/routes";
 import type { Author } from "@/types/models";
 
