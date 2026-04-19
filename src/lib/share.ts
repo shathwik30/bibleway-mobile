@@ -1,6 +1,6 @@
 import * as Sharing from "expo-sharing";
 import * as Clipboard from "expo-clipboard";
-import { DEEP_LINK_SCHEME, UNIVERSAL_LINK_PREFIX } from "@/constants/app";
+import { UNIVERSAL_LINK_PREFIX } from "@/constants/app";
 
 export function generateDeepLink(path: string): string {
   return `${UNIVERSAL_LINK_PREFIX}/${path}`;

@@ -1,7 +1,6 @@
 import * as ImageManipulator from "expo-image-manipulator";
 import {
   IMAGE_MAX_WIDTH,
-  IMAGE_MAX_HEIGHT,
   IMAGE_QUALITY,
 } from "@/constants/app";
 

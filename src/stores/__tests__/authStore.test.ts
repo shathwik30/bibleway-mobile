@@ -54,6 +54,12 @@ jest.mock("@/lib/pushNotifications", () => ({
   deregisterPushNotifications: jest.fn().mockResolvedValue(undefined),
 }));
 
+jest.mock("@/lib/firebase", () => ({
+  signInWithGoogle: jest.fn(),
+  getFirebaseIdToken: jest.fn(),
+  firebaseSignOut: jest.fn().mockResolvedValue(undefined),
+}));
+
 import { useAuthStore } from "../authStore";
 import { api } from "@/api/client";
 import {

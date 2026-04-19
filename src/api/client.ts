@@ -13,6 +13,10 @@ const isNetworkError = (error: AxiosError) =>
     error.code === "ECONNABORTED" ||
     error.message === "Network Error");
 
+const IDEMPOTENT_METHODS = new Set(["get", "head", "options"]);
+const isIdempotent = (config: InternalAxiosRequestConfig) =>
+  IDEMPOTENT_METHODS.has((config.method || "get").toLowerCase());
+
 let refreshPromise: Promise<string> | null = null;
 let failedQueue: Array<{
   resolve: (token: string) => void;
@@ -123,6 +127,7 @@ apiClient.interceptors.response.use(undefined, async (error: AxiosError) => {
     _networkRetry?: number;
   };
   if (!config || !isNetworkError(error)) return Promise.reject(error);
+  if (!isIdempotent(config)) return Promise.reject(error);
 
   config._networkRetry = (config._networkRetry || 0) + 1;
   if (config._networkRetry > MAX_NETWORK_RETRIES) {
@@ -156,7 +161,7 @@ apiClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (originalRequest.url?.includes("token/refresh")) {
+    if (originalRequest.url === ENDPOINTS.auth.refreshToken) {
       return Promise.reject(error);
     }
 

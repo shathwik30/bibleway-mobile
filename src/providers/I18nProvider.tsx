@@ -14,8 +14,6 @@ import hi from "../../locales/hi.json";
 import ar from "../../locales/ar.json";
 import sw from "../../locales/sw.json";
 
-const BUNDLED_LOCALES: Record<string, object> = { en, es, fr, pt, hi, ar, sw };
-
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },

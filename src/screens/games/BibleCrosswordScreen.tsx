@@ -16,7 +16,6 @@ import Animated, {
   FadeInDown,
 } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
@@ -119,8 +118,6 @@ function LevelSelect({
   completedLevels: Set<number>;
   onSelectLevel: (id: number) => void;
 }) {
-  const navigation = useNavigation();
-
   return (
     <SafeAreaScreen>
       <ScreenHeader title="Bible Crossword" />
@@ -316,7 +313,6 @@ function LevelCompleteScreen({
 }
 
 export default function BibleCrosswordScreen() {
-  const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
 
   const [screen, setScreen] = useState<"levels" | "game" | "complete">(
@@ -342,8 +338,10 @@ export default function BibleCrosswordScreen() {
   const popScale = useSharedValue(1);
 
   const level = LEVELS[levelId - 1];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const gridMap = useMemo(() => buildGrid(level), [levelId]);
   const word = level.words[wordIdx];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const currKeys = useMemo(() => getWordKeys(word), [levelId, wordIdx]);
 
   const CELL_GAP = 2;
@@ -358,6 +356,7 @@ export default function BibleCrosswordScreen() {
     setInput([]);
     setFeedback("idle");
     setHints(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wordIdx, levelId]);
 
   const shakeStyle = useAnimatedStyle(() => ({
@@ -467,6 +466,7 @@ export default function BibleCrosswordScreen() {
       );
       setTimeout(() => setFeedback("idle"), 600);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     input,
     word,

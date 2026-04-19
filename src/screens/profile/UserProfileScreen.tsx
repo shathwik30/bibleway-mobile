@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
-import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { useRoute, RouteProp } from "@react-navigation/native";
 import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
@@ -21,7 +21,6 @@ import type { Post, Prayer } from "@/types/models";
 type Tab = "posts" | "prayers";
 
 export default function UserProfileScreen() {
-  const navigation = useNavigation();
   const route = useRoute<RouteProp<HomeStackParamList, "UserProfile">>();
   const { userId } = route.params;
   const { data: profile, isLoading } = useUserProfile(userId);

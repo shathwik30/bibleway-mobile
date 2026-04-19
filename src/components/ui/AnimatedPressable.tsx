@@ -43,10 +43,12 @@ export default function AnimatedPressable({
 
   const handlePressIn = useCallback(() => {
     scale.value = withSpring(scaleValue, { damping: 15, stiffness: 200 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scaleValue]);
 
   const handlePressOut = useCallback(() => {
     scale.value = withSpring(1, { damping: 15, stiffness: 200 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePress = useCallback(() => {

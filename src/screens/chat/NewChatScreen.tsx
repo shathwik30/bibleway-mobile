@@ -51,6 +51,7 @@ export default function NewChatScreen(): React.JSX.Element {
         },
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [navigation],
   );
 

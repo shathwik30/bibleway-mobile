@@ -9,10 +9,9 @@ import {
   useWindowDimensions,
   type ImageSourcePropType,
 } from "react-native";
-import Animated, { ZoomIn, FadeIn, FadeInDown } from "react-native-reanimated";
+import Animated, { ZoomIn, FadeInDown } from "react-native-reanimated";
 import { ReactNativeZoomableView } from "@openspacelabs/react-native-zoomable-view";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
@@ -203,7 +202,6 @@ function LevelSelect({
 }
 
 export default function FindDifferenceScreen() {
-  const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
 
   const [screen, setScreen] = useState<"levels" | "game" | "result">("levels");
@@ -216,10 +214,12 @@ export default function FindDifferenceScreen() {
   const [zoomImg, setZoomImg] = useState<number | null>(null);
 
   const level = FTD_LEVELS[levelId - 1];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const correctSet = useMemo(() => new Set(level.correct), [levelId]);
 
   const options = useMemo(
     () => shuffle([...level.correct, ...level.wrong]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [levelId],
   );
 

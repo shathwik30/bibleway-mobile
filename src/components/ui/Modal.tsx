@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal as RNModal, View, Pressable, Text } from "react-native";
+import { Modal as RNModal, Pressable, Text } from "react-native";
 
 interface ModalProps {
   visible: boolean;

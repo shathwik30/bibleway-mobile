@@ -1,3 +1,5 @@
+import type { NavigatorScreenParams } from "@react-navigation/native";
+
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -78,17 +80,17 @@ export type ChatStackParamList = {
 };
 
 export type MainTabParamList = {
-  HomeTab: undefined;
-  ChatTab: undefined;
-  BibleTab: undefined;
-  ShopTab: undefined;
-  GamesTab: undefined;
-  ProfileTab: undefined;
+  HomeTab: NavigatorScreenParams<HomeStackParamList> | undefined;
+  ChatTab: NavigatorScreenParams<ChatStackParamList> | undefined;
+  BibleTab: NavigatorScreenParams<BibleStackParamList> | undefined;
+  ShopTab: NavigatorScreenParams<ShopStackParamList> | undefined;
+  GamesTab: NavigatorScreenParams<GamesStackParamList> | undefined;
+  ProfileTab: NavigatorScreenParams<ProfileStackParamList> | undefined;
 };
 
 export type RootStackParamList = {
   Auth: undefined;
-  Main: undefined;
+  Main: NavigatorScreenParams<MainTabParamList> | undefined;
 };
 
 declare global {
@@ -100,6 +102,7 @@ declare global {
         ShopStackParamList,
         GamesStackParamList,
         ProfileStackParamList,
-        ChatStackParamList {}
+        ChatStackParamList,
+        MainTabParamList {}
   }
 }

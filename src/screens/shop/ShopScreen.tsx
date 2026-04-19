@@ -5,7 +5,6 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
@@ -18,7 +17,6 @@ import { flattenPages } from "@/lib/pages";
 import type { ProductListItem } from "@/types/models";
 
 export default function ShopScreen() {
-  const navigation = useNavigation();
   const {
     data,
     isLoading,

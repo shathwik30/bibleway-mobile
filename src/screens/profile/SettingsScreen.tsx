@@ -106,7 +106,7 @@ export default function SettingsScreen() {
     <SafeAreaScreen>
       <ScreenHeader title={t("settings.title")} />
       <ScrollView className="flex-1 px-4 pt-2">
-        {menuItems.map((item, index) => (
+        {menuItems.map((item, _index) => (
           <AnimatedPressable
             key={item.icon}
             onPress={

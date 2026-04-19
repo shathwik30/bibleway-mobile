@@ -44,6 +44,7 @@ function MessageBubble({
     });
 
     return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [translateLang, message.text]);
 
   const showTranslation = !!translateLang && !!translatedText;

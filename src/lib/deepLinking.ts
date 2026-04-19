@@ -11,14 +11,6 @@ export function parseDeepLink(
 
   if (parts.length === 0) return null;
 
-  const routes: Record<string, string> = {
-    post: "PostDetail",
-    prayer: "PrayerDetail",
-    user: "UserProfile",
-    "bible/page": "SegregatedPageDetail",
-    "shop/product": "ProductDetail",
-  };
-
   if (parts[0] === "bible" && parts[1] === "page" && parts[2]) {
     return { screen: "SegregatedPageDetail", params: { pageId: parts[2] } };
   }

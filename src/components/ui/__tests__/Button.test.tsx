@@ -102,7 +102,7 @@ describe("Button", () => {
 
   describe("icons", () => {
     it("renders with a left icon", () => {
-      const { getByText, getByTestId } = render(
+      const { getByText } = render(
         <Button
           {...defaultProps}
           leftIcon={

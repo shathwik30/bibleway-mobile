@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,13 @@ export default function LanguageSettingsScreen() {
   const setLanguage = useAppStore((s) => s.setLanguage);
   const [search, setSearch] = useState("");
   const [loadingLang, setLoadingLang] = useState<string | null>(null);
+  const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (loadingTimerRef.current) clearTimeout(loadingTimerRef.current);
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return SUPPORTED_LANGUAGES;
@@ -41,7 +48,8 @@ export default function LanguageSettingsScreen() {
     if (!BUNDLED_CODES.has(langCode)) {
       setLoadingLang(langCode);
       setLanguage(langCode);
-      setTimeout(() => setLoadingLang(null), 3000);
+      if (loadingTimerRef.current) clearTimeout(loadingTimerRef.current);
+      loadingTimerRef.current = setTimeout(() => setLoadingLang(null), 3000);
     } else {
       setLanguage(langCode);
     }

@@ -21,4 +21,4 @@ export { default as SelectPicker } from "./SelectPicker";
 export { default as Skeleton } from "./Skeleton";
 export { default as Spinner } from "./Spinner";
 export { default as TabBar } from "./TabBar";
-export { default as Toast } from "./Toast";
+export { showToast, toastConfig } from "./Toast";

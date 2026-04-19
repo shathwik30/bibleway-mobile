@@ -50,7 +50,7 @@ export default function GoogleCompleteProfileScreen() {
   const { t } = useTranslation();
   const route =
     useRoute<RouteProp<AuthStackParamList, "GoogleCompleteProfile">>();
-  const { email, fullName, profilePhoto, idToken } = route.params;
+  const { email, fullName, profilePhoto, idToken: _idToken } = route.params;
   const googleAuth = useGoogleAuth();
 
   const {

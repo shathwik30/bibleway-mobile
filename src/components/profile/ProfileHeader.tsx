@@ -13,8 +13,8 @@ interface ProfileHeaderProps {
 
 function ProfileHeader({
   user,
-  isOwnProfile = false,
-  onEditPress,
+  isOwnProfile: _isOwnProfile = false,
+  onEditPress: _onEditPress,
   children,
 }: ProfileHeaderProps) {
   return (

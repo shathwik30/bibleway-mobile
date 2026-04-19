@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosHeaders } from "axios";
+import { AxiosError, AxiosHeaders } from "axios";
 
 jest.mock("@/constants/api", () => ({
   API_BASE_URL: "http://localhost:8000/api/v1",
@@ -68,7 +68,7 @@ jest.mock("axios", () => {
 
 describe("API Client", () => {
   let requestInterceptor: (config: any) => any;
-  let requestErrorHandler: (error: any) => any;
+  let _requestErrorHandler: (error: any) => any;
   let responseEnvelopeInterceptor: (response: any) => any;
   let responseDeduplicationInterceptor: (response: any) => any;
   let networkRetryErrorHandler: (error: any) => any;
@@ -85,7 +85,7 @@ describe("API Client", () => {
     expect(mockInterceptorsRequest.use).toHaveBeenCalledTimes(1);
     expect(mockInterceptorsResponse.use).toHaveBeenCalledTimes(3);
 
-    [requestInterceptor, requestErrorHandler] =
+    [requestInterceptor, _requestErrorHandler] =
       mockInterceptorsRequest.use.mock.calls[0];
     [responseDeduplicationInterceptor, deduplicationErrorHandler] =
       mockInterceptorsResponse.use.mock.calls[0];

@@ -16,11 +16,10 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
-import { QUIZ_LEVELS, type QuizLevel } from "@/constants/quizLevels";
+import { QUIZ_LEVELS } from "@/constants/quizLevels";
 import { mmkvStorage } from "@/lib/storage";
 
 const STORAGE_UNLOCKED = "quiz_unlocked_level";
@@ -168,7 +167,6 @@ function LevelSelect({
 }
 
 export default function BibleQuizScreen() {
-  const navigation = useNavigation();
   const { width: SW } = useWindowDimensions();
 
   const [screen, setScreen] = useState<"levels" | "story" | "quiz" | "result">(
@@ -224,6 +222,7 @@ export default function BibleQuizScreen() {
         );
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [answered, question],
   );
 

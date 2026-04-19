@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -26,7 +26,7 @@ import {
 import { showToast } from "@/components/ui/Toast";
 import { flattenPages } from "@/lib/pages";
 import type { HomeStackParamList } from "@/types/navigation";
-import type { Comment, Reply } from "@/types/models";
+import type { Comment } from "@/types/models";
 
 export default function CommentsScreen() {
   const route = useRoute<RouteProp<HomeStackParamList, "Comments">>();
