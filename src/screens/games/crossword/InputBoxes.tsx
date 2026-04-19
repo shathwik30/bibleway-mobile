@@ -1,0 +1,97 @@
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import Animated, {
+  ZoomIn,
+  useAnimatedStyle,
+  type SharedValue,
+} from "react-native-reanimated";
+import { colors } from "@/theme/colors";
+import type { Feedback } from "./types";
+
+const CORRECT_BG = "#ECFDF5";
+const WRONG_BG = "#FEF2F2";
+const ACTIVE_BG = "#EFF6FF";
+
+interface InputBoxesProps {
+  length: number;
+  input: string[];
+  feedback: Feedback;
+  boxWidth: number;
+  shakeX: SharedValue<number>;
+  popScale: SharedValue<number>;
+}
+
+export default function InputBoxes({
+  length,
+  input,
+  feedback,
+  boxWidth,
+  shakeX,
+  popScale,
+}: InputBoxesProps) {
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: shakeX.value }, { scale: popScale.value }],
+  }));
+
+  return (
+    <Animated.View style={[styles.container, animatedStyle]}>
+      {Array.from({ length }).map((_, i) => {
+        const isFilled = !!input[i];
+        const borderColor =
+          feedback === "correct"
+            ? colors.success
+            : feedback === "wrong"
+              ? colors.error
+              : isFilled
+                ? colors.primary.DEFAULT
+                : colors.surfaceContainerHighest;
+        const backgroundColor =
+          feedback === "correct"
+            ? CORRECT_BG
+            : feedback === "wrong"
+              ? WRONG_BG
+              : isFilled
+                ? ACTIVE_BG
+                : colors.surfaceContainerLowest;
+        return (
+          <View
+            key={i}
+            style={{
+              width: boxWidth,
+              height: boxWidth + 4,
+              borderWidth: 2,
+              borderRadius: 10,
+              borderColor,
+              backgroundColor,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {input[i] ? (
+              <Animated.Text
+                entering={ZoomIn.duration(150)}
+                className="text-lg font-bold text-textPrimary"
+              >
+                {input[i]}
+              </Animated.Text>
+            ) : (
+              <View style={styles.dash} className="bg-gray-200" />
+            )}
+          </View>
+        );
+      })}
+    </Animated.View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    gap: 6,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+    paddingHorizontal: 16,
+  },
+  dash: { width: 12, height: 2, borderRadius: 1 },
+});
