@@ -29,58 +29,77 @@ npx eslint src/
 
 ### Directory Structure
 
+Feature-folder layout. Each product feature owns its screens, components,
+hooks, store slice, services, and data. Shared primitives (`components/ui/`,
+`components/layout/`, `theme/`, `utils/`, generic `constants/` and `types/`)
+live at the top level.
+
 ```
 src/
   api/
-    client.ts          # Axios-based API client with token refresh, retry, dedup
-    endpoints.ts       # Centralized API endpoint constants
-    pagination.ts      # Infinite query pagination helpers
-  components/
-    bible/             # Bible-specific components (+ index.ts barrel)
-    chat/              # Chat components (+ index.ts barrel)
-    feed/              # Feed components: PostCard, PrayerCard, etc. (+ index.ts barrel)
-    layout/            # Layout wrappers: SafeAreaScreen, ScreenHeader (+ index.ts barrel)
-    profile/           # Profile components (+ index.ts barrel)
-    shop/              # Shop components (+ index.ts barrel)
-    ui/                # Reusable UI primitives: Button, Input, Modal, etc. (+ index.ts barrel)
-  constants/
-    api.ts             # Cache durations, API config
-    app.ts             # App constants
-    games/             # Game-specific: storageKeys, level data
-    languages.ts       # Supported languages list
-    reactions.ts       # Reaction emoji definitions
-    stickers.ts        # Sticker GIF mappings
+    client.ts          # Axios client: token refresh, dedup, 3x retry
+    endpoints.ts       # Typed endpoint constants
+    pagination.ts      # Infinite-query page helpers
+  components/          # Shared primitives only (NOT feature-specific)
+    layout/            # SafeAreaScreen, ScreenHeader, KeyboardAvoidingWrapper, InfiniteList
+    ui/                # Button, Input, Modal, BottomSheet, Avatar, Toast, etc.
+      skeletons/       # Per-variant skeleton components
+  constants/           # Global constants only
+    api.ts             # API base URL, cache durations
+    app.ts             # Top-level constants
+    languages.ts       # Supported language list
+    brand.ts           # Third-party brand colors (Google)
   data/
-    countries.ts       # Country data (names, codes, flags, dial codes)
-  hooks/               # Custom hooks: useAuth, useBible, useChat, useProfile, useSocial, useShop
-  lib/
-    gameProgress.ts    # Shared game progress persistence
-    pages.ts           # Infinite query page flattening
+    countries.ts
+  features/            # ONE FOLDER PER PRODUCT FEATURE
+    auth/              # Sign-in, register, OTP, reset — screens/hooks/store
+    bible/             # Bible reader, bookmarks, notes, segregated — screens/components/hooks/services
+    chat/              # Conversations, chat room — screens/components/hooks/store
+    feed/              # Home feed, posts, prayers, comments, notifications —
+                       #   screens/components/hooks/store/constants
+    games/             # Crossword, quiz, find-difference, tic-tac-toe —
+                       #   screens/constants/data/utils
+    profile/           # Profile view/edit, settings, followers, boost —
+                       #   screens/components/hooks
+    shop/              # Products, purchases, downloads — screens/components/hooks/services
+  hooks/               # Generic hooks only (useSignedUrl)
+  lib/                 # Shared low-level helpers
     storage.ts         # MMKV storage wrapper
-  navigation/          # React Navigation setup
-    RootNavigator.tsx  # Auth check -> AuthNavigator or MainTabNavigator
-    MainTabNavigator.tsx # 6 bottom tabs
-    *StackNavigator.tsx  # Per-tab stack navigators
-  providers/           # Context providers (Navigation, QueryClient)
-  screens/             # Feature-grouped screens
-    auth/              # Login, Register, OTP, ForgotPassword, ResetPassword
-    bible/             # Bible browsing, search, bookmarks, notes, segregated pages
-    chat/              # Conversations, chat room, new chat
-    games/             # Quiz, crossword, find-difference, tic-tac-toe
-    home/              # Feed, create post/prayer, comments, notifications
-    profile/           # Profile, edit, settings, boost analytics, followers
-    shop/              # Products, purchases, downloads
-  stores/              # Zustand stores
-    authStore.ts       # User, tokens, auth state
-    appStore.ts        # App-level state
-    chatStore.ts       # Unread counts, active conversation
-    notificationStore.ts # Notification state
-  theme/               # Colors, spacing, typography
-  types/               # TypeScript interfaces
-    api.ts             # ApiResponse<T>, PaginatedResponse<T>, AuthTokens
-    enums.ts           # EmojiType, MediaType, Gender, NotificationType, etc.
-    models.ts          # All data model interfaces (Post, Prayer, User, Bible, etc.)
-    navigation.ts      # React Navigation param list types
+    secureStorage.ts   # expo-secure-store wrapper
+    pushNotifications.ts
+    firebase.ts
+    biometrics.ts
+    translate.ts
+    i18nTranslate.ts
+    imageCompressor.ts
+    share.ts
+    deepLinking.ts
+    haptics.ts
+    confirm.ts
+    pages.ts
+    s3Presign.ts       # [CRITICAL: move to backend — see file header]
+  navigation/
+    RootNavigator.tsx
+    MainTabNavigator.tsx
+    *StackNavigator.tsx
+    routes.ts          # Route name constants (use instead of raw strings)
+    linking.ts
+  providers/           # AppProviders, NavigationProvider, QueryProvider, I18nProvider
+  store/               # Only app-wide state — feature stores live inside features/*/store/
+    appStore.ts
+  theme/
+    colors.ts          # Theme tokens (+ feedback.*, shadow)
+    fonts.ts           # Shared font StyleSheet
+    spacing.ts
+    typography.ts
+  types/
+    api.ts             # Generic ApiResponse<T>, PaginatedResponse<T>, AuthTokens
+    enums.ts
+    models.ts          # Data model interfaces
+    navigation.ts      # RootStackParamList + per-stack ParamList
+  utils/
+    parseError.ts      # normalize unknown → user-safe string
+    logger.ts          # env-gated console wrapper
 ```
 
 ### Key Patterns
@@ -90,24 +109,24 @@ src/
 **Types**: Comprehensive types in `src/types/` — `models.ts` has 50+ interfaces covering all data models. `enums.ts` has string literal union types. `navigation.ts` has full param list types with global declaration.
 
 **State Management**:
-- **Server state**: TanStack React Query (hooks in `src/hooks/`)
-- **Client state**: Zustand stores (auth, app, chat, notification)
-- **Form state**: React Hook Form
-- **Persistent state**: MMKV storage (`src/lib/storage.ts`)
+- **Server state**: TanStack React Query. Query hooks live in each feature's `hooks/` folder.
+- **Client state**: Zustand. Feature-specific stores under `src/features/<name>/store/`; app-wide state in `src/store/`.
+- **Form state**: React Hook Form.
+- **Persistent state**: MMKV via `src/lib/storage.ts`; secure tokens via `src/lib/secureStorage.ts`.
 
 **Navigation**: React Navigation 7.x with typed param lists. 6 bottom tabs (Home, Chat, Bible, Shop, Games, Profile), each with its own stack navigator. Deep linking via `bibleway://` scheme.
 
 **Styling**: NativeWind (Tailwind CSS for React Native). Theme colors in `src/theme/colors.ts`. Primary: `#59021a`. Always use theme tokens, not hardcoded hex colors.
 
-**Component Imports**: Each component subdirectory has an `index.ts` barrel file. Import via `@/components/feed` instead of `@/components/feed/PostCard`.
+**Component Imports**: Feature components live under `src/features/<name>/components/` and are imported via absolute paths (e.g. `@/features/feed/components/PostCard`). Shared primitives are imported from `@/components/ui/*` and `@/components/layout/*`. Barrel `index.ts` files exist where multiple components want to be exported together.
 
 **Response Envelope**: Backend returns `{"message": "...", "data": {...}}`. The API client unwraps this automatically.
 
 ## Path Aliases
 
 Configured in `tsconfig.json`:
-- `@/*` -> `src/*`
-- `@/components/*`, `@/screens/*`, `@/hooks/*`, `@/stores/*`, `@/types/*`, etc.
+- `@/*` → `src/*`
+- All imports use absolute `@/` paths. Relative paths are reserved for sibling files inside the same folder (e.g. `./types` inside a feature's `screens/crossword/`).
 
 ## Environment
 
