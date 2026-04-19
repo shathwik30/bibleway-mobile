@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { speak, stopSpeaking, setSpeed, getSpeed } from "@/lib/tts";
+import { speak, stopSpeaking, setSpeed, getSpeed } from "@/features/bible/services/tts";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import { colors } from "@/theme/colors";
 

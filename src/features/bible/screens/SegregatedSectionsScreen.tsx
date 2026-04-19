@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
-import { useSections } from "@/hooks/useBible";
+import { useSections } from "@/features/bible/hooks/useBible";
 import { colors } from "@/theme/colors";
 import { ROUTES } from "@/navigation/routes";
 

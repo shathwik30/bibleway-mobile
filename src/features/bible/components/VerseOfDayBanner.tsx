@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { useVerseOfDay } from "@/hooks/useVerseOfDay";
+import { useVerseOfDay } from "@/features/bible/hooks/useVerseOfDay";
 import { colors } from "@/theme/colors";
 
 const GRADIENT_COLORS: readonly [string, string] = [

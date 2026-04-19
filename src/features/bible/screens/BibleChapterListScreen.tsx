@@ -5,7 +5,7 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import EmptyState from "@/components/ui/EmptyState";
-import { useBibleChapters } from "@/hooks/useBible";
+import { useBibleChapters } from "@/features/bible/hooks/useBible";
 import type { BibleStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
 

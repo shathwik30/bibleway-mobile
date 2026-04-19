@@ -12,7 +12,7 @@ import { colors } from "@/theme/colors";
 import InfiniteList from "@/components/layout/InfiniteList";
 import PostCard from "@/components/feed/PostCard";
 import PrayerCard from "@/components/feed/PrayerCard";
-import VerseOfDayBanner from "@/components/bible/VerseOfDayBanner";
+import VerseOfDayBanner from "@/features/bible/components/VerseOfDayBanner";
 import Badge from "@/components/ui/Badge";
 import { usePosts, usePrayers } from "@/hooks/useSocial";
 import { useUnreadCount } from "@/hooks/useNotifications";

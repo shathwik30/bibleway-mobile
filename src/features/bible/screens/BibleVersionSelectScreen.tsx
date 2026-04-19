@@ -12,7 +12,7 @@ import SearchBar from "@/components/ui/SearchBar";
 
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
-import { useBibleVersions } from "@/hooks/useBible";
+import { useBibleVersions } from "@/features/bible/hooks/useBible";
 import { colors } from "@/theme/colors";
 import type { BibleVersion } from "@/types/models";
 import { ROUTES } from "@/navigation/routes";

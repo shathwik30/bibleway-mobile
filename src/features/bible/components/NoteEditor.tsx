@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, TextInput, Text } from "react-native";
 import { colors } from "@/theme/colors";
-import Button from "../ui/Button";
+import Button from "@/components/ui/Button";
 
 interface NoteEditorProps {
   initialText?: string;

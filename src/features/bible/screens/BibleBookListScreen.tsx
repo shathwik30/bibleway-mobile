@@ -1,43 +1,42 @@
 import React from "react";
-import { View, Text, FlatList, Pressable } from "react-native";
+import { Text, FlatList, Pressable } from "react-native";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import EmptyState from "@/components/ui/EmptyState";
-import { usePages } from "@/hooks/useBible";
+import { useBibleBooks } from "@/features/bible/hooks/useBible";
 import { colors } from "@/theme/colors";
 import type { BibleStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
 
-export default function SegregatedPagesScreen() {
+export default function BibleBookListScreen() {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<BibleStackParamList, "SegregatedPages">>();
-  const { chapterId, chapterTitle } = route.params;
-  const { data: pages, isLoading } = usePages(chapterId);
+  const route = useRoute<RouteProp<BibleStackParamList, "BibleBookList">>();
+  const { bibleId } = route.params;
+  const { data: books, isLoading } = useBibleBooks(bibleId);
 
-  if (isLoading) return <LoadingScreen title={chapterTitle} />;
+  if (isLoading) return <LoadingScreen title="Books" />;
 
   return (
     <SafeAreaScreen>
-      <ScreenHeader title={chapterTitle} />
+      <ScreenHeader title="Books" />
       <FlatList
-        data={pages}
+        data={books ?? []}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ padding: 16 }}
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
-              navigation.navigate(ROUTES.SegregatedPageDetail, { pageId: item.id })
+              navigation.navigate(ROUTES.BibleChapterList, {
+                bibleId,
+                bookId: item.id,
+              })
             }
-            className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3"
+            className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-2"
           >
-            <View className="flex-1 mr-3">
-              <Text className="text-base font-semibold text-textPrimary">
-                {item.title}
-              </Text>
-            </View>
+            <Text className="text-base text-textPrimary">{item.name}</Text>
             <Ionicons
               name="chevron-forward"
               size={20}
@@ -46,7 +45,7 @@ export default function SegregatedPagesScreen() {
           </Pressable>
         )}
         ListEmptyComponent={
-          <EmptyState icon="document-text-outline" title="No pages available" />
+          <EmptyState icon="book-outline" title="No books found" />
         }
       />
     </SafeAreaScreen>

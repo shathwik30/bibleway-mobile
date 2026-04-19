@@ -5,7 +5,7 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import EmptyState from "@/components/ui/EmptyState";
-import { useNotes, useDeleteNote } from "@/hooks/useBible";
+import { useNotes, useDeleteNote } from "@/features/bible/hooks/useBible";
 import { flattenPages } from "@/lib/pages";
 import { confirmAction } from "@/lib/confirm";
 import { colors } from "@/theme/colors";

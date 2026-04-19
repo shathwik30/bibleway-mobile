@@ -13,7 +13,7 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import SearchBar from "@/components/ui/SearchBar";
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
-import { useBibleSearch, useApiBibleSearch } from "@/hooks/useBible";
+import { useBibleSearch, useApiBibleSearch } from "@/features/bible/hooks/useBible";
 import { parseError } from "@/utils/parseError";
 import type { BibleStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
