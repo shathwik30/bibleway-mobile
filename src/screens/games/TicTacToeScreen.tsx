@@ -43,7 +43,7 @@ function saveScores(scores: ScoreMap): void {
   );
 }
 
-const WINNING_LINES = [
+const WINNING_LINES: ReadonlyArray<readonly [number, number, number]> = [
   [0, 1, 2],
   [3, 4, 5],
   [6, 7, 8],
@@ -68,7 +68,9 @@ const DRAW_VERSES = [
   '"Two are better than one." — Ecclesiastes 4:9',
 ];
 
-function getWinner(board: Board): { winner: Player; line: number[] } | null {
+function getWinner(
+  board: Board,
+): { winner: Player; line: readonly number[] } | null {
   for (const line of WINNING_LINES) {
     const [a, b, c] = line;
     if (board[a] && board[a] === board[b] && board[a] === board[c]) {
@@ -123,8 +125,8 @@ function getBestMove(board: Board): number {
   return bestMove;
 }
 
-function getRandomVerse(verses: string[]) {
-  return verses[Math.floor(Math.random() * verses.length)];
+function getRandomVerse(verses: readonly string[]): string {
+  return verses[Math.floor(Math.random() * verses.length)]!;
 }
 
 function CellButton({
@@ -418,7 +420,7 @@ export default function TicTacToeScreen() {
                 return (
                   <CellButton
                     key={index}
-                    value={board[index]}
+                    value={board[index] ?? null}
                     onPress={() => handleCellPress(index)}
                     isWinning={result?.line.includes(index) ?? false}
                     disabled={isInputDisabled}

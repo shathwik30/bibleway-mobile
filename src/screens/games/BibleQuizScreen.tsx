@@ -29,7 +29,8 @@ export default function BibleQuizScreen() {
   const [correctCount, setCorrectCount] = useState(0);
   const [showHint, setShowHint] = useState(false);
 
-  const level = QUIZ_LEVELS[levelId - 1];
+  // levelId is always a valid 1..QUIZ_LEVELS.length index (clamped on advance).
+  const level = QUIZ_LEVELS[levelId - 1]!;
 
   const startLevel = useCallback((id: number) => {
     setLevelId(id);
@@ -48,7 +49,7 @@ export default function BibleQuizScreen() {
       setSelected(optIdx);
       setAnswered(true);
 
-      if (optIdx === level.questions[questionIdx].correctIndex) {
+      if (optIdx === level.questions[questionIdx]!.correctIndex) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         setCorrectCount((p) => p + 1);
       } else {

@@ -40,7 +40,8 @@ export async function translateLocale(
   const translatedFlat: Record<string, string> = {};
 
   keys.forEach((key, i) => {
-    translatedFlat[key] = translatedValues[i]?.trim() || flat[key];
+    const fallback = flat[key] ?? "";
+    translatedFlat[key] = translatedValues[i]?.trim() || fallback;
   });
 
   const result = unflatten(translatedFlat);
@@ -86,10 +87,12 @@ function unflatten(obj: Record<string, string>): LocaleObject {
     const parts = key.split(".");
     let current: Record<string, unknown> = result;
     for (let i = 0; i < parts.length - 1; i++) {
-      if (!current[parts[i]]) current[parts[i]] = {};
-      current = current[parts[i]] as Record<string, unknown>;
+      const segment = parts[i]!;
+      if (!current[segment]) current[segment] = {};
+      current = current[segment] as Record<string, unknown>;
     }
-    current[parts[parts.length - 1]] = obj[key];
+    const leaf = parts[parts.length - 1]!;
+    current[leaf] = obj[key]!;
   }
   return result as LocaleObject;
 }

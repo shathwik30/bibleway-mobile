@@ -55,7 +55,9 @@ export default function GameView({
   const popScale = useSharedValue(1);
 
   const gridMap = useMemo(() => buildGrid(level), [level]);
-  const word = level.words[wordIdx];
+  // wordIdx is always a valid index into level.words (selectNextUnsolved
+  // only advances within bounds, useEffect resets on level change).
+  const word = level.words[wordIdx]!;
   const currKeys = useMemo(() => getWordKeys(word), [word]);
 
   const CELL = Math.min(
@@ -101,13 +103,14 @@ export default function GameView({
   const del = useCallback(() => {
     if (!input.length) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    const last = input[input.length - 1];
+    const last = input[input.length - 1]!;
     let done = false;
     setBank((p) => {
       const n = [...p];
       for (let i = n.length - 1; i >= 0; i--) {
-        if (n[i].used && n[i].letter === last && !done) {
-          n[i] = { ...n[i], used: false };
+        const tile = n[i]!;
+        if (tile.used && tile.letter === last && !done) {
+          n[i] = { ...tile, used: false };
           done = true;
           break;
         }

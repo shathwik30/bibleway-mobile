@@ -43,7 +43,9 @@ export default function QuestionView({
   onNext,
   onShowHint,
 }: QuestionViewProps) {
-  const question = level.questions[questionIdx];
+  // questionIdx is always within bounds — parent advances via nextQuestion
+  // which ends the quiz when we hit level.questions.length.
+  const question = level.questions[questionIdx]!;
   const shakeX = useSharedValue(0);
   const shakeStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: shakeX.value }],

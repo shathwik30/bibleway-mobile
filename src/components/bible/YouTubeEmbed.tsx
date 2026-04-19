@@ -12,7 +12,7 @@ function getYouTubeId(url: string): string | null {
   const match = url.match(
     /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([^&?\s]+)/,
   );
-  return match ? match[1] : null;
+  return match?.[1] ?? null;
 }
 
 export default function YouTubeEmbed({ url }: YouTubeEmbedProps) {

@@ -105,11 +105,13 @@ export function getStickerSource(id: number): ImageSourcePropType | null {
 
 export function isSticker(text: string): boolean {
   const match = text.trim().match(STICKER_PATTERN);
-  if (!match) return false;
-  return STICKER_MAP.has(parseInt(match[1], 10));
+  const id = match?.[1];
+  if (!id) return false;
+  return STICKER_MAP.has(parseInt(id, 10));
 }
 
 export function parseStickerText(text: string): number | null {
   const match = text.trim().match(STICKER_PATTERN);
-  return match ? parseInt(match[1], 10) : null;
+  const id = match?.[1];
+  return id ? parseInt(id, 10) : null;
 }

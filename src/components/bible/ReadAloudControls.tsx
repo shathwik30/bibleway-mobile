@@ -37,7 +37,7 @@ export default function ReadAloudControls({
   const cycleSpeed = () => {
     const currentIndex = SPEEDS.indexOf(currentSpeed);
     const nextIndex = (currentIndex + 1) % SPEEDS.length;
-    const newSpeed = SPEEDS[nextIndex];
+    const newSpeed = SPEEDS[nextIndex] ?? SPEEDS[0]!;
     setSpeed(newSpeed);
     setCurrentSpeed(newSpeed);
     if (isPlaying) {

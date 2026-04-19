@@ -23,7 +23,8 @@ export default function BibleCrosswordScreen() {
   );
   const [lastScore, setLastScore] = useState(0);
 
-  const level = LEVELS[levelId - 1];
+  // levelId is always a valid 1..LEVELS.length index (clamped on advance).
+  const level = LEVELS[levelId - 1]!;
 
   const startLevel = useCallback((id: number) => {
     setLevelId(id);

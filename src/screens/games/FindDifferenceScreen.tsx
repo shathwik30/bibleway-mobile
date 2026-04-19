@@ -18,7 +18,8 @@ export default function FindDifferenceScreen() {
   const [unlockedLevel, setUnlockedLevel] = useState(() => loadUnlocked());
   const [completedLevels, setCompletedLevels] = useState(() => loadCompleted());
 
-  const level = FTD_LEVELS[levelId - 1];
+  // levelId is always a valid 1..FTD_LEVELS.length index (clamped on advance).
+  const level = FTD_LEVELS[levelId - 1]!;
 
   const startLevel = useCallback((id: number) => {
     setLevelId(id);

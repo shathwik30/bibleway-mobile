@@ -18,11 +18,12 @@ function prependToFirstPage<TPage extends { results: unknown[] }>(
   old: InfiniteData<TPage>,
   item: TPage["results"][number],
 ): InfiniteData<TPage> {
-  if (!old.pages.length) return old;
+  const firstPage = old.pages[0];
+  if (!firstPage) return old;
   return {
     ...old,
     pages: [
-      { ...old.pages[0], results: [item, ...old.pages[0].results] } as TPage,
+      { ...firstPage, results: [item, ...firstPage.results] } as TPage,
       ...old.pages.slice(1),
     ],
   };

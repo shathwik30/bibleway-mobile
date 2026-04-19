@@ -12,7 +12,7 @@ export function buildGrid(level: LevelData): Map<string, CellInfo> {
       const k = `${r}-${c}`;
       const existing = map.get(k);
       if (existing) existing.wordIndices.push(wi);
-      else map.set(k, { letter: w.word[i], wordIndices: [wi] });
+      else map.set(k, { letter: w.word[i]!, wordIndices: [wi] });
     }
   });
   return map;
@@ -32,7 +32,10 @@ function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    // i and j are both in [0, a.length), swap is safe.
+    const tmp = a[i]!;
+    a[i] = a[j]!;
+    a[j] = tmp;
   }
   return a;
 }
