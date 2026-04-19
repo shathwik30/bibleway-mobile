@@ -12,6 +12,9 @@ export const GAME_STORAGE_KEYS = {
     unlocked: "ftd_unlocked_level",
     completed: "ftd_completed_levels",
   },
+  ticTacToe: {
+    scores: "tictactoe_scores",
+  },
 } as const;
 
 export type GameType = keyof typeof GAME_STORAGE_KEYS;

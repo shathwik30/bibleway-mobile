@@ -5,11 +5,42 @@ import * as Haptics from "expo-haptics";
 import Animated, { FadeIn } from "react-native-reanimated";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
+import { mmkvStorage } from "@/lib/storage";
+import { GAME_STORAGE_KEYS } from "@/constants/games/storageKeys";
+import { logger } from "@/utils/logger";
 
 type Player = "X" | "O";
 type Cell = Player | null;
 type Board = Cell[];
 type GameMode = "1P" | "2P";
+type ScoreMap = Record<GameMode, { X: number; O: number }>;
+
+const EMPTY_SCORES: ScoreMap = {
+  "1P": { X: 0, O: 0 },
+  "2P": { X: 0, O: 0 },
+};
+
+function loadScores(): ScoreMap {
+  const raw = mmkvStorage.getString(GAME_STORAGE_KEYS.ticTacToe.scores);
+  if (!raw) return EMPTY_SCORES;
+  try {
+    const parsed = JSON.parse(raw) as Partial<ScoreMap>;
+    return {
+      "1P": parsed["1P"] ?? { X: 0, O: 0 },
+      "2P": parsed["2P"] ?? { X: 0, O: 0 },
+    };
+  } catch (err) {
+    logger.warn("[tictactoe] score cache read failed", err);
+    return EMPTY_SCORES;
+  }
+}
+
+function saveScores(scores: ScoreMap): void {
+  mmkvStorage.setString(
+    GAME_STORAGE_KEYS.ticTacToe.scores,
+    JSON.stringify(scores),
+  );
+}
 
 const WINNING_LINES = [
   [0, 1, 2],
@@ -179,9 +210,25 @@ export default function TicTacToeScreen() {
   const [mode, setMode] = useState<GameMode>("1P");
   const [board, setBoard] = useState<Board>(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>("X");
-  const [scores, setScores] = useState({ X: 0, O: 0 });
+  const [allScores, setAllScores] = useState<ScoreMap>(loadScores);
   const [verse, setVerse] = useState("");
   const computerThinking = useRef(false);
+
+  const scores = allScores[mode];
+
+  const bumpScore = useCallback(
+    (winner: Player): void => {
+      setAllScores((prev) => {
+        const next: ScoreMap = {
+          ...prev,
+          [mode]: { ...prev[mode], [winner]: prev[mode][winner] + 1 },
+        };
+        saveScores(next);
+        return next;
+      });
+    },
+    [mode],
+  );
 
   const result = getWinner(board);
   const isDraw = !result && board.every((c) => c !== null);
@@ -207,7 +254,7 @@ export default function TicTacToeScreen() {
       const winResult = getWinner(newBoard);
       if (winResult) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-        setScores((prev) => ({ ...prev, O: prev.O + 1 }));
+        bumpScore("O");
         setVerse(getRandomVerse(DRAW_VERSES));
       } else if (newBoard.every((c) => c !== null)) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
@@ -219,7 +266,7 @@ export default function TicTacToeScreen() {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [currentPlayer, mode, gameOver, board]);
+  }, [currentPlayer, mode, gameOver, board, bumpScore]);
 
   const handleCellPress = useCallback(
     (index: number) => {
@@ -236,10 +283,7 @@ export default function TicTacToeScreen() {
       const winResult = getWinner(newBoard);
       if (winResult) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        setScores((prev) => ({
-          ...prev,
-          [winResult.winner]: prev[winResult.winner] + 1,
-        }));
+        bumpScore(winResult.winner);
         setVerse(getRandomVerse(VICTORY_VERSES));
       } else if (newBoard.every((c) => c !== null)) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
@@ -248,7 +292,7 @@ export default function TicTacToeScreen() {
         setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
       }
     },
-    [board, currentPlayer, gameOver, mode],
+    [board, currentPlayer, gameOver, mode, bumpScore],
   );
 
   const resetGame = useCallback(() => {
@@ -264,7 +308,6 @@ export default function TicTacToeScreen() {
     setMode(newMode);
     setBoard(Array(9).fill(null));
     setCurrentPlayer("X");
-    setScores({ X: 0, O: 0 });
     setVerse("");
     computerThinking.current = false;
   }, []);
@@ -273,10 +316,14 @@ export default function TicTacToeScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setBoard(Array(9).fill(null));
     setCurrentPlayer("X");
-    setScores({ X: 0, O: 0 });
+    setAllScores((prev) => {
+      const next: ScoreMap = { ...prev, [mode]: { X: 0, O: 0 } };
+      saveScores(next);
+      return next;
+    });
     setVerse("");
     computerThinking.current = false;
-  }, []);
+  }, [mode]);
 
   const youLabel = mode === "1P" ? "You" : "Player 1";
   const opponentLabel = mode === "1P" ? "Computer" : "Player 2";
