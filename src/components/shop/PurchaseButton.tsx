@@ -8,6 +8,7 @@ interface PurchaseButtonProps {
   onPurchase: () => void;
   onDownload: () => void;
   loading?: boolean;
+  disabled?: boolean;
 }
 
 export default function PurchaseButton({
@@ -16,6 +17,7 @@ export default function PurchaseButton({
   onPurchase,
   onDownload,
   loading = false,
+  disabled = false,
 }: PurchaseButtonProps) {
   if (isPurchased || isFree) {
     return (
@@ -23,6 +25,7 @@ export default function PurchaseButton({
         title="Download"
         onPress={onDownload}
         loading={loading}
+        disabled={disabled}
         leftIcon={
           <Ionicons name="download-outline" size={18} color="#FFFFFF" />
         }
@@ -36,6 +39,7 @@ export default function PurchaseButton({
       title="Buy Now"
       onPress={onPurchase}
       loading={loading}
+      disabled={disabled}
       leftIcon={<Ionicons name="cart-outline" size={18} color="#FFFFFF" />}
       fullWidth
     />

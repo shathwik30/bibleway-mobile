@@ -8,8 +8,9 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import Button from "@/components/ui/Button";
 import { useCreatePrayer } from "@/hooks/useSocial";
 import { useMediaUpload } from "@/hooks/useMediaUpload";
-import { useAuthStore } from "@/stores/authStore";
 import { showToast } from "@/components/ui/Toast";
+import { parseError } from "@/utils/parseError";
+import { logger } from "@/utils/logger";
 
 export default function CreatePrayerScreen() {
   const navigation = useNavigation();
@@ -18,7 +19,6 @@ export default function CreatePrayerScreen() {
   const createMutation = useCreatePrayer();
   const { media, uploading, pickImages, removeMedia, uploadMedia } =
     useMediaUpload();
-  const accessToken = useAuthStore((s) => s.accessToken);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
@@ -27,17 +27,12 @@ export default function CreatePrayerScreen() {
       return;
     }
 
-    if (media.length > 0 && !accessToken) {
-      showToast("error", "Error", "Please log in again");
-      return;
-    }
-
     setSubmitting(true);
     try {
       let mediaKeys: string[] = [];
       let mediaTypes: string[] = [];
       if (media.length > 0) {
-        const uploaded = await uploadMedia(accessToken!);
+        const uploaded = await uploadMedia();
         mediaKeys = uploaded.keys;
         mediaTypes = uploaded.types;
       }
@@ -53,10 +48,9 @@ export default function CreatePrayerScreen() {
 
       showToast("success", "Submitted", "Your prayer request has been shared");
       navigation.goBack();
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
-      showToast("error", "Error", msg);
+    } catch (err) {
+      logger.error("[CreatePrayer] submit failed", err);
+      showToast("error", "Error", parseError(err));
     } finally {
       setSubmitting(false);
     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -10,7 +10,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "@/theme/colors";
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
@@ -19,11 +18,10 @@ import Avatar from "@/components/ui/Avatar";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { useMyProfile, useUpdateProfile } from "@/hooks/useProfile";
-import { useAuthStore } from "@/stores/authStore";
 import { showToast } from "@/components/ui/Toast";
 import { compressImage } from "@/lib/imageCompressor";
-import { API_BASE_URL } from "@/constants/api";
-import { ENDPOINTS } from "@/api/endpoints";
+import { parseError } from "@/utils/parseError";
+import { logger } from "@/utils/logger";
 
 interface ProfileForm {
   full_name: string;
@@ -33,7 +31,41 @@ interface ProfileForm {
   date_of_birth: string;
 }
 
-export default function EditProfileScreen() {
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+
+function buildPayload(
+  data: ProfileForm,
+  photoUri: string | null,
+): FormData | Record<string, string> {
+  if (!photoUri) {
+    const payload: Record<string, string> = {
+      full_name: data.full_name,
+      bio: data.bio,
+      country: data.country,
+      phone_number: data.phone_number,
+    };
+    if (data.date_of_birth) payload.date_of_birth = data.date_of_birth;
+    return payload;
+  }
+
+  const formData = new FormData();
+  formData.append("full_name", data.full_name);
+  formData.append("bio", data.bio);
+  formData.append("country", data.country);
+  formData.append("phone_number", data.phone_number);
+  if (data.date_of_birth) formData.append("date_of_birth", data.date_of_birth);
+
+  const filename = photoUri.split("/").pop() || "profile.jpg";
+  // RN FormData accepts {uri, type, name} — Blob cast is a known RN quirk.
+  formData.append("profile_photo", {
+    uri: photoUri,
+    name: filename,
+    type: "image/jpeg",
+  } as unknown as Blob);
+  return formData;
+}
+
+export default function EditProfileScreen(): React.ReactElement {
   const navigation = useNavigation();
   const { data: profile } = useMyProfile();
   const updateMutation = useUpdateProfile();
@@ -65,98 +97,60 @@ export default function EditProfileScreen() {
     }
   }, [profile, reset]);
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
+  const pickImage = useCallback(async (): Promise<void> => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+      if (result.canceled || !result.assets[0]) return;
 
-    if (!result.canceled && result.assets[0]) {
-      const compressed = await compressImage(result.assets[0].uri);
+      const asset = result.assets[0];
+      if (asset.fileSize && asset.fileSize > MAX_IMAGE_BYTES) {
+        showToast("error", "Image too large", "Please choose an image under 10 MB.");
+        return;
+      }
+      const compressed = await compressImage(asset.uri);
       setSelectedPhoto(compressed);
+    } catch (err) {
+      logger.error("[EditProfile] pickImage failed", err);
+      showToast("error", "Error", parseError(err, "Could not open image picker"));
     }
-  };
+  }, []);
 
-  const accessToken = useAuthStore((s) => s.accessToken);
-  const [submitting, setSubmitting] = useState(false);
-
-  const onSubmit = async (data: ProfileForm) => {
-    if (selectedPhoto) {
-      setSubmitting(true);
-      try {
-        const formData = new FormData();
-        formData.append("full_name", data.full_name);
-        formData.append("bio", data.bio);
-        formData.append("country", data.country);
-        formData.append("phone_number", data.phone_number);
-        if (data.date_of_birth) {
-          formData.append("date_of_birth", data.date_of_birth);
-        }
-
-        const filename = selectedPhoto.split("/").pop() || "profile.jpg";
-        formData.append("profile_photo", {
-          uri: selectedPhoto,
-          name: filename,
-          type: "image/jpeg",
-        } as unknown as Blob);
-
-        const url = `${API_BASE_URL}${ENDPOINTS.profile.me}`;
-        const res = await fetch(url, {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            ...(__DEV__ && { "ngrok-skip-browser-warning": "true" }),
-          },
-          body: formData,
-        });
-
-        const body = await res.json().catch(() => null);
-
-        if (!res.ok) {
-          throw new Error(
-            body?.message || body?.detail || `Update failed (${res.status})`,
-          );
-        }
-
-        showToast("success", "Updated", "Profile updated successfully");
-        navigation.goBack();
-      } catch (error) {
-        showToast(
-          "error",
-          "Error",
-          error instanceof Error ? error.message : "Failed to update profile",
-        );
-      } finally {
-        setSubmitting(false);
-      }
-    } else {
-      const payload: Record<string, string> = {
-        full_name: data.full_name,
-        bio: data.bio,
-        country: data.country,
-        phone_number: data.phone_number,
-      };
-      if (data.date_of_birth) {
-        payload.date_of_birth = data.date_of_birth;
-      }
-
+  const onSubmit = useCallback(
+    (data: ProfileForm): void => {
+      const payload = buildPayload(data, selectedPhoto);
       updateMutation.mutate(payload, {
         onSuccess: () => {
           showToast("success", "Updated", "Profile updated successfully");
           navigation.goBack();
         },
-        onError: (error) => {
-          showToast(
-            "error",
-            "Error",
-            error.message || "Failed to update profile",
-          );
+        onError: (err) => {
+          logger.error("[EditProfile] update failed", err);
+          showToast("error", "Error", parseError(err, "Failed to update profile"));
         },
       });
-    }
-  };
+    },
+    [selectedPhoto, updateMutation, navigation],
+  );
+
+  const handleDateChange = useCallback(
+    (_event: unknown, selectedDate?: Date): void => {
+      setShowDatePicker(Platform.OS === "ios");
+      if (selectedDate) {
+        const iso = selectedDate.toISOString().split("T")[0];
+        if (iso) setValue("date_of_birth", iso);
+      }
+    },
+    [setValue],
+  );
+
+  const openDatePicker = useCallback((): void => {
+    setShowDatePicker(true);
+  }, []);
 
   const avatarSource = selectedPhoto || profile?.profile_photo || null;
 
@@ -167,14 +161,6 @@ export default function EditProfileScreen() {
       )
     : (profile?.age ?? null);
 
-  const handleDateChange = (_event: unknown, selectedDate?: Date) => {
-    setShowDatePicker(Platform.OS === "ios");
-    if (selectedDate) {
-      const iso = selectedDate.toISOString().split("T")[0];
-      setValue("date_of_birth", iso);
-    }
-  };
-
   return (
     <SafeAreaScreen>
       <ScreenHeader title="Edit Profile" />
@@ -183,7 +169,12 @@ export default function EditProfileScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View className="items-center mb-6">
-          <Pressable onPress={pickImage} className="relative">
+          <Pressable
+            onPress={pickImage}
+            className="relative"
+            accessibilityLabel="Change profile photo"
+            accessibilityRole="button"
+          >
             {avatarSource ? (
               <Image
                 source={{ uri: avatarSource }}
@@ -224,8 +215,10 @@ export default function EditProfileScreen() {
             Date of Birth
           </Text>
           <Pressable
-            onPress={() => setShowDatePicker(true)}
+            onPress={openDatePicker}
             className="flex-row items-center justify-between bg-surfaceContainerLowest rounded-xl px-4 py-3"
+            accessibilityLabel="Select date of birth"
+            accessibilityRole="button"
           >
             <Text
               className={`text-base ${dateOfBirth ? "text-textPrimary" : "text-textTertiary"}`}
@@ -283,7 +276,7 @@ export default function EditProfileScreen() {
           <Button
             title="Save Changes"
             onPress={handleSubmit(onSubmit)}
-            loading={submitting || updateMutation.isPending}
+            loading={updateMutation.isPending}
             fullWidth
             size="lg"
           />

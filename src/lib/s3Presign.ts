@@ -1,16 +1,44 @@
+/*
+ * ============================================================================
+ * CRITICAL SECURITY WARNING
+ * ============================================================================
+ * This file signs S3 requests *in the client* using long-lived Tigris
+ * credentials. Any secret shipped in a mobile app is extractable by any user
+ * — these credentials are effectively public the moment they ship.
+ *
+ * Action required (backend work, cannot be fixed client-side):
+ *   1. Add a backend endpoint that accepts a storage key and returns a
+ *      short-lived presigned URL (e.g. GET /media/signed-url/?key=...).
+ *   2. Replace getSignedUrl below with a call to that endpoint.
+ *   3. Rotate the Tigris credentials and scrub them from git history
+ *      (they are exposed in every prior commit).
+ *
+ * The current implementation is retained only to avoid breaking existing
+ * media rendering until the backend endpoint lands. Do not add new call
+ * sites — route new work through the eventual backend signer.
+ * ============================================================================
+ */
 import { sha256 } from "js-sha256";
 
 const TIGRIS_ACCESS_KEY =
+  process.env.EXPO_PUBLIC_TIGRIS_ACCESS_KEY ??
   "tid_RHjkfNsMLPcwgXlsMJpmY_wFvFw_wYzbkjmjfyOefLdNfuYKJc";
 const TIGRIS_SECRET_KEY =
+  process.env.EXPO_PUBLIC_TIGRIS_SECRET_KEY ??
   "tsec_xZy-YkdUtsGBKW+wDEIVMDjKT_dTNcIImArWwdcbCffuSXV6wwNARDO1_DlvmeJVH7dv_r";
-const TIGRIS_BUCKET = "bibleway-media-gad9adteco";
-const TIGRIS_HOST = "t3.storageapi.dev";
+const TIGRIS_BUCKET =
+  process.env.EXPO_PUBLIC_TIGRIS_BUCKET ?? "bibleway-media-gad9adteco";
+const TIGRIS_HOST = process.env.EXPO_PUBLIC_TIGRIS_HOST ?? "t3.storageapi.dev";
 const REGION = "auto";
 const EXPIRES = 86400;
+const MAX_CACHE_ENTRIES = 500;
 
 function hmacSha256(key: string | number[], message: string): number[] {
   return sha256.hmac.array(key, message);
+}
+
+function hmacSha256Hex(key: number[], message: string): string {
+  return sha256.hmac(key, message);
 }
 
 function getSigningKey(dateStamp: string): number[] {
@@ -18,10 +46,6 @@ function getSigningKey(dateStamp: string): number[] {
   const kRegion = hmacSha256(kDate, REGION);
   const kService = hmacSha256(kRegion, "s3");
   return hmacSha256(kService, "aws4_request");
-}
-
-function hmacSha256Hex(key: number[], message: string): string {
-  return sha256.hmac(key, message);
 }
 
 export function presignUrl(storageUrl: string): string {
@@ -37,10 +61,7 @@ export function presignUrl(storageUrl: string): string {
   const now = new Date();
   const dateStamp = now.toISOString().replace(/[-:]/g, "").slice(0, 8);
   const amzDate =
-    dateStamp +
-    "T" +
-    now.toISOString().replace(/[-:]/g, "").slice(9, 15) +
-    "Z";
+    dateStamp + "T" + now.toISOString().replace(/[-:]/g, "").slice(9, 15) + "Z";
   const scope = `${dateStamp}/${REGION}/s3/aws4_request`;
 
   const host = `${TIGRIS_BUCKET}.${TIGRIS_HOST}`;
@@ -84,15 +105,26 @@ export function presignUrl(storageUrl: string): string {
 
 const presignCache = new Map<string, { url: string; expiry: number }>();
 
-export function getSignedUrl(storageUrl: string): string {
-  if (!storageUrl || !storageUrl.includes(TIGRIS_HOST)) {
-    return storageUrl;
+function evictOldest(): void {
+  const now = Date.now();
+  for (const [key, val] of presignCache) {
+    if (val.expiry < now) presignCache.delete(key);
   }
+  if (presignCache.size > MAX_CACHE_ENTRIES) {
+    const overflow = presignCache.size - MAX_CACHE_ENTRIES;
+    let removed = 0;
+    for (const key of presignCache.keys()) {
+      presignCache.delete(key);
+      if (++removed >= overflow) break;
+    }
+  }
+}
+
+export function getSignedUrl(storageUrl: string): string {
+  if (!storageUrl || !storageUrl.includes(TIGRIS_HOST)) return storageUrl;
 
   const cached = presignCache.get(storageUrl);
-  if (cached && cached.expiry > Date.now()) {
-    return cached.url;
-  }
+  if (cached && cached.expiry > Date.now()) return cached.url;
 
   const signed = presignUrl(storageUrl);
   presignCache.set(storageUrl, {
@@ -100,12 +132,7 @@ export function getSignedUrl(storageUrl: string): string {
     expiry: Date.now() + (EXPIRES - 300) * 1000,
   });
 
-  if (presignCache.size > 500) {
-    const now = Date.now();
-    for (const [key, val] of presignCache) {
-      if (val.expiry < now) presignCache.delete(key);
-    }
-  }
+  if (presignCache.size > MAX_CACHE_ENTRIES) evictOldest();
 
   return signed;
 }

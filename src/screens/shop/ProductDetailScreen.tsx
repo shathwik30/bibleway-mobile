@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, ScrollView, Platform } from "react-native";
 import { Image } from "expo-image";
 import { useRoute, RouteProp } from "@react-navigation/native";
@@ -14,32 +14,82 @@ import {
 import { initIAP, teardownIAP, purchaseShopProduct } from "@/lib/iap";
 import { showToast } from "@/components/ui/Toast";
 import { useSignedUrl } from "@/hooks/useSignedUrl";
+import { parseError } from "@/utils/parseError";
+import { logger } from "@/utils/logger";
 import type { ShopStackParamList } from "@/types/navigation";
 
-export default function ProductDetailScreen() {
+const PURCHASE_TIMEOUT_MS = 60_000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error(`${label} timed out after ${ms}ms`)),
+      ms,
+    );
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      },
+    );
+  });
+}
+
+function isUserCancellation(message: string): boolean {
+  const lower = message.toLowerCase();
+  return lower.includes("cancel");
+}
+
+export default function ProductDetailScreen(): React.ReactElement {
   const route = useRoute<RouteProp<ShopStackParamList, "ProductDetail">>();
   const { productId } = route.params;
   const { data: product, isLoading } = useProductDetail(productId);
   const purchaseMutation = useCreatePurchase();
   const { refetch: fetchDownload } = useDownload(productId);
   const [purchasing, setPurchasing] = useState(false);
+  const [iapReady, setIapReady] = useState(false);
   const signedCover = useSignedUrl(product?.cover_image);
 
   useEffect(() => {
-    initIAP().catch(() => {});
+    let cancelled = false;
+    (async () => {
+      try {
+        await initIAP();
+        if (!cancelled) setIapReady(true);
+      } catch (err) {
+        logger.error("[ProductDetail] initIAP failed", err);
+        if (!cancelled) setIapReady(false);
+      }
+    })();
     return () => {
-      teardownIAP().catch(() => {});
+      cancelled = true;
+      teardownIAP().catch((err) =>
+        logger.error("[ProductDetail] teardownIAP failed", err),
+      );
     };
   }, []);
 
-  const handlePurchase = async () => {
+  const handlePurchase = useCallback(async (): Promise<void> => {
     if (!product || product.is_free) return;
+    if (!iapReady) {
+      showToast(
+        "error",
+        "Store unavailable",
+        "In-app purchases aren't available right now. Try again later.",
+      );
+      return;
+    }
 
     setPurchasing(true);
     try {
-      const { receiptData, transactionId } = await purchaseShopProduct(
-        product.apple_product_id,
-        product.google_product_id,
+      const { receiptData, transactionId } = await withTimeout(
+        purchaseShopProduct(product.apple_product_id, product.google_product_id),
+        PURCHASE_TIMEOUT_MS,
+        "Purchase",
       );
 
       purchaseMutation.mutate(
@@ -57,33 +107,31 @@ export default function ProductDetailScreen() {
               "You can now download this product",
             );
           },
-          onError: (error) => {
-            showToast(
-              "error",
-              "Error",
-              error.message || "Failed to validate purchase",
-            );
+          onError: (err) => {
+            logger.error("[ProductDetail] validate purchase failed", err);
+            showToast("error", "Error", parseError(err, "Failed to validate purchase"));
           },
           onSettled: () => setPurchasing(false),
         },
       );
-    } catch (error) {
+    } catch (err) {
       setPurchasing(false);
-      const message =
-        error instanceof Error ? error.message : "An error occurred";
-      if (message.includes("cancelled")) return;
+      const message = parseError(err, "Purchase failed");
+      if (isUserCancellation(message)) return;
+      logger.error("[ProductDetail] purchase failed", err);
       showToast("error", "Purchase Failed", message);
     }
-  };
+  }, [product, iapReady, purchaseMutation]);
 
-  const handleDownload = async () => {
+  const handleDownload = useCallback(async (): Promise<void> => {
     try {
       await fetchDownload();
       showToast("success", "Download Started", "Your download has started");
-    } catch {
-      showToast("error", "Download Failed", "Could not start download");
+    } catch (err) {
+      logger.error("[ProductDetail] download failed", err);
+      showToast("error", "Download Failed", parseError(err, "Could not start download"));
     }
-  };
+  }, [fetchDownload]);
 
   const isProcessing = purchasing || purchaseMutation.isPending;
 
@@ -94,9 +142,7 @@ export default function ProductDetailScreen() {
       <SafeAreaScreen>
         <ScreenHeader title="Product" />
         <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-base text-textSecondary">
-            Product not found
-          </Text>
+          <Text className="text-base text-textSecondary">Product not found</Text>
         </View>
       </SafeAreaScreen>
     );
@@ -116,7 +162,10 @@ export default function ProductDetailScreen() {
           />
         )}
         <View className="px-4 pt-4">
-          <Text className="text-xl text-textPrimary" style={{ fontFamily: "PlayfairDisplay_700Bold" }}>
+          <Text
+            className="text-xl text-textPrimary"
+            style={{ fontFamily: "PlayfairDisplay_700Bold" }}
+          >
             {product.title}
           </Text>
           <Text className="text-lg font-semibold text-primary mt-2">
@@ -136,6 +185,7 @@ export default function ProductDetailScreen() {
           onPurchase={handlePurchase}
           onDownload={handleDownload}
           loading={isProcessing}
+          disabled={!product.is_free && !iapReady && !product.download_url}
         />
       </View>
     </SafeAreaScreen>
