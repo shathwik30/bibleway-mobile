@@ -21,7 +21,12 @@ export default function ScreenHeader({
     <View className="flex-row items-center justify-between px-4 py-3 bg-surfaceContainerLowest">
       <View className="flex-row items-center flex-1">
         {showBack && (
-          <Pressable onPress={() => navigation.goBack()} className="mr-3 p-1">
+          <Pressable
+            onPress={() => navigation.goBack()}
+            accessibilityLabel="Go back"
+            accessibilityRole="button"
+            className="mr-3 p-1"
+          >
             <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
           </Pressable>
         )}

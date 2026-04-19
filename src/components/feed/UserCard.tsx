@@ -15,6 +15,8 @@ function UserCard({ user }: UserCardProps) {
   return (
     <Pressable
       onPress={() => navigation.navigate(ROUTES.UserProfile, { userId: user.id })}
+      accessibilityLabel={`View ${user.full_name}'s profile`}
+      accessibilityRole="button"
       className="items-center mr-4 w-20"
     >
       <Avatar source={user.profile_photo} name={user.full_name} size={56} />

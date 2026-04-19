@@ -32,6 +32,8 @@ export default function StatsRow({
       </View>
       <Pressable
         onPress={() => navigation.navigate(ROUTES.Followers, { userId })}
+        accessibilityLabel={`${followers} followers. Tap to view list.`}
+        accessibilityRole="button"
         className="items-center"
       >
         <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{followers}</Text>
@@ -39,6 +41,8 @@ export default function StatsRow({
       </Pressable>
       <Pressable
         onPress={() => navigation.navigate(ROUTES.Following, { userId })}
+        accessibilityLabel={`Following ${following}. Tap to view list.`}
+        accessibilityRole="button"
         className="items-center"
       >
         <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{following}</Text>

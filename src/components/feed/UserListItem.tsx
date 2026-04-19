@@ -16,6 +16,8 @@ function UserListItemComponent({ user, rightAction }: UserListItemProps) {
   return (
     <Pressable
       onPress={() => navigation.navigate(ROUTES.UserProfile, { userId: user.id })}
+      accessibilityLabel={`View ${user.full_name}'s profile`}
+      accessibilityRole="button"
       className="flex-row items-center p-4 bg-surface rounded-xl mb-2"
     >
       <Avatar source={user.profile_photo} name={user.full_name} size={40} />

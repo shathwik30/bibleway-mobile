@@ -22,6 +22,8 @@ export default function ReplyItem({ reply }: ReplyItemProps) {
         onPress={() =>
           navigation.navigate(ROUTES.UserProfile, { userId: reply.user.id })
         }
+        accessibilityLabel={`View ${reply.user.full_name}'s profile`}
+        accessibilityRole="button"
       >
         <Avatar
           source={reply.user.profile_photo}

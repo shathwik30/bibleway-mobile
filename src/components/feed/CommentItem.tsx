@@ -28,6 +28,8 @@ export default function CommentItem({
         onPress={() =>
           navigation.navigate(ROUTES.UserProfile, { userId: comment.user.id })
         }
+        accessibilityLabel={`View ${comment.user.full_name}'s profile`}
+        accessibilityRole="button"
       >
         <Avatar
           source={comment.user.profile_photo}
@@ -62,7 +64,12 @@ export default function CommentItem({
             })}
           </Text>
           {onReply && (
-            <Pressable onPress={onReply} className="ml-4">
+            <Pressable
+              onPress={onReply}
+              accessibilityLabel="Reply to comment"
+              accessibilityRole="button"
+              className="ml-4"
+            >
               <Text className="text-xs font-semibold text-textSecondary">
                 Reply
               </Text>
@@ -70,7 +77,12 @@ export default function CommentItem({
           )}
         </View>
         {comment.reply_count > 0 && onViewReplies && (
-          <Pressable onPress={onViewReplies} className="mt-1 ml-1">
+          <Pressable
+            onPress={onViewReplies}
+            accessibilityLabel={`View ${comment.reply_count} ${comment.reply_count === 1 ? "reply" : "replies"}`}
+            accessibilityRole="button"
+            className="mt-1 ml-1"
+          >
             <Text className="text-xs font-semibold text-primary">
               View {comment.reply_count}{" "}
               {comment.reply_count === 1 ? "reply" : "replies"}
