@@ -28,6 +28,8 @@ function PostCard({ post }: PostCardProps) {
   return (
     <AnimatedPressable
       onPress={() => navigation.navigate(ROUTES.PostDetail, { postId: post.id })}
+      accessibilityLabel={`Open post by ${post.author.full_name}`}
+      accessibilityRole="button"
       className="bg-surfaceContainerLowest mb-2 rounded-xl mx-4"
     >
       <View className="px-4 pt-3">
@@ -36,6 +38,8 @@ function PostCard({ post }: PostCardProps) {
             onPress={() =>
               navigation.navigate(ROUTES.UserProfile, { userId: post.author.id })
             }
+            accessibilityLabel={`View ${post.author.full_name}'s profile`}
+            accessibilityRole="button"
             className="flex-row items-center flex-1"
           >
             <Avatar
@@ -70,7 +74,11 @@ function PostCard({ post }: PostCardProps) {
               {displayText}
             </Text>
             {shouldTruncate && !expanded && (
-              <Pressable onPress={() => setExpanded(true)}>
+              <Pressable
+                onPress={() => setExpanded(true)}
+                accessibilityLabel="Show full post text"
+                accessibilityRole="button"
+              >
                 <Text className="text-primary text-sm font-medium mt-1">
                   Read more
                 </Text>

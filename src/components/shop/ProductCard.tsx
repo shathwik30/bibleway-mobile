@@ -23,6 +23,8 @@ function ProductCard({ product }: ProductCardProps) {
       onPress={() =>
         navigation.navigate(ROUTES.ProductDetail, { productId: product.id })
       }
+      accessibilityLabel={`Open product ${product.title}. ${product.is_free ? "Free" : product.price_tier}.`}
+      accessibilityRole="button"
       style={{ width: CARD_WIDTH }}
       className="mb-4"
     >

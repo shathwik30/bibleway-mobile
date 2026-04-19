@@ -69,6 +69,12 @@ function ReactionBar({
                 : setShowPicker(!showPicker)
             }
             onLongPress={() => setShowPicker(!showPicker)}
+            accessibilityLabel={
+              userReaction
+                ? `Remove your ${userReaction} reaction. ${reactionCount} total.`
+                : `React to this ${contentType}. ${reactionCount} reactions.`
+            }
+            accessibilityRole="button"
             className="flex-row items-center mr-4"
           >
             <Text className="text-lg mr-1">
@@ -85,6 +91,8 @@ function ReactionBar({
             onPress={() =>
               navigation.navigate(ROUTES.Comments, { contentType, objectId })
             }
+            accessibilityLabel={`Open comments. ${commentCount} total.`}
+            accessibilityRole="button"
             className="flex-row items-center"
           >
             <Ionicons
@@ -98,7 +106,12 @@ function ReactionBar({
           </Pressable>
         </View>
 
-        <Pressable onPress={handleShare} className="flex-row items-center">
+        <Pressable
+          onPress={handleShare}
+          accessibilityLabel={`Share this ${contentType}`}
+          accessibilityRole="button"
+          className="flex-row items-center"
+        >
           <Ionicons
             name="share-outline"
             size={18}
@@ -116,6 +129,9 @@ function ReactionBar({
             <Pressable
               key={r.type}
               onPress={() => handleReaction(r.type)}
+              accessibilityLabel={`React with ${r.type}`}
+              accessibilityRole="button"
+              accessibilityState={{ selected: userReaction === r.type }}
               className={`px-2 py-1 rounded-full mx-0.5 ${
                 userReaction === r.type ? "bg-primaryLight/20" : ""
               }`}

@@ -30,6 +30,8 @@ function PrayerCard({ prayer }: PrayerCardProps) {
       onPress={() =>
         navigation.navigate(ROUTES.PrayerDetail, { prayerId: prayer.id })
       }
+      accessibilityLabel={`Open prayer request: ${prayer.title}`}
+      accessibilityRole="button"
       className="bg-surfaceContainerLow mb-2 rounded-xl mx-4"
     >
       <View className="px-4 pt-3">
@@ -38,6 +40,8 @@ function PrayerCard({ prayer }: PrayerCardProps) {
             onPress={() =>
               navigation.navigate(ROUTES.UserProfile, { userId: prayer.author.id })
             }
+            accessibilityLabel={`View ${prayer.author.full_name}'s profile`}
+            accessibilityRole="button"
             className="flex-row items-center flex-1"
           >
             <Avatar
@@ -75,7 +79,11 @@ function PrayerCard({ prayer }: PrayerCardProps) {
               {displayText}
             </Text>
             {shouldTruncate && !expanded && (
-              <Pressable onPress={() => setExpanded(true)}>
+              <Pressable
+                onPress={() => setExpanded(true)}
+                accessibilityLabel="Show full prayer description"
+                accessibilityRole="button"
+              >
                 <Text className="text-primary text-sm font-medium mt-1">
                   Read more
                 </Text>

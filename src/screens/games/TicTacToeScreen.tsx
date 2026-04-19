@@ -8,6 +8,7 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import { mmkvStorage } from "@/lib/storage";
 import { GAME_STORAGE_KEYS } from "@/constants/games/storageKeys";
 import { logger } from "@/utils/logger";
+import { colors } from "@/theme/colors";
 
 type Player = "X" | "O";
 type Cell = Player | null;
@@ -148,8 +149,8 @@ function CellButton({
         disabled={disabled}
         className={`w-24 h-24 rounded-xl items-center justify-center ${bgClass}`}
       >
-        {value === "X" && <Ionicons name="add" size={48} color="#59021a" />}
-        {value === "O" && <Ionicons name="star" size={36} color="#eac16a" />}
+        {value === "X" && <Ionicons name="add" size={48} color={colors.primary.DEFAULT} />}
+        {value === "O" && <Ionicons name="star" size={36} color={colors.tertiary.fixedDim} />}
       </Pressable>
     </View>
   );
@@ -173,7 +174,7 @@ function ModeToggle({
         <Ionicons
           name="person-outline"
           size={16}
-          color={mode === "1P" ? "#FFFFFF" : "#564243"}
+          color={mode === "1P" ? colors.onPrimary : colors.textSecondary}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
@@ -192,7 +193,7 @@ function ModeToggle({
         <Ionicons
           name="people-outline"
           size={16}
-          color={mode === "2P" ? "#FFFFFF" : "#564243"}
+          color={mode === "2P" ? colors.onPrimary : colors.textSecondary}
         />
         <Text
           className={`ml-1.5 text-sm font-semibold ${
@@ -349,8 +350,13 @@ export default function TicTacToeScreen() {
       <ScreenHeader
         title="Tic Tac Toe"
         rightAction={
-          <Pressable onPress={resetScores} className="p-1">
-            <Ionicons name="refresh-outline" size={22} color="#1c1b1b" />
+          <Pressable
+            onPress={resetScores}
+            accessibilityLabel="Reset scores"
+            accessibilityRole="button"
+            className="p-1"
+          >
+            <Ionicons name="refresh-outline" size={22} color={colors.textPrimary} />
           </Pressable>
         }
       />
@@ -361,7 +367,7 @@ export default function TicTacToeScreen() {
         <View className="flex-row items-center mb-6 bg-surfaceContainerLowest rounded-xl overflow-hidden">
           <View className="items-center px-6 py-3">
             <View className="flex-row items-center mb-1">
-              <Ionicons name="add" size={18} color="#59021a" />
+              <Ionicons name="add" size={18} color={colors.primary.DEFAULT} />
               <Text className="text-xs font-semibold text-primary ml-0.5">
                 {youLabel}
               </Text>
@@ -377,7 +383,7 @@ export default function TicTacToeScreen() {
           <View className="w-px h-12 bg-surfaceContainerHigh" />
           <View className="items-center px-6 py-3">
             <View className="flex-row items-center mb-1">
-              <Ionicons name="star" size={14} color="#eac16a" />
+              <Ionicons name="star" size={14} color={colors.tertiary.fixedDim} />
               <Text className="text-xs font-semibold text-secondary ml-1">
                 {opponentLabel}
               </Text>
