@@ -4,6 +4,7 @@ import RNToast from "react-native-toast-message";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { successHaptic, errorHaptic } from "@/lib/haptics";
+import { colors } from "@/theme/colors";
 
 interface ToastProps {
   text1?: string;
@@ -85,7 +86,7 @@ function CustomToast({
         </View>
 
         <Pressable onPress={props.hide} className="p-1 ml-2" hitSlop={8}>
-          <Ionicons name="close" size={16} color="#897173" />
+          <Ionicons name="close" size={16} color={colors.textTertiary} />
         </Pressable>
       </Pressable>
     </Animated.View>

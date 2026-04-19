@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import TabBar from "@/components/ui/TabBar";
+import { colors } from "@/theme/colors";
 import InfiniteList from "@/components/layout/InfiniteList";
 import PostCard from "@/components/feed/PostCard";
 import PrayerCard from "@/components/feed/PrayerCard";
@@ -53,7 +54,11 @@ export default function HomeFeedScreen() {
             className="relative p-2"
             accessibilityLabel="Notifications"
           >
-            <Ionicons name="notifications-outline" size={24} color="#1c1b1b" />
+            <Ionicons
+              name="notifications-outline"
+              size={24}
+              color={colors.textPrimary}
+            />
             {unreadCount > 0 && (
               <View className="absolute top-1 right-1">
                 <Badge count={unreadCount} />
@@ -90,7 +95,7 @@ export default function HomeFeedScreen() {
         className="w-14 h-14 bg-primary rounded-full items-center justify-center shadow-lg"
         accessibilityLabel="Create new"
       >
-        <Ionicons name="add" size={28} color="#FFFFFF" />
+        <Ionicons name="add" size={28} color={colors.onPrimary} />
       </Pressable>
     </SafeAreaScreen>
   );

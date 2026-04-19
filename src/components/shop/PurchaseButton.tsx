@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../ui/Button";
 import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
 
 interface PurchaseButtonProps {
   isFree: boolean;
@@ -27,7 +28,7 @@ export default function PurchaseButton({
         loading={loading}
         disabled={disabled}
         leftIcon={
-          <Ionicons name="download-outline" size={18} color="#FFFFFF" />
+          <Ionicons name="download-outline" size={18} color={colors.onPrimary} />
         }
         fullWidth
       />
@@ -40,7 +41,9 @@ export default function PurchaseButton({
       onPress={onPurchase}
       loading={loading}
       disabled={disabled}
-      leftIcon={<Ionicons name="cart-outline" size={18} color="#FFFFFF" />}
+      leftIcon={
+        <Ionicons name="cart-outline" size={18} color={colors.onPrimary} />
+      }
       fullWidth
     />
   );

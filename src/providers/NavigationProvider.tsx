@@ -7,17 +7,18 @@ import {
 } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { linking } from "@/navigation/linking";
+import { colors } from "@/theme/colors";
 import type { RootStackParamList } from "@/types/navigation";
 
 const LightTheme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#59021a",
-    background: "#fcf9f8",
-    card: "#ffffff",
-    text: "#1c1b1b",
-    border: "#dcc0c1",
+    primary: colors.primary.DEFAULT,
+    background: colors.surface,
+    card: colors.surfaceContainerLowest,
+    text: colors.textPrimary,
+    border: colors.border,
   },
 };
 

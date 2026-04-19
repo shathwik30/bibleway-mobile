@@ -22,6 +22,7 @@ import { showToast } from "@/components/ui/Toast";
 import { compressImage } from "@/lib/imageCompressor";
 import { parseError } from "@/utils/parseError";
 import { logger } from "@/utils/logger";
+import { colors } from "@/theme/colors";
 
 interface ProfileForm {
   full_name: string;
@@ -184,7 +185,7 @@ export default function EditProfileScreen(): React.ReactElement {
               <Avatar source={null} name={profile?.full_name || ""} size={96} />
             )}
             <View className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full items-center justify-center border-2 border-surfaceContainerLowest">
-              <Ionicons name="camera" size={16} color="#FFFFFF" />
+              <Ionicons name="camera" size={16} color={colors.onPrimary} />
             </View>
           </Pressable>
         </View>
@@ -238,7 +239,11 @@ export default function EditProfileScreen(): React.ReactElement {
                 </Text>
               </View>
             ) : (
-              <Ionicons name="calendar-outline" size={20} color="#897173" />
+              <Ionicons
+                name="calendar-outline"
+                size={20}
+                color={colors.textTertiary}
+              />
             )}
           </Pressable>
           {showDatePicker && (
