@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, Pressable, TextInputProps } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  Pressable,
+  TextInputProps,
+  StyleSheet,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
 
@@ -24,10 +31,7 @@ export default function Input({
   return (
     <View className="mb-4">
       {label && (
-        <Text
-          className="text-sm text-textPrimary mb-1.5"
-          style={{ fontFamily: "Inter_500Medium" }}
-        >
+        <Text className="text-sm text-textPrimary mb-1.5" style={styles.label}>
           {label}
         </Text>
       )}
@@ -49,7 +53,7 @@ export default function Input({
           accessibilityLabel={label}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={styles.input}
         />
         {secureTextEntry && (
           <Pressable onPress={() => setIsSecure(!isSecure)} className="ml-2">
@@ -68,3 +72,8 @@ export default function Input({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  label: { fontFamily: "Inter_500Medium" },
+  input: { fontFamily: "Inter_400Regular" },
+});

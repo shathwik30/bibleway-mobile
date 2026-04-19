@@ -1,5 +1,11 @@
-import React from "react";
-import { View, FlatList, Pressable, useWindowDimensions } from "react-native";
+import React, { useCallback, useMemo } from "react";
+import {
+  View,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 import { Image } from "expo-image";
 import { STICKERS, type Sticker } from "@/constants/stickers";
 
@@ -14,32 +20,47 @@ function StickerPickerComponent({ onSelect }: StickerPickerProps) {
   const { width } = useWindowDimensions();
   const itemSize = (width - PADDING * 2 - (COLUMNS - 1) * PADDING) / COLUMNS;
 
-  const renderItem = ({ item }: { item: Sticker }) => (
-    <Pressable
-      onPress={() => onSelect(item.id)}
-      className="items-center justify-center"
-      style={{ width: itemSize, height: itemSize, padding: 6 }}
-    >
-      <Image
-        source={item.source}
-        style={{ width: itemSize - 20, height: itemSize - 20 }}
-        contentFit="contain"
-      />
-    </Pressable>
+  const tileStyle = useMemo(
+    () => ({ width: itemSize, height: itemSize, padding: 6 }),
+    [itemSize],
+  );
+  const imageStyle = useMemo(
+    () => ({ width: itemSize - 20, height: itemSize - 20 }),
+    [itemSize],
+  );
+
+  const renderItem = useCallback(
+    ({ item }: { item: Sticker }) => (
+      <Pressable
+        onPress={() => onSelect(item.id)}
+        accessibilityLabel={`Send sticker ${item.id}`}
+        accessibilityRole="button"
+        className="items-center justify-center"
+        style={tileStyle}
+      >
+        <Image source={item.source} style={imageStyle} contentFit="contain" />
+      </Pressable>
+    ),
+    [onSelect, tileStyle, imageStyle],
   );
 
   return (
-    <View style={{ height: 260 }} className="bg-surfaceContainerLow">
+    <View style={styles.container} className="bg-surfaceContainerLow">
       <FlatList
         data={STICKERS}
         renderItem={renderItem}
         keyExtractor={(item) => String(item.id)}
         numColumns={COLUMNS}
-        contentContainerStyle={{ padding: PADDING }}
+        contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { height: 260 },
+  content: { padding: PADDING },
+});
 
 export default React.memo(StickerPickerComponent);

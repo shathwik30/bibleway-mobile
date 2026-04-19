@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { format } from "date-fns";
 import StickerMessage from "@/components/feed/StickerMessage";
 import { isSticker } from "@/constants/stickers";
@@ -66,7 +66,7 @@ function MessageBubble({
               color={
                 message.is_read ? colors.primary.DEFAULT : colors.textTertiary
               }
-              style={{ marginLeft: 4 }}
+              style={styles.readReceipt}
             />
           )}
         </View>
@@ -121,5 +121,9 @@ function MessageBubble({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  readReceipt: { marginLeft: 4 },
+});
 
 export default React.memo(MessageBubble);

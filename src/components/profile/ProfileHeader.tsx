@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import Avatar from "../ui/Avatar";
 import StatsRow from "./StatsRow";
 import type { UserProfile, UserPublicProfile } from "@/types/models";
@@ -20,10 +20,7 @@ function ProfileHeader({
   return (
     <View className="items-center pt-6 pb-4 px-4">
       <Avatar source={user.profile_photo} name={user.full_name} size={80} />
-      <Text
-        className="text-xl text-textPrimary mt-3"
-        style={{ fontFamily: "PlayfairDisplay_700Bold" }}
-      >
+      <Text className="text-xl text-textPrimary mt-3" style={styles.name}>
         {user.full_name}
       </Text>
       {user.age ? (
@@ -47,5 +44,9 @@ function ProfileHeader({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  name: { fontFamily: "PlayfairDisplay_700Bold" },
+});
 
 export default React.memo(ProfileHeader);

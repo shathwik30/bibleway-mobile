@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Pressable, Text } from "react-native";
+import { View, Pressable, Text, StyleSheet } from "react-native";
 
 interface Tab {
   key: string;
@@ -15,29 +15,33 @@ interface TabBarProps {
 export default function TabBar({ tabs, activeTab, onTabChange }: TabBarProps) {
   return (
     <View className="flex-row bg-surfaceContainerLow">
-      {tabs.map((tab) => (
-        <Pressable
-          key={tab.key}
-          onPress={() => onTabChange(tab.key)}
-          className={`flex-1 items-center py-3 ${
-            activeTab === tab.key ? "border-b-2 border-primary" : ""
-          }`}
-        >
-          <Text
-            className={`text-sm ${
-              activeTab === tab.key ? "text-primary" : "text-textSecondary"
+      {tabs.map((tab) => {
+        const isActive = activeTab === tab.key;
+        return (
+          <Pressable
+            key={tab.key}
+            onPress={() => onTabChange(tab.key)}
+            accessibilityLabel={tab.label}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: isActive }}
+            className={`flex-1 items-center py-3 ${
+              isActive ? "border-b-2 border-primary" : ""
             }`}
-            style={{
-              fontFamily:
-                activeTab === tab.key
-                  ? "Inter_600SemiBold"
-                  : "Inter_500Medium",
-            }}
           >
-            {tab.label}
-          </Text>
-        </Pressable>
-      ))}
+            <Text
+              className={`text-sm ${isActive ? "text-primary" : "text-textSecondary"}`}
+              style={isActive ? styles.labelActive : styles.labelInactive}
+            >
+              {tab.label}
+            </Text>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  labelActive: { fontFamily: "Inter_600SemiBold" },
+  labelInactive: { fontFamily: "Inter_500Medium" },
+});

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
@@ -33,7 +33,7 @@ export default function ScreenHeader({
         <Text
           className="text-xl text-textPrimary"
           numberOfLines={1}
-          style={{ fontFamily: "Inter_700Bold" }}
+          style={styles.title}
         >
           {title}
         </Text>
@@ -42,3 +42,7 @@ export default function ScreenHeader({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  title: { fontFamily: "Inter_700Bold" },
+});

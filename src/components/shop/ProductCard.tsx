@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Dimensions } from "react-native";
+import { Text, Dimensions, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
 import AnimatedPressable from "../ui/AnimatedPressable";
@@ -9,6 +9,7 @@ import type { ProductListItem } from "@/types/models";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const CARD_WIDTH = (SCREEN_WIDTH - 48) / 2;
+const COVER_ASPECT = 1.2;
 
 interface ProductCardProps {
   product: ProductListItem;
@@ -25,16 +26,12 @@ function ProductCard({ product }: ProductCardProps) {
       }
       accessibilityLabel={`Open product ${product.title}. ${product.is_free ? "Free" : product.price_tier}.`}
       accessibilityRole="button"
-      style={{ width: CARD_WIDTH }}
+      style={styles.card}
       className="mb-4"
     >
       <Image
         source={signedCover ? { uri: signedCover } : undefined}
-        style={{
-          width: CARD_WIDTH,
-          height: CARD_WIDTH * 1.2,
-          borderRadius: 12,
-        }}
+        style={styles.cover}
         contentFit="cover"
         transition={200}
         placeholder={{ blurhash: "L6PZfSi_.AyE_3t7t7R**0o#DgR4" }}
@@ -53,5 +50,14 @@ function ProductCard({ product }: ProductCardProps) {
     </AnimatedPressable>
   );
 }
+
+const styles = StyleSheet.create({
+  card: { width: CARD_WIDTH },
+  cover: {
+    width: CARD_WIDTH,
+    height: CARD_WIDTH * COVER_ASPECT,
+    borderRadius: 12,
+  },
+});
 
 export default React.memo(ProductCard);

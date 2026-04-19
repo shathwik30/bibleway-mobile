@@ -6,6 +6,7 @@ import {
   FlatList,
   Modal,
   TextInput,
+  StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
@@ -72,7 +73,10 @@ export default function CountryPicker({
           onPress={() => setVisible(false)}
           className="flex-1 bg-black/40"
         />
-        <View className="bg-surfaceContainerLowest rounded-t-2xl" style={{ maxHeight: "70%" }}>
+        <View
+          className="bg-surfaceContainerLowest rounded-t-2xl"
+          style={styles.modalSheet}
+        >
           <View className="px-4 py-3 bg-surfaceContainerLow">
             <View className="flex-row items-center justify-between mb-3">
               <Text className="text-lg font-bold text-textPrimary">
@@ -142,3 +146,7 @@ export default function CountryPicker({
 }
 
 export { COUNTRIES };
+
+const styles = StyleSheet.create({
+  modalSheet: { maxHeight: "70%" },
+});

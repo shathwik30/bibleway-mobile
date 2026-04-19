@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 import { Image } from "expo-image";
 import { useSignedUrl } from "@/hooks/useSignedUrl";
@@ -21,24 +21,31 @@ function getInitials(name: string | undefined | null): string {
 
 function Avatar({ source, name, size = 40 }: AvatarProps) {
   const signedUrl = useSignedUrl(source);
+  const boxStyle = useMemo(
+    () => ({ width: size, height: size, borderRadius: size / 2 }),
+    [size],
+  );
+  const textStyle = useMemo(() => ({ fontSize: size * 0.36 }), [size]);
 
   if (signedUrl) {
     return (
       <Image
         source={{ uri: signedUrl }}
-        style={{ width: size, height: size, borderRadius: size / 2 }}
+        style={boxStyle}
         contentFit="cover"
         transition={200}
+        accessibilityLabel={`${name}'s profile photo`}
       />
     );
   }
 
   return (
     <View
-      style={{ width: size, height: size, borderRadius: size / 2 }}
+      style={boxStyle}
       className="bg-primaryLight items-center justify-center"
+      accessibilityLabel={`${name}'s initials avatar`}
     >
-      <Text style={{ fontSize: size * 0.36 }} className="text-white font-bold">
+      <Text style={textStyle} className="text-white font-bold">
         {getInitials(name)}
       </Text>
     </View>

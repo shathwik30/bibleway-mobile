@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
 
@@ -22,7 +22,13 @@ export default function AnalyticsCard({
         <Ionicons name={icon} size={20} color={color} />
         <Text className="text-xs text-textSecondary ml-1.5">{title}</Text>
       </View>
-      <Text className="text-2xl text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{value}</Text>
+      <Text className="text-2xl text-textPrimary" style={styles.value}>
+        {value}
+      </Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  value: { fontFamily: "Inter_700Bold" },
+});

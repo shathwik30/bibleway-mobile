@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Image } from "expo-image";
 import { parseStickerText, getStickerSource } from "@/constants/stickers";
 
@@ -9,18 +9,12 @@ interface StickerMessageProps {
 
 function StickerMessageComponent({ text, size = 120 }: StickerMessageProps) {
   const stickerId = parseStickerText(text);
-  if (stickerId === null) return null;
+  const source = stickerId !== null ? getStickerSource(stickerId) : null;
+  const style = useMemo(() => ({ width: size, height: size }), [size]);
 
-  const source = getStickerSource(stickerId);
   if (!source) return null;
 
-  return (
-    <Image
-      source={source}
-      style={{ width: size, height: size }}
-      contentFit="contain"
-    />
-  );
+  return <Image source={source} style={style} contentFit="contain" />;
 }
 
 export default React.memo(StickerMessageComponent);

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ROUTES } from "@/navigation/routes";
 
@@ -23,11 +23,15 @@ export default function StatsRow({
   return (
     <View className="flex-row mt-4 w-full justify-around">
       <View className="items-center">
-        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{posts}</Text>
+        <Text className="text-lg text-textPrimary" style={styles.number}>
+          {posts}
+        </Text>
         <Text className="text-xs text-textSecondary">Posts</Text>
       </View>
       <View className="items-center">
-        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{prayers}</Text>
+        <Text className="text-lg text-textPrimary" style={styles.number}>
+          {prayers}
+        </Text>
         <Text className="text-xs text-textSecondary">Prayers</Text>
       </View>
       <Pressable
@@ -36,7 +40,9 @@ export default function StatsRow({
         accessibilityRole="button"
         className="items-center"
       >
-        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{followers}</Text>
+        <Text className="text-lg text-textPrimary" style={styles.number}>
+          {followers}
+        </Text>
         <Text className="text-xs text-textSecondary">Followers</Text>
       </Pressable>
       <Pressable
@@ -45,9 +51,15 @@ export default function StatsRow({
         accessibilityRole="button"
         className="items-center"
       >
-        <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{following}</Text>
+        <Text className="text-lg text-textPrimary" style={styles.number}>
+          {following}
+        </Text>
         <Text className="text-xs text-textSecondary">Following</Text>
       </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  number: { fontFamily: "Inter_700Bold" },
+});

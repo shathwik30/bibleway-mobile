@@ -3,6 +3,7 @@ import {
   View,
   Dimensions,
   FlatList,
+  StyleSheet,
   type NativeSyntheticEvent,
   type NativeScrollEvent,
 } from "react-native";
@@ -28,7 +29,7 @@ const VideoItem = React.memo(function VideoItem({ uri }: { uri: string }) {
   return (
     <VideoView
       player={player}
-      style={{ width: CARD_WIDTH, height: CARD_WIDTH * 0.75 }}
+      style={styles.media}
       contentFit="contain"
       fullscreenOptions={{ enable: true }}
       allowsPictureInPicture={false}
@@ -51,7 +52,7 @@ function MediaCarousel({ media }: MediaCarouselProps) {
       return (
         <Image
           source={{ uri: url }}
-          style={{ width: CARD_WIDTH, height: CARD_WIDTH * 0.75 }}
+          style={styles.media}
           contentFit="cover"
           transition={200}
           placeholder={{ blurhash: DEFAULT_BLURHASH }}
@@ -106,5 +107,9 @@ function MediaCarousel({ media }: MediaCarouselProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  media: { width: CARD_WIDTH, height: CARD_WIDTH * 0.75 },
+});
 
 export default React.memo(MediaCarousel);
