@@ -12,7 +12,9 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import SearchBar from "@/components/ui/SearchBar";
 import EmptyState from "@/components/ui/EmptyState";
+import ErrorState from "@/components/ui/ErrorState";
 import { useBibleSearch, useApiBibleSearch } from "@/hooks/useBible";
+import { parseError } from "@/utils/parseError";
 import type { BibleStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
 
@@ -40,6 +42,9 @@ export default function BibleSearchScreen() {
   const isFetching = isApiSearch
     ? apiBibleSearch.isFetching
     : segregatedSearch.isFetching;
+  const isError = isApiSearch ? apiBibleSearch.isError : segregatedSearch.isError;
+  const searchError = isApiSearch ? apiBibleSearch.error : segregatedSearch.error;
+  const refetch = isApiSearch ? apiBibleSearch.refetch : segregatedSearch.refetch;
 
   const results: SearchResultItem[] = isApiSearch
     ? (apiBibleSearch.data?.verses ?? []).map((v) => ({
@@ -62,6 +67,11 @@ export default function BibleSearchScreen() {
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
         </View>
+      ) : isError && query.length > 0 ? (
+        <ErrorState
+          message={parseError(searchError, "Search failed")}
+          onRetry={() => refetch()}
+        />
       ) : (
         <FlatList
           data={results}
