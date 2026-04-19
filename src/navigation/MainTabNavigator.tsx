@@ -9,7 +9,7 @@ import BibleStackNavigator from "./BibleStackNavigator";
 import ShopStackNavigator from "./ShopStackNavigator";
 import GamesStackNavigator from "./GamesStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
-import { useChatStore } from "@/stores/chatStore";
+import { useChatStore } from "@/features/chat/store/chatStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "@/theme/colors";

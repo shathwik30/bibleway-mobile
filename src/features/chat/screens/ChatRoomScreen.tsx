@@ -22,15 +22,15 @@ import Avatar from "@/components/ui/Avatar";
 import KeyboardAvoidingWrapper from "@/components/layout/KeyboardAvoidingWrapper";
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
-import MessageBubble from "@/components/chat/MessageBubble";
-import ChatInput from "@/components/chat/ChatInput";
+import MessageBubble from "@/features/chat/components/MessageBubble";
+import ChatInput from "@/features/chat/components/ChatInput";
 import {
   useMessages,
   useSendMessage,
   useMarkMessagesRead,
-} from "@/hooks/useChat";
+} from "@/features/chat/hooks/useChat";
 import { useAuthStore } from "@/features/auth/store/authStore";
-import { useChatStore } from "@/stores/chatStore";
+import { useChatStore } from "@/features/chat/store/chatStore";
 import { showToast } from "@/components/ui/Toast";
 import { flattenPages } from "@/lib/pages";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";

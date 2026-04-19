@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
-import { useChatStore } from "@/stores/chatStore";
+import { useChatStore } from "@/features/chat/store/chatStore";
 import { CACHE_DURATIONS } from "@/constants/api";
 import { cursorNextPage, pageNumberNextPage } from "@/api/pagination";
 import type { PaginatedResponse, CursorPaginatedResponse } from "@/types/api";

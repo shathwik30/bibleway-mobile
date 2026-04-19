@@ -2,9 +2,9 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ChatStackParamList } from "@/types/navigation";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
-import ConversationListScreen from "@/screens/chat/ConversationListScreen";
-import ChatRoomScreen from "@/screens/chat/ChatRoomScreen";
-import NewChatScreen from "@/screens/chat/NewChatScreen";
+import ConversationListScreen from "@/features/chat/screens/ConversationListScreen";
+import ChatRoomScreen from "@/features/chat/screens/ChatRoomScreen";
+import NewChatScreen from "@/features/chat/screens/NewChatScreen";
 
 const Stack = createNativeStackNavigator<ChatStackParamList>();
 

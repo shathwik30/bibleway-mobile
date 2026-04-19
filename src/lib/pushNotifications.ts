@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
 import { mmkvStorage } from "@/lib/storage";
-import { useChatStore } from "@/stores/chatStore";
+import { useChatStore } from "@/features/chat/store/chatStore";
 import { logger } from "@/utils/logger";
 
 Notifications.setNotificationHandler({
