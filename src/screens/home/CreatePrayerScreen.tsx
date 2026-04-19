@@ -11,6 +11,7 @@ import { useMediaUpload } from "@/hooks/useMediaUpload";
 import { showToast } from "@/components/ui/Toast";
 import { parseError } from "@/utils/parseError";
 import { logger } from "@/utils/logger";
+import { fonts } from "@/theme/fonts";
 
 export default function CreatePrayerScreen() {
   const navigation = useNavigation();
@@ -68,7 +69,7 @@ export default function CreatePrayerScreen() {
           placeholder="Prayer title"
           placeholderTextColor={colors.textTertiary}
           className="text-lg font-semibold text-textPrimary p-3 bg-surfaceContainerHigh rounded-xl mb-3"
-          style={{ fontFamily: "Inter_600SemiBold" }}
+          style={fonts.semibold}
         />
 
         <TextInput
@@ -79,7 +80,7 @@ export default function CreatePrayerScreen() {
           multiline
           textAlignVertical="top"
           className="flex-1 text-base text-textPrimary p-3 bg-surfaceContainerHigh rounded-xl min-h-[120px]"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={fonts.regular}
         />
 
         {media.length > 0 && (

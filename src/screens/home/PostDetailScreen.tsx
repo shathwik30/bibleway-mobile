@@ -16,6 +16,7 @@ import { usePostDetail } from "@/hooks/useSocial";
 import { useRecordView } from "@/hooks/useAnalytics";
 import type { HomeStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 export default function PostDetailScreen() {
   const navigation = useNavigation();
@@ -42,7 +43,7 @@ export default function PostDetailScreen() {
         <View className="flex-1 items-center justify-center px-6">
           <Text
             className="text-base text-textSecondary"
-            style={{ fontFamily: "Inter_400Regular" }}
+            style={fonts.regular}
           >
             Post not found
           </Text>
@@ -74,7 +75,7 @@ export default function PostDetailScreen() {
             />
             <Text
               className="text-base text-textSecondary ml-2"
-              style={{ fontFamily: "Inter_500Medium" }}
+              style={fonts.medium}
             >
               {post.comment_count ?? 0} Comments
             </Text>

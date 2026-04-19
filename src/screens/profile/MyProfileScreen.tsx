@@ -15,6 +15,7 @@ import { useMyProfile } from "@/hooks/useProfile";
 import { useUserPosts, useUserPrayers } from "@/hooks/useSocial";
 import type { Post, Prayer } from "@/types/models";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 type Tab = "posts" | "prayers";
 
@@ -49,7 +50,7 @@ export default function MyProfileScreen() {
         >
           <Text
             className={`text-sm ${activeTab === "posts" ? "text-primary" : "text-textSecondary"}`}
-            style={{ fontFamily: "Inter_700Bold" }}
+            style={fonts.bold}
           >
             Posts
           </Text>
@@ -60,7 +61,7 @@ export default function MyProfileScreen() {
         >
           <Text
             className={`text-sm ${activeTab === "prayers" ? "text-primary" : "text-textSecondary"}`}
-            style={{ fontFamily: "Inter_700Bold" }}
+            style={fonts.bold}
           >
             Prayers
           </Text>

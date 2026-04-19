@@ -8,6 +8,7 @@ import AnalyticsCard from "@/components/profile/AnalyticsCard";
 import { useBoostAnalytics } from "@/hooks/useAnalytics";
 import type { BoostAnalyticSnapshot } from "@/types/models";
 import type { ProfileStackParamList } from "@/types/navigation";
+import { fonts } from "@/theme/fonts";
 
 export default function BoostAnalyticsScreen() {
   const route = useRoute<RouteProp<ProfileStackParamList, "BoostAnalytics">>();
@@ -85,7 +86,7 @@ export default function BoostAnalyticsScreen() {
 
         <Text
           className="text-lg text-textPrimary mb-3"
-          style={{ fontFamily: "Inter_700Bold" }}
+          style={fonts.bold}
         >
           Daily Snapshots
         </Text>

@@ -19,6 +19,7 @@ import { successHaptic } from "@/lib/haptics";
 import { getFirebaseIdToken } from "@/lib/firebase";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import type { AuthStackParamList } from "@/types/navigation";
+import { fonts } from "@/theme/fonts";
 
 const maxDate = new Date();
 maxDate.setFullYear(maxDate.getFullYear() - 13);
@@ -111,13 +112,13 @@ export default function GoogleCompleteProfileScreen() {
             <Avatar source={profilePhoto || null} name={fullName} size={80} />
             <Text
               className="text-lg font-bold text-textPrimary mt-3"
-              style={{ fontFamily: "PlayfairDisplay_700Bold" }}
+              style={fonts.serifBold}
             >
               {fullName}
             </Text>
             <Text
               className="text-sm text-textSecondary"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={fonts.regular}
             >
               {email}
             </Text>
@@ -125,7 +126,7 @@ export default function GoogleCompleteProfileScreen() {
 
           <Text
             className="text-base text-textSecondary mb-6 text-center"
-            style={{ fontFamily: "Inter_400Regular" }}
+            style={fonts.regular}
           >
             We need a few more details to set up your account
           </Text>

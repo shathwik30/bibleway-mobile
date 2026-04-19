@@ -8,6 +8,7 @@ import PrayerCard from "@/components/feed/PrayerCard";
 import { usePrayerDetail } from "@/hooks/useSocial";
 import { useRecordView } from "@/hooks/useAnalytics";
 import type { HomeStackParamList } from "@/types/navigation";
+import { fonts } from "@/theme/fonts";
 
 export default function PrayerDetailScreen() {
   const route = useRoute<RouteProp<HomeStackParamList, "PrayerDetail">>();
@@ -24,7 +25,7 @@ export default function PrayerDetailScreen() {
         <View className="flex-1 items-center justify-center px-6">
           <Text
             className="text-base text-textSecondary"
-            style={{ fontFamily: "Inter_400Regular" }}
+            style={fonts.regular}
           >
             Prayer request not found
           </Text>

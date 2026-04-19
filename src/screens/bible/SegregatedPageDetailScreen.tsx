@@ -13,6 +13,7 @@ import KeyboardAvoidingWrapper from "@/components/layout/KeyboardAvoidingWrapper
 import { usePageDetail, useCreatePageComment } from "@/hooks/useBible";
 import { showToast } from "@/components/ui/Toast";
 import type { BibleStackParamList } from "@/types/navigation";
+import { fonts } from "@/theme/fonts";
 
 export default function SegregatedPageDetailScreen() {
   const route =
@@ -109,7 +110,7 @@ export default function SegregatedPageDetailScreen() {
             <Text
               selectable={true}
               className="text-xl text-textPrimary mb-4"
-              style={{ fontFamily: "PlayfairDisplay_700Bold" }}
+              style={fonts.serifBold}
             >
               {page.title}
             </Text>

@@ -14,6 +14,7 @@ import { usePasswordReset } from "@/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { AuthStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 const schema = z.object({ email: z.string().email("Invalid email") });
 
@@ -52,7 +53,7 @@ export default function ForgotPasswordScreen() {
       <View className="flex-1 px-6 pt-8">
         <Text
           className="text-base text-textSecondary text-center mb-8"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={fonts.regular}
         >
           {t("auth.forgotPasswordSubtitle")}
         </Text>

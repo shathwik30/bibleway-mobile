@@ -27,6 +27,7 @@ import { showToast } from "@/components/ui/Toast";
 import { flattenPages } from "@/lib/pages";
 import type { HomeStackParamList } from "@/types/navigation";
 import type { Comment } from "@/types/models";
+import { fonts } from "@/theme/fonts";
 
 export default function CommentsScreen() {
   const route = useRoute<RouteProp<HomeStackParamList, "Comments">>();
@@ -165,7 +166,7 @@ export default function CommentsScreen() {
           <View className="flex-row items-center px-4 py-2 bg-surfaceContainerLow">
             <Text
               className="flex-1 text-sm text-textSecondary"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={fonts.regular}
             >
               Replying to comment
             </Text>

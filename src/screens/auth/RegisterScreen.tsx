@@ -18,6 +18,7 @@ import { showToast } from "@/components/ui/Toast";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import { AuthStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 const registerSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -218,14 +219,14 @@ export default function RegisterScreen() {
         <View className="flex-row justify-center mb-6">
           <Text
             className="text-sm text-textSecondary"
-            style={{ fontFamily: "Inter_400Regular" }}
+            style={fonts.regular}
           >
             {t("auth.hasAccount")}{" "}
           </Text>
           <Pressable onPress={() => navigation.goBack()}>
             <Text
               className="text-sm text-primary font-semibold"
-              style={{ fontFamily: "Inter_500Medium" }}
+              style={fonts.medium}
             >
               {t("auth.loginLink")}
             </Text>

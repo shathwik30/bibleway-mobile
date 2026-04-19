@@ -11,6 +11,7 @@ import { useMediaUpload } from "@/hooks/useMediaUpload";
 import { showToast } from "@/components/ui/Toast";
 import { parseError } from "@/utils/parseError";
 import { logger } from "@/utils/logger";
+import { fonts } from "@/theme/fonts";
 
 export default function CreatePostScreen() {
   const navigation = useNavigation();
@@ -69,7 +70,7 @@ export default function CreatePostScreen() {
           multiline
           textAlignVertical="top"
           className="flex-1 text-base text-textPrimary p-3 bg-surfaceContainerHigh rounded-xl min-h-[120px]"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={fonts.regular}
         />
 
         {media.length > 0 && (

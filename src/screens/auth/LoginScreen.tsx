@@ -17,6 +17,7 @@ import { signInWithGoogle, getFirebaseIdToken } from "@/lib/firebase";
 import GoogleLogo from "@/components/ui/GoogleLogo";
 import { AuthStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -108,7 +109,7 @@ export default function LoginScreen() {
             />
             <Text
               className="text-sm text-textSecondary mt-1"
-              style={{ fontFamily: "PlayfairDisplay_400Regular_Italic" }}
+              style={fonts.serifItalic}
             >
               Faith-centered community
             </Text>
@@ -151,7 +152,7 @@ export default function LoginScreen() {
           >
             <Text
               className="text-sm text-primary font-medium"
-              style={{ fontFamily: "Inter_500Medium" }}
+              style={fonts.medium}
             >
               {t("auth.forgotPassword")}
             </Text>
@@ -169,7 +170,7 @@ export default function LoginScreen() {
             <View className="flex-1 h-px bg-border" />
             <Text
               className="text-sm text-textSecondary mx-4"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={fonts.regular}
             >
               or
             </Text>
@@ -184,7 +185,7 @@ export default function LoginScreen() {
             <GoogleLogo size={20} />
             <Text
               className="text-base font-medium text-textPrimary ml-3"
-              style={{ fontFamily: "Inter_500Medium" }}
+              style={fonts.medium}
             >
               Continue with Google
             </Text>
@@ -193,14 +194,14 @@ export default function LoginScreen() {
           <View className="flex-row justify-center mt-6">
             <Text
               className="text-sm text-textSecondary"
-              style={{ fontFamily: "Inter_400Regular" }}
+              style={fonts.regular}
             >
               {t("auth.noAccount")}{" "}
             </Text>
             <Pressable onPress={() => navigation.navigate(ROUTES.Register)}>
               <Text
                 className="text-sm text-primary font-semibold"
-                style={{ fontFamily: "Inter_500Medium" }}
+                style={fonts.medium}
               >
                 {t("auth.signUpLink")}
               </Text>

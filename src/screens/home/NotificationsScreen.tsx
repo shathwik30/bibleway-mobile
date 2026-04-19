@@ -19,6 +19,7 @@ import { useNotifications, useMarkRead } from "@/hooks/useNotifications";
 import { flattenPages } from "@/lib/pages";
 import type { Notification } from "@/types/models";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 export default function NotificationsScreen() {
   const { t } = useTranslation();
@@ -102,11 +103,11 @@ export default function NotificationsScreen() {
       <View className="flex-1 ml-3">
         <Text
           className="text-sm text-textPrimary"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={fonts.regular}
         >
           <Text
             className="font-semibold"
-            style={{ fontFamily: "Inter_600SemiBold" }}
+            style={fonts.semibold}
           >
             {item.sender?.full_name ?? "System"}
           </Text>{" "}
@@ -114,7 +115,7 @@ export default function NotificationsScreen() {
         </Text>
         <Text
           className="text-xs text-textSecondary mt-0.5"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={fonts.regular}
         >
           {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}
         </Text>
@@ -131,7 +132,7 @@ export default function NotificationsScreen() {
           <Pressable onPress={() => markRead.mutate(undefined)}>
             <Text
               className="text-sm text-primary font-medium"
-              style={{ fontFamily: "Inter_500Medium" }}
+              style={fonts.medium}
             >
               {t("notifications.markAllRead")}
             </Text>

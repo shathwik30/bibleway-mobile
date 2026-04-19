@@ -12,6 +12,7 @@ import { showToast } from "@/components/ui/Toast";
 import { successHaptic } from "@/lib/haptics";
 import { AuthStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 export default function OTPVerificationScreen() {
   const { t } = useTranslation();
@@ -86,13 +87,13 @@ export default function OTPVerificationScreen() {
       <View className="flex-1 px-6 pt-8">
         <Text
           className="text-base text-textSecondary text-center mb-2"
-          style={{ fontFamily: "Inter_400Regular" }}
+          style={fonts.regular}
         >
           {t("auth.otpSubtitle")}
         </Text>
         <Text
           className="text-base font-semibold text-textPrimary text-center mb-8"
-          style={{ fontFamily: "Inter_500Medium" }}
+          style={fonts.medium}
         >
           {email}
         </Text>

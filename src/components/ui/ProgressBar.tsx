@@ -20,7 +20,10 @@ export default function ProgressBar({
       className="h-2 bg-surface rounded-full overflow-hidden"
     >
       <View
-        style={{ width: `${clampedProgress * 100}%`, backgroundColor: color }}
+        style={{
+          width: `${clampedProgress * 100}%` as const,
+          backgroundColor: color,
+        }}
         className="h-full rounded-full"
       />
     </View>

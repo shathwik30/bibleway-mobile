@@ -17,6 +17,7 @@ import {
 import { parseError } from "@/utils/parseError";
 import { logger } from "@/utils/logger";
 import type { ProfileStackParamList } from "@/types/navigation";
+import { fonts } from "@/theme/fonts";
 
 const BOOST_TIERS: {
   productId: BoostProductId;
@@ -146,7 +147,7 @@ export default function BoostPostScreen() {
             }`}
           >
             <View className="flex-row items-center justify-between">
-              <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>
+              <Text className="text-lg text-textPrimary" style={fonts.bold}>
                 {tier.name}
               </Text>
               {selectedTier === tier.productId && (

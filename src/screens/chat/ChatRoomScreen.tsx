@@ -36,6 +36,7 @@ import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import type { ChatStackParamList } from "@/types/navigation";
 import type { ChatMessage } from "@/types/models";
 import { ROUTES } from "@/navigation/routes";
+import { fonts } from "@/theme/fonts";
 
 export default function ChatRoomScreen(): React.JSX.Element {
   const route = useRoute<RouteProp<ChatStackParamList, "ChatRoom">>();
@@ -142,7 +143,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
         <Text
           className="text-lg text-textPrimary ml-3"
           numberOfLines={1}
-          style={{ fontFamily: "Inter_600SemiBold" }}
+          style={fonts.semibold}
         >
           {otherUser.full_name}
         </Text>
@@ -204,7 +205,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
           <Ionicons name="language" size={14} color={colors.primary.DEFAULT} />
           <Text
             className="text-xs text-primary ml-1"
-            style={{ fontFamily: "Inter_500Medium" }}
+            style={fonts.medium}
           >
             Translating to {selectedLangName}
           </Text>
@@ -272,7 +273,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
             <View className="flex-row items-center justify-between mb-3">
               <Text
                 className="text-lg text-textPrimary"
-                style={{ fontFamily: "Inter_700Bold" }}
+                style={fonts.bold}
               >
                 Translate to
               </Text>
@@ -292,7 +293,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
                 placeholder="Search languages..."
                 placeholderTextColor={colors.textTertiary}
                 className="flex-1 ml-2 text-base text-textPrimary"
-                style={{ fontFamily: "Inter_400Regular" }}
+                style={fonts.regular}
                 autoFocus
               />
             </View>
@@ -311,7 +312,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
                 <View className="flex-1">
                   <Text
                     className="text-base text-textPrimary"
-                    style={{ fontFamily: "Inter_400Regular" }}
+                    style={fonts.regular}
                   >
                     {item.name}
                   </Text>

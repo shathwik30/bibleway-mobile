@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, TextInput, Pressable } from "react-native";
+import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
 
@@ -43,13 +43,21 @@ export default function SearchBar({
         placeholderTextColor={colors.textTertiary}
         className="flex-1 ml-2 text-base text-textPrimary"
         returnKeyType="search"
-        style={{ fontFamily: "Inter_400Regular" }}
+        style={styles.input}
       />
       {value.length > 0 && (
-        <Pressable onPress={handleClear}>
+        <Pressable
+          onPress={handleClear}
+          accessibilityLabel="Clear search"
+          accessibilityRole="button"
+        >
           <Ionicons name="close-circle" size={20} color={colors.textTertiary} />
         </Pressable>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  input: { fontFamily: "Inter_400Regular" },
+});

@@ -17,6 +17,7 @@ import { useSignedUrl } from "@/hooks/useSignedUrl";
 import { parseError } from "@/utils/parseError";
 import { logger } from "@/utils/logger";
 import type { ShopStackParamList } from "@/types/navigation";
+import { fonts } from "@/theme/fonts";
 
 const PURCHASE_TIMEOUT_MS = 60_000;
 
@@ -164,7 +165,7 @@ export default function ProductDetailScreen(): React.ReactElement {
         <View className="px-4 pt-4">
           <Text
             className="text-xl text-textPrimary"
-            style={{ fontFamily: "PlayfairDisplay_700Bold" }}
+            style={fonts.serifBold}
           >
             {product.title}
           </Text>
