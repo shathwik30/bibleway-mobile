@@ -97,6 +97,8 @@ export default function BibleVerseScreen() {
         rightAction={
           <Pressable
             onPress={() => setShowLangPicker(!showLangPicker)}
+            accessibilityLabel={`Translation language: ${currentLang?.name || "English"}. Tap to change.`}
+            accessibilityRole="button"
             className="flex-row items-center px-3 py-1.5 bg-surface rounded-full"
           >
             <Ionicons
@@ -160,6 +162,8 @@ export default function BibleVerseScreen() {
               onPress={() =>
                 navigation.setParams({ chapterId: chapter.previous!.id })
               }
+              accessibilityLabel="Previous chapter"
+              accessibilityRole="button"
               className="flex-row items-center px-4 py-2 bg-surface rounded-xl"
             >
               <Ionicons
@@ -177,6 +181,8 @@ export default function BibleVerseScreen() {
               onPress={() =>
                 navigation.setParams({ chapterId: chapter.next!.id })
               }
+              accessibilityLabel="Next chapter"
+              accessibilityRole="button"
               className="flex-row items-center px-4 py-2 bg-surface rounded-xl"
             >
               <Text className="text-sm text-primary mr-1">Next</Text>
@@ -235,7 +241,12 @@ function LanguagePickerModal({
             <Text className="text-lg font-bold text-textPrimary">
               Select Language
             </Text>
-            <Pressable onPress={onClose} className="p-1">
+            <Pressable
+              onPress={onClose}
+              accessibilityLabel="Close language picker"
+              accessibilityRole="button"
+              className="p-1"
+            >
               <Ionicons name="close" size={24} color={colors.textSecondary} />
             </Pressable>
           </View>
@@ -259,6 +270,9 @@ function LanguagePickerModal({
             renderItem={({ item }) => (
               <Pressable
                 onPress={() => onSelect(item.code)}
+                accessibilityLabel={`${item.name}${item.nativeName ? `, ${item.nativeName}` : ""}`}
+                accessibilityRole="button"
+                accessibilityState={{ selected: selectedCode === item.code }}
                 className={`flex-row items-center justify-between px-5 py-3.5 ${
                   selectedCode === item.code
                     ? "bg-primary/5"

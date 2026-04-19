@@ -46,6 +46,9 @@ export default function MyProfileScreen() {
       <View className="flex-row bg-surfaceContainerLow">
         <Pressable
           onPress={() => setActiveTab("posts")}
+          accessibilityLabel="Posts tab"
+          accessibilityRole="tab"
+          accessibilityState={{ selected: activeTab === "posts" }}
           className={`flex-1 items-center py-3 ${activeTab === "posts" ? "border-b-2 border-primary" : ""}`}
         >
           <Text
@@ -57,6 +60,9 @@ export default function MyProfileScreen() {
         </Pressable>
         <Pressable
           onPress={() => setActiveTab("prayers")}
+          accessibilityLabel="Prayers tab"
+          accessibilityRole="tab"
+          accessibilityState={{ selected: activeTab === "prayers" }}
           className={`flex-1 items-center py-3 ${activeTab === "prayers" ? "border-b-2 border-primary" : ""}`}
         >
           <Text

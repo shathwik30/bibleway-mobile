@@ -129,11 +129,18 @@ export default function ChatRoomScreen(): React.JSX.Element {
 
   const chatHeader = (
     <View className="flex-row items-center px-4 py-3 bg-surfaceContainerLowest">
-      <Pressable onPress={() => navigation.goBack()} className="mr-3 p-1">
+      <Pressable
+        onPress={() => navigation.goBack()}
+        accessibilityLabel="Go back"
+        accessibilityRole="button"
+        className="mr-3 p-1"
+      >
         <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
       </Pressable>
       <Pressable
         onPress={navigateToProfile}
+        accessibilityLabel={`View ${otherUser.full_name}'s profile`}
+        accessibilityRole="button"
         className="flex-row items-center flex-1"
       >
         <Avatar
@@ -201,6 +208,8 @@ export default function ChatRoomScreen(): React.JSX.Element {
       {translateLang && selectedLangName && (
         <Pressable
           onPress={() => setTranslateLang(null)}
+          accessibilityLabel={`Stop translating to ${selectedLangName}`}
+          accessibilityRole="button"
           className="flex-row items-center justify-center py-1.5 bg-primary/5"
         >
           <Ionicons name="language" size={14} color={colors.primary.DEFAULT} />
@@ -278,7 +287,11 @@ export default function ChatRoomScreen(): React.JSX.Element {
               >
                 Translate to
               </Text>
-              <Pressable onPress={() => setShowLangPicker(false)}>
+              <Pressable
+                onPress={() => setShowLangPicker(false)}
+                accessibilityLabel="Close translation picker"
+                accessibilityRole="button"
+              >
                 <Ionicons name="close" size={24} color={colors.textPrimary} />
               </Pressable>
             </View>
@@ -306,6 +319,9 @@ export default function ChatRoomScreen(): React.JSX.Element {
             renderItem={({ item }) => (
               <Pressable
                 onPress={() => handleSelectLanguage(item.code)}
+                accessibilityLabel={`Translate to ${item.name}`}
+                accessibilityRole="button"
+                accessibilityState={{ selected: translateLang === item.code }}
                 className={`flex-row items-center justify-between px-4 py-3.5 ${
                   translateLang === item.code ? "bg-primary/5" : ""
                 }`}

@@ -149,6 +149,13 @@ function CellButton({
           if (!value && !disabled) onPress();
         }}
         disabled={disabled}
+        accessibilityLabel={
+          value
+            ? `Cell with ${value === "X" ? "X" : "O"}`
+            : "Empty cell. Tap to place your mark."
+        }
+        accessibilityRole="button"
+        accessibilityState={{ disabled: disabled || !!value }}
         className={`w-24 h-24 rounded-xl items-center justify-center ${bgClass}`}
       >
         {value === "X" && <Ionicons name="add" size={48} color={colors.primary.DEFAULT} />}
@@ -169,6 +176,9 @@ function ModeToggle({
     <View className="flex-row bg-surfaceContainerLow rounded-xl overflow-hidden mb-5">
       <Pressable
         onPress={() => onToggle("1P")}
+        accessibilityLabel="Play against computer"
+        accessibilityRole="button"
+        accessibilityState={{ selected: mode === "1P" }}
         className={`flex-1 flex-row items-center justify-center py-2.5 px-4 ${
           mode === "1P" ? "bg-primary" : ""
         }`}
@@ -188,6 +198,9 @@ function ModeToggle({
       </Pressable>
       <Pressable
         onPress={() => onToggle("2P")}
+        accessibilityLabel="Play two-player mode"
+        accessibilityRole="button"
+        accessibilityState={{ selected: mode === "2P" }}
         className={`flex-1 flex-row items-center justify-center py-2.5 px-4 ${
           mode === "2P" ? "bg-primary" : ""
         }`}
@@ -435,6 +448,8 @@ export default function TicTacToeScreen() {
           <Animated.View entering={FadeIn.duration(300)}>
             <Pressable
               onPress={resetGame}
+              accessibilityLabel="Play again"
+              accessibilityRole="button"
               className="mt-6 bg-primary rounded-xl px-8 py-3.5"
             >
               <Text className="text-white font-bold text-base">Play Again</Text>

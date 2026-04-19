@@ -151,6 +151,8 @@ export default function LoginScreen() {
 
           <Pressable
             onPress={() => navigation.navigate(ROUTES.ForgotPassword)}
+            accessibilityLabel="Forgot your password? Go to reset flow."
+            accessibilityRole="link"
             className="self-end mb-6"
           >
             <Text
@@ -183,6 +185,9 @@ export default function LoginScreen() {
           <Pressable
             onPress={handleGoogleSignIn}
             disabled={googleAuthMutation.isPending}
+            accessibilityLabel="Continue with Google"
+            accessibilityRole="button"
+            accessibilityState={{ disabled: googleAuthMutation.isPending }}
             className="flex-row items-center justify-center rounded-xl py-3.5 bg-surfaceContainerHigh"
           >
             <GoogleLogo size={20} />
@@ -201,7 +206,11 @@ export default function LoginScreen() {
             >
               {t("auth.noAccount")}{" "}
             </Text>
-            <Pressable onPress={() => navigation.navigate(ROUTES.Register)}>
+            <Pressable
+              onPress={() => navigation.navigate(ROUTES.Register)}
+              accessibilityLabel="Sign up for a new account"
+              accessibilityRole="link"
+            >
               <Text
                 className="text-sm text-primary font-semibold"
                 style={fonts.medium}
