@@ -7,7 +7,7 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import Button from "@/components/ui/Button";
 import { colors } from "@/theme/colors";
-import { useVerifyEmail, useResendOtp } from "@/hooks/useAuth";
+import { useVerifyEmail, useResendOtp } from "@/features/auth/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { successHaptic } from "@/lib/haptics";
 import { AuthStackParamList } from "@/types/navigation";

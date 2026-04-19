@@ -46,7 +46,7 @@ let _saveSecureValue: ((key: string, value: string) => Promise<void>) | null =
 
 function getAuthStore() {
   if (!_getAuthStore) {
-    const { useAuthStore } = require("@/stores/authStore");
+    const { useAuthStore } = require("@/features/auth/store/authStore");
     _getAuthStore = () => useAuthStore.getState();
   }
   return _getAuthStore();

@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import AnimatedPressable from "@/components/ui/AnimatedPressable";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/features/auth/store/authStore";
 import { confirmAction } from "@/lib/confirm";
 import { colors } from "@/theme/colors";
 

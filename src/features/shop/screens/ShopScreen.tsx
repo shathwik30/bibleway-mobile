@@ -10,9 +10,9 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import SearchBar from "@/components/ui/SearchBar";
 import EmptyState from "@/components/ui/EmptyState";
-import ProductCard from "@/components/shop/ProductCard";
+import ProductCard from "@/features/shop/components/ProductCard";
 import { ProductCardSkeleton } from "@/components/ui/Skeleton";
-import { useProducts } from "@/hooks/useShop";
+import { useProducts } from "@/features/shop/hooks/useShop";
 import { flattenPages } from "@/lib/pages";
 import type { ProductListItem } from "@/types/models";
 

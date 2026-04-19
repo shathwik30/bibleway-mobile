@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Image, Text, StyleSheet } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { RootStackParamList } from "@/types/navigation";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/features/auth/store/authStore";
 import { registerForPushNotifications } from "@/lib/pushNotifications";
 import AuthNavigator from "./AuthNavigator";
 import MainTabNavigator from "./MainTabNavigator";

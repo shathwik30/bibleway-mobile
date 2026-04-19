@@ -10,7 +10,7 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { usePasswordReset } from "@/hooks/useAuth";
+import { usePasswordReset } from "@/features/auth/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { AuthStackParamList } from "@/types/navigation";
 import { ROUTES } from "@/navigation/routes";

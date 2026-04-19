@@ -13,7 +13,7 @@ import {
   purchaseBoost,
   teardownIAP,
   type BoostProductId,
-} from "@/lib/iap";
+} from "@/features/shop/services/iap";
 import { parseError } from "@/utils/parseError";
 import { logger } from "@/utils/logger";
 import type { ProfileStackParamList } from "@/types/navigation";

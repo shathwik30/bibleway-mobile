@@ -1,12 +1,12 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "@/types/navigation";
-import LoginScreen from "@/screens/auth/LoginScreen";
-import RegisterScreen from "@/screens/auth/RegisterScreen";
-import OTPVerificationScreen from "@/screens/auth/OTPVerificationScreen";
-import ForgotPasswordScreen from "@/screens/auth/ForgotPasswordScreen";
-import ResetPasswordScreen from "@/screens/auth/ResetPasswordScreen";
-import GoogleCompleteProfileScreen from "@/screens/auth/GoogleCompleteProfileScreen";
+import LoginScreen from "@/features/auth/screens/LoginScreen";
+import RegisterScreen from "@/features/auth/screens/RegisterScreen";
+import OTPVerificationScreen from "@/features/auth/screens/OTPVerificationScreen";
+import ForgotPasswordScreen from "@/features/auth/screens/ForgotPasswordScreen";
+import ResetPasswordScreen from "@/features/auth/screens/ResetPasswordScreen";
+import GoogleCompleteProfileScreen from "@/features/auth/screens/GoogleCompleteProfileScreen";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 

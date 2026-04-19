@@ -5,7 +5,7 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
-import { usePurchases } from "@/hooks/useShop";
+import { usePurchases } from "@/features/shop/hooks/useShop";
 import { flattenPages } from "@/lib/pages";
 import { parseError } from "@/utils/parseError";
 import { colors } from "@/theme/colors";

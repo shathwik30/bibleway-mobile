@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Dimensions, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
-import AnimatedPressable from "../ui/AnimatedPressable";
+import AnimatedPressable from "@/components/ui/AnimatedPressable";
 import { useSignedUrl } from "@/hooks/useSignedUrl";
 import { ROUTES } from "@/navigation/routes";
 import type { ProductListItem } from "@/types/models";

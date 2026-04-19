@@ -5,7 +5,7 @@ jest.mock("@/constants/api", () => ({
   API_TIMEOUT: 30000,
 }));
 
-jest.mock("@/stores/authStore", () => ({
+jest.mock("@/features/auth/store/authStore", () => ({
   useAuthStore: {
     getState: jest.fn(() => ({
       accessToken: null,
@@ -96,7 +96,7 @@ describe("API Client", () => {
 
   describe("token injection (request interceptor)", () => {
     it("adds Authorization header when token exists", () => {
-      const { useAuthStore } = require("@/stores/authStore");
+      const { useAuthStore } = require("@/features/auth/store/authStore");
       useAuthStore.getState.mockReturnValueOnce({
         accessToken: "my_token",
         setAccessToken: jest.fn(),
@@ -114,7 +114,7 @@ describe("API Client", () => {
     });
 
     it("does not add Authorization header when no token", () => {
-      const { useAuthStore } = require("@/stores/authStore");
+      const { useAuthStore } = require("@/features/auth/store/authStore");
       useAuthStore.getState.mockReturnValueOnce({
         accessToken: null,
         setAccessToken: jest.fn(),
@@ -132,7 +132,7 @@ describe("API Client", () => {
     });
 
     it("removes Content-Type header for FormData", () => {
-      const { useAuthStore } = require("@/stores/authStore");
+      const { useAuthStore } = require("@/features/auth/store/authStore");
       useAuthStore.getState.mockReturnValueOnce({
         accessToken: null,
         setAccessToken: jest.fn(),
@@ -155,7 +155,7 @@ describe("API Client", () => {
 
   describe("request deduplication", () => {
     it("aborts a previous identical GET request", () => {
-      const { useAuthStore } = require("@/stores/authStore");
+      const { useAuthStore } = require("@/features/auth/store/authStore");
       useAuthStore.getState.mockReturnValue({
         accessToken: null,
         setAccessToken: jest.fn(),
@@ -183,7 +183,7 @@ describe("API Client", () => {
     });
 
     it("does not deduplicate POST requests", () => {
-      const { useAuthStore } = require("@/stores/authStore");
+      const { useAuthStore } = require("@/features/auth/store/authStore");
       useAuthStore.getState.mockReturnValue({
         accessToken: null,
         setAccessToken: jest.fn(),
@@ -201,7 +201,7 @@ describe("API Client", () => {
     });
 
     it("does not deduplicate GET requests with different params", () => {
-      const { useAuthStore } = require("@/stores/authStore");
+      const { useAuthStore } = require("@/features/auth/store/authStore");
       useAuthStore.getState.mockReturnValue({
         accessToken: null,
         setAccessToken: jest.fn(),

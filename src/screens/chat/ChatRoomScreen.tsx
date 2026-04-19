@@ -29,7 +29,7 @@ import {
   useSendMessage,
   useMarkMessagesRead,
 } from "@/hooks/useChat";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/features/auth/store/authStore";
 import { useChatStore } from "@/stores/chatStore";
 import { showToast } from "@/components/ui/Toast";
 import { flattenPages } from "@/lib/pages";

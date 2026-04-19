@@ -2,10 +2,10 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ShopStackParamList } from "@/types/navigation";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
-import ShopScreen from "@/screens/shop/ShopScreen";
-import ProductDetailScreen from "@/screens/shop/ProductDetailScreen";
-import PurchasesScreen from "@/screens/shop/PurchasesScreen";
-import DownloadsScreen from "@/screens/shop/DownloadsScreen";
+import ShopScreen from "@/features/shop/screens/ShopScreen";
+import ProductDetailScreen from "@/features/shop/screens/ProductDetailScreen";
+import PurchasesScreen from "@/features/shop/screens/PurchasesScreen";
+import DownloadsScreen from "@/features/shop/screens/DownloadsScreen";
 
 const Stack = createNativeStackNavigator<ShopStackParamList>();
 

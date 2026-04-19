@@ -13,7 +13,7 @@ import Button from "@/components/ui/Button";
 import SelectPicker from "@/components/ui/SelectPicker";
 import CountryPicker from "@/components/ui/CountryPicker";
 import DatePicker from "@/components/ui/DatePicker";
-import { useRegister } from "@/hooks/useAuth";
+import { useRegister } from "@/features/auth/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import { AuthStackParamList } from "@/types/navigation";

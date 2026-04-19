@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/features/auth/store/authStore";
 import { CACHE_DURATIONS } from "@/constants/api";
 import { pageNumberNextPage } from "@/api/pagination";
 import type { PaginatedResponse } from "@/types/api";

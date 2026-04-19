@@ -13,7 +13,7 @@ import Button from "@/components/ui/Button";
 import DatePicker from "@/components/ui/DatePicker";
 import SelectPicker from "@/components/ui/SelectPicker";
 import CountryPicker from "@/components/ui/CountryPicker";
-import { useGoogleAuth } from "@/hooks/useAuth";
+import { useGoogleAuth } from "@/features/auth/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { successHaptic } from "@/lib/haptics";
 import { getFirebaseIdToken } from "@/lib/firebase";

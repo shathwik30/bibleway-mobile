@@ -5,13 +5,13 @@ import { useRoute, RouteProp } from "@react-navigation/native";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
 import LoadingScreen from "@/components/layout/LoadingScreen";
-import PurchaseButton from "@/components/shop/PurchaseButton";
+import PurchaseButton from "@/features/shop/components/PurchaseButton";
 import {
   useProductDetail,
   useCreatePurchase,
   useDownload,
-} from "@/hooks/useShop";
-import { initIAP, teardownIAP, purchaseShopProduct } from "@/lib/iap";
+} from "@/features/shop/hooks/useShop";
+import { initIAP, teardownIAP, purchaseShopProduct } from "@/features/shop/services/iap";
 import { showToast } from "@/components/ui/Toast";
 import { useSignedUrl } from "@/hooks/useSignedUrl";
 import { parseError } from "@/utils/parseError";

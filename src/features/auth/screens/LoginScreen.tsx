@@ -17,7 +17,7 @@ import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import KeyboardAvoidingWrapper from "@/components/layout/KeyboardAvoidingWrapper";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { useLogin, useGoogleAuth } from "@/hooks/useAuth";
+import { useLogin, useGoogleAuth } from "@/features/auth/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { successHaptic } from "@/lib/haptics";
 import { signInWithGoogle, getFirebaseIdToken } from "@/lib/firebase";
