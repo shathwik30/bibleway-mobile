@@ -9,9 +9,9 @@ import PostDetailScreen from "@/screens/home/PostDetailScreen";
 import PrayerDetailScreen from "@/screens/home/PrayerDetailScreen";
 import CommentsScreen from "@/screens/home/CommentsScreen";
 import NotificationsScreen from "@/screens/home/NotificationsScreen";
-import UserProfileScreen from "@/screens/profile/UserProfileScreen";
-import FollowersScreen from "@/screens/profile/FollowersScreen";
-import FollowingScreen from "@/screens/profile/FollowingScreen";
+import UserProfileScreen from "@/features/profile/screens/UserProfileScreen";
+import FollowersScreen from "@/features/profile/screens/FollowersScreen";
+import FollowingScreen from "@/features/profile/screens/FollowingScreen";
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 

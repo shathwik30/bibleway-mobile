@@ -4,7 +4,7 @@ import { useRoute, RouteProp } from "@react-navigation/native";
 import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
-import AnalyticsCard from "@/components/profile/AnalyticsCard";
+import AnalyticsCard from "@/features/profile/components/AnalyticsCard";
 import { useBoostAnalytics } from "@/hooks/useAnalytics";
 import type { BoostAnalyticSnapshot } from "@/types/models";
 import type { ProfileStackParamList } from "@/types/navigation";

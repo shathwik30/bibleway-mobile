@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Avatar from "../ui/Avatar";
-import StatsRow from "./StatsRow";
+import Avatar from "@/components/ui/Avatar";
+import StatsRow from "@/features/profile/components/StatsRow";
 import type { UserProfile, UserPublicProfile } from "@/types/models";
 
 interface ProfileHeaderProps {

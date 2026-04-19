@@ -14,7 +14,7 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import SearchBar from "@/components/ui/SearchBar";
 import Avatar from "@/components/ui/Avatar";
 import EmptyState from "@/components/ui/EmptyState";
-import { useSearchUsers } from "@/hooks/useProfile";
+import { useSearchUsers } from "@/features/profile/hooks/useProfile";
 import { useCreateConversation } from "@/features/chat/hooks/useChat";
 import { showToast } from "@/components/ui/Toast";
 import type { ChatStackParamList } from "@/types/navigation";

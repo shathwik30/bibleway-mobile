@@ -6,7 +6,7 @@ import LoadingScreen from "@/components/layout/LoadingScreen";
 import EmptyState from "@/components/ui/EmptyState";
 import UserListItem from "@/components/feed/UserListItem";
 import Button from "@/components/ui/Button";
-import { useBlockedUsers, useUnblockUser } from "@/hooks/useProfile";
+import { useBlockedUsers, useUnblockUser } from "@/features/profile/hooks/useProfile";
 import { showToast } from "@/components/ui/Toast";
 import { confirmAction } from "@/lib/confirm";
 import { flattenPages } from "@/lib/pages";

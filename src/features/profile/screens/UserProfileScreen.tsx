@@ -1,54 +1,79 @@
 import React, { useState } from "react";
-import { View, Text, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, Pressable, ActivityIndicator } from "react-native";
+import { useRoute, RouteProp } from "@react-navigation/native";
 import { colors } from "@/theme/colors";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import ScreenHeader from "@/components/layout/ScreenHeader";
-import AnimatedPressable from "@/components/ui/AnimatedPressable";
-import { ProfileSkeleton } from "@/components/ui/Skeleton";
-import ProfileHeader from "@/components/profile/ProfileHeader";
+import ProfileHeader from "@/features/profile/components/ProfileHeader";
+import FollowButton from "@/features/profile/components/FollowButton";
 import InfiniteList from "@/components/layout/InfiniteList";
 import PostCard from "@/components/feed/PostCard";
 import PrayerCard from "@/components/feed/PrayerCard";
-import { useMyProfile } from "@/hooks/useProfile";
+import {
+  useUserProfile,
+  useFollowUser,
+  useUnfollowUser,
+} from "@/features/profile/hooks/useProfile";
 import { useUserPosts, useUserPrayers } from "@/hooks/useSocial";
+import type { HomeStackParamList } from "@/types/navigation";
 import type { Post, Prayer } from "@/types/models";
-import { ROUTES } from "@/navigation/routes";
 import { fonts } from "@/theme/fonts";
 
 type Tab = "posts" | "prayers";
 
-export default function MyProfileScreen() {
-  const navigation = useNavigation();
-  const { data: profile, isLoading } = useMyProfile();
+export default function UserProfileScreen() {
+  const route = useRoute<RouteProp<HomeStackParamList, "UserProfile">>();
+  const { userId } = route.params;
+  const { data: profile, isLoading } = useUserProfile(userId);
   const [activeTab, setActiveTab] = useState<Tab>("posts");
+  const postsQuery = useUserPosts(userId);
+  const prayersQuery = useUserPrayers(userId);
+  const followMutation = useFollowUser();
+  const unfollowMutation = useUnfollowUser();
 
-  const postsQuery = useUserPosts(profile?.id ?? "");
-  const prayersQuery = useUserPrayers(profile?.id ?? "");
-
-  if (isLoading || !profile) {
+  if (isLoading) {
     return (
       <SafeAreaScreen>
-        <ScreenHeader title="My Profile" />
-        <ProfileSkeleton />
+        <ScreenHeader title="Profile" />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
+        </View>
       </SafeAreaScreen>
     );
   }
 
-  const tabBar = (
+  if (!profile) {
+    return (
+      <SafeAreaScreen>
+        <ScreenHeader title="Profile" />
+        <View className="flex-1 items-center justify-center px-6">
+          <Text className="text-base text-textSecondary">User not found</Text>
+        </View>
+      </SafeAreaScreen>
+    );
+  }
+
+  const followStatus =
+    profile.follow_status === "self" ? undefined : profile.follow_status;
+  const isFollowLoading =
+    followMutation.isPending || unfollowMutation.isPending;
+
+  const headerComponent = (
     <View>
-      <ProfileHeader
-        user={profile}
-        isOwnProfile
-        onEditPress={() => navigation.navigate(ROUTES.EditProfile)}
-      />
+      <ProfileHeader user={profile} />
+      {followStatus !== undefined && (
+        <View className="px-4 mb-4">
+          <FollowButton
+            status={followStatus}
+            onFollow={() => followMutation.mutate(userId)}
+            onUnfollow={() => unfollowMutation.mutate(userId)}
+            loading={isFollowLoading}
+          />
+        </View>
+      )}
       <View className="flex-row bg-surfaceContainerLow">
         <Pressable
           onPress={() => setActiveTab("posts")}
-          accessibilityLabel="Posts tab"
-          accessibilityRole="tab"
-          accessibilityState={{ selected: activeTab === "posts" }}
           className={`flex-1 items-center py-3 ${activeTab === "posts" ? "border-b-2 border-primary" : ""}`}
         >
           <Text
@@ -60,9 +85,6 @@ export default function MyProfileScreen() {
         </Pressable>
         <Pressable
           onPress={() => setActiveTab("prayers")}
-          accessibilityLabel="Prayers tab"
-          accessibilityRole="tab"
-          accessibilityState={{ selected: activeTab === "prayers" }}
           className={`flex-1 items-center py-3 ${activeTab === "prayers" ? "border-b-2 border-primary" : ""}`}
         >
           <Text
@@ -78,27 +100,13 @@ export default function MyProfileScreen() {
 
   return (
     <SafeAreaScreen>
-      <ScreenHeader
-        title="My Profile"
-        rightAction={
-          <AnimatedPressable
-            onPress={() => navigation.navigate(ROUTES.Settings)}
-            accessibilityLabel="Settings"
-          >
-            <Ionicons
-              name="settings-outline"
-              size={22}
-              color={colors.primary.DEFAULT}
-            />
-          </AnimatedPressable>
-        }
-      />
+      <ScreenHeader title={profile.full_name || "Profile"} />
       {activeTab === "posts" ? (
         <InfiniteList<Post>
           queryResult={postsQuery}
           renderItem={({ item }) => <PostCard post={item} />}
           keyExtractor={(item) => item.id}
-          headerComponent={tabBar}
+          headerComponent={headerComponent}
           emptyTitle="No posts yet"
         />
       ) : (
@@ -106,7 +114,7 @@ export default function MyProfileScreen() {
           queryResult={prayersQuery}
           renderItem={({ item }) => <PrayerCard prayer={item} />}
           keyExtractor={(item) => item.id}
-          headerComponent={tabBar}
+          headerComponent={headerComponent}
           emptyTitle="No prayers yet"
         />
       )}

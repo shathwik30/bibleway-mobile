@@ -18,7 +18,7 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import Avatar from "@/components/ui/Avatar";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { useMyProfile, useUpdateProfile } from "@/hooks/useProfile";
+import { useMyProfile, useUpdateProfile } from "@/features/profile/hooks/useProfile";
 import { showToast } from "@/components/ui/Toast";
 import { compressImage } from "@/lib/imageCompressor";
 import { parseError } from "@/utils/parseError";

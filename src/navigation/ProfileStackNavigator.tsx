@@ -2,16 +2,16 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "@/types/navigation";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
-import MyProfileScreen from "@/screens/profile/MyProfileScreen";
-import EditProfileScreen from "@/screens/profile/EditProfileScreen";
-import SettingsScreen from "@/screens/profile/SettingsScreen";
-import LanguageSettingsScreen from "@/screens/profile/LanguageSettingsScreen";
-import BlockedUsersScreen from "@/screens/profile/BlockedUsersScreen";
-import FollowersScreen from "@/screens/profile/FollowersScreen";
-import FollowingScreen from "@/screens/profile/FollowingScreen";
-import PostAnalyticsScreen from "@/screens/profile/PostAnalyticsScreen";
-import BoostPostScreen from "@/screens/profile/BoostPostScreen";
-import BoostAnalyticsScreen from "@/screens/profile/BoostAnalyticsScreen";
+import MyProfileScreen from "@/features/profile/screens/MyProfileScreen";
+import EditProfileScreen from "@/features/profile/screens/EditProfileScreen";
+import SettingsScreen from "@/features/profile/screens/SettingsScreen";
+import LanguageSettingsScreen from "@/features/profile/screens/LanguageSettingsScreen";
+import BlockedUsersScreen from "@/features/profile/screens/BlockedUsersScreen";
+import FollowersScreen from "@/features/profile/screens/FollowersScreen";
+import FollowingScreen from "@/features/profile/screens/FollowingScreen";
+import PostAnalyticsScreen from "@/features/profile/screens/PostAnalyticsScreen";
+import BoostPostScreen from "@/features/profile/screens/BoostPostScreen";
+import BoostAnalyticsScreen from "@/features/profile/screens/BoostAnalyticsScreen";
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
