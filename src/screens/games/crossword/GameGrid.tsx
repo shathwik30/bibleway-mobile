@@ -4,8 +4,8 @@ import { colors } from "@/theme/colors";
 import type { LevelData } from "@/constants/crosswordLevels";
 import type { CellInfo } from "./types";
 
-const ACTIVE_BG = "#EFF6FF";
-const SOLVED_BG = "#ECFDF5";
+const ACTIVE_BG = colors.feedback.infoBg;
+const SOLVED_BG = colors.feedback.successBg;
 
 interface GameGridProps {
   level: LevelData;

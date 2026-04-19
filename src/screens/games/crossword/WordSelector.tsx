@@ -4,8 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
 import type { WordData } from "@/constants/crosswordLevels";
 
-const ACTIVE_BG = "#EFF6FF";
-const SOLVED_BG = "#ECFDF5";
+const ACTIVE_BG = colors.feedback.infoBg;
+const SOLVED_BG = colors.feedback.successBg;
 
 interface WordSelectorProps {
   words: WordData[];

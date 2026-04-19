@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { REACTIONS } from "@/constants/reactions";
+import { colors } from "@/theme/colors";
 import type { EmojiType } from "@/types/enums";
 
 interface ReactionPickerProps {
@@ -37,7 +38,7 @@ export default function ReactionPicker({
 
 const styles = StyleSheet.create({
   shadow: {
-    shadowColor: "#121212",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.04,
     shadowRadius: 40,

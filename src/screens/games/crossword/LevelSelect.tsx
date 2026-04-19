@@ -7,8 +7,8 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import { LEVELS } from "@/constants/crosswordLevels";
 import { colors } from "@/theme/colors";
 
-const COMPLETED_BG = "#ECFDF5";
-const ACTIVE_ACTION_BG = "#EFF6FF";
+const COMPLETED_BG = colors.feedback.successBg;
+const ACTIVE_ACTION_BG = colors.feedback.infoBg;
 
 interface LevelSelectProps {
   unlockedLevel: number;

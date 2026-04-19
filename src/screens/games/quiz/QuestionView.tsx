@@ -15,9 +15,9 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import { colors } from "@/theme/colors";
 import type { QuizLevel } from "@/constants/quizLevels";
 
-const OPTION_CORRECT_BG = "#ECFDF5";
-const OPTION_WRONG_BG = "#FEF2F2";
-const HINT_ICON_COLOR = "#D97706";
+const OPTION_CORRECT_BG = colors.feedback.successBg;
+const OPTION_WRONG_BG = colors.feedback.errorBg;
+const HINT_ICON_COLOR = colors.feedback.hintAccent;
 
 interface QuestionViewProps {
   level: QuizLevel;

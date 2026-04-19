@@ -42,6 +42,27 @@ export const colors = {
     blue: "#DBEAFE",
     pink: "#FCE7F3",
   },
+  /**
+   * Feedback tints used across game screens and Toast.
+   *
+   * *Bg / *Text are a matched pair for the four states (success /
+   * info / warning / error). *Solid is the bold brand-flavored
+   * version used inside Toast icons. *Accent is the hint-button
+   * amber used by the quiz and crossword hint controls.
+   */
+  feedback: {
+    successBg: "#ECFDF5",
+    successText: "#166534",
+    successSolid: "#059669",
+    infoBg: "#EFF6FF",
+    warningBg: "#FEF3C7",
+    warningText: "#92400E",
+    errorBg: "#FEF2F2",
+    errorText: "#991B1B",
+    errorSolid: "#DC2626",
+    hintAccent: "#D97706",
+  },
+  shadow: "#000000",
 } as const;
 
 export type Colors = typeof colors;

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import RNToast from "react-native-toast-message";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
@@ -18,7 +18,7 @@ const TOAST_STYLES = {
     bg: "bg-emerald-50",
     border: "border-emerald-200",
     iconBg: "bg-emerald-100",
-    iconColor: "#059669",
+    iconColor: colors.feedback.successSolid,
     iconName: "checkmark-circle" as const,
     titleColor: "text-emerald-900",
     messageColor: "text-emerald-700",
@@ -27,7 +27,7 @@ const TOAST_STYLES = {
     bg: "bg-red-50",
     border: "border-red-200",
     iconBg: "bg-red-100",
-    iconColor: "#DC2626",
+    iconColor: colors.feedback.errorSolid,
     iconName: "close-circle" as const,
     titleColor: "text-red-900",
     messageColor: "text-red-700",
@@ -52,13 +52,7 @@ function CustomToast({
       <Pressable
         onPress={props.hide}
         className={`flex-row items-center px-4 py-3.5 rounded-2xl border ${style.bg} ${style.border}`}
-        style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.08,
-          shadowRadius: 12,
-          elevation: 6,
-        }}
+        style={styles.shadow}
       >
         <View
           className={`w-9 h-9 rounded-full items-center justify-center ${style.iconBg}`}
@@ -85,7 +79,13 @@ function CustomToast({
           ) : null}
         </View>
 
-        <Pressable onPress={props.hide} className="p-1 ml-2" hitSlop={8}>
+        <Pressable
+          onPress={props.hide}
+          className="p-1 ml-2"
+          hitSlop={8}
+          accessibilityLabel="Dismiss toast"
+          accessibilityRole="button"
+        >
           <Ionicons name="close" size={16} color={colors.textTertiary} />
         </Pressable>
       </Pressable>
@@ -117,3 +117,13 @@ export function showToast(
     topOffset: 54,
   });
 }
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+});

@@ -8,9 +8,9 @@ import Animated, {
 import { colors } from "@/theme/colors";
 import type { Feedback } from "./types";
 
-const CORRECT_BG = "#ECFDF5";
-const WRONG_BG = "#FEF2F2";
-const ACTIVE_BG = "#EFF6FF";
+const CORRECT_BG = colors.feedback.successBg;
+const WRONG_BG = colors.feedback.errorBg;
+const ACTIVE_BG = colors.feedback.infoBg;
 
 interface InputBoxesProps {
   length: number;

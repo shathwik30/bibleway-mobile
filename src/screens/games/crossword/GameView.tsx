@@ -27,7 +27,7 @@ import WordSelector from "./WordSelector";
 import InputBoxes from "./InputBoxes";
 import LetterBank from "./LetterBank";
 
-const HINT_ICON = "#D97706";
+const HINT_ICON = colors.feedback.hintAccent;
 const CELL_GAP = 2;
 
 interface GameViewProps {

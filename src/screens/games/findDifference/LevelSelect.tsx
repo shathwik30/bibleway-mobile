@@ -7,7 +7,7 @@ import ScreenHeader from "@/components/layout/ScreenHeader";
 import { FTD_LEVELS } from "@/constants/findDifferenceLevels";
 import { colors } from "@/theme/colors";
 
-const COMPLETED_BG = "#ECFDF5";
+const COMPLETED_BG = colors.feedback.successBg;
 
 interface LevelSelectProps {
   unlockedLevel: number;

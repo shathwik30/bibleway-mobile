@@ -1,13 +1,13 @@
 import { colors } from "@/theme/colors";
 import type { Ionicons } from "@expo/vector-icons";
 
-const COMPLETED_BG = "#ECFDF5";
-const ACTIVE_BG = "#EFF6FF";
-const MISSED_BG = "#FEF3C7";
-const WRONG_BG = "#FEF2F2";
-const CORRECT_TEXT = "#166534";
-const MISSED_TEXT = "#92400E";
-const WRONG_TEXT = "#991B1B";
+const COMPLETED_BG = colors.feedback.successBg;
+const ACTIVE_BG = colors.feedback.infoBg;
+const MISSED_BG = colors.feedback.warningBg;
+const WRONG_BG = colors.feedback.errorBg;
+const CORRECT_TEXT = colors.feedback.successText;
+const MISSED_TEXT = colors.feedback.warningText;
+const WRONG_TEXT = colors.feedback.errorText;
 
 type IonName = keyof typeof Ionicons.glyphMap;
 
