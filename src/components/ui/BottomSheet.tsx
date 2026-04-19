@@ -4,6 +4,7 @@ import GorhomBottomSheet, {
   BottomSheetBackdropProps,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { colors } from "@/theme/colors";
 
 interface BottomSheetProps {
   children: React.ReactNode;
@@ -41,7 +42,7 @@ export default function BottomSheet({
       backdropComponent={renderBackdrop}
       onClose={onClose}
       backgroundStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
-      handleIndicatorStyle={{ backgroundColor: "#D1D5DB", width: 40 }}
+      handleIndicatorStyle={{ backgroundColor: colors.outlineVariant, width: 40 }}
     >
       <BottomSheetView style={{ flex: 1, padding: 16 }}>
         {children}

@@ -15,7 +15,9 @@ export default function SearchBar({
   debounceMs = 300,
 }: SearchBarProps) {
   const [value, setValue] = useState("");
-  const timeoutRef = React.useRef<NodeJS.Timeout>(undefined);
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   const handleChange = useCallback(
     (text: string) => {
@@ -33,7 +35,7 @@ export default function SearchBar({
 
   return (
     <View className="flex-row items-center bg-surfaceContainerHigh rounded-xl px-3 py-2">
-      <Ionicons name="search-outline" size={20} color="#897173" />
+      <Ionicons name="search-outline" size={20} color={colors.textTertiary} />
       <TextInput
         value={value}
         onChangeText={handleChange}

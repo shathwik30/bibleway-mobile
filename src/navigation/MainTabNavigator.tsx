@@ -12,6 +12,7 @@ import ProfileStackNavigator from "./ProfileStackNavigator";
 import { useChatStore } from "@/stores/chatStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { colors } from "@/theme/colors";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -32,10 +33,10 @@ export default function MainTabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#59021a",
-        tabBarInactiveTintColor: "#897173",
+        tabBarActiveTintColor: colors.primary.DEFAULT,
+        tabBarInactiveTintColor: colors.textTertiary,
         tabBarStyle: {
-          backgroundColor: "#ffffff",
+          backgroundColor: colors.surfaceContainerLowest,
           borderTopWidth: 0,
           paddingBottom: Math.max(insets.bottom, 4),
           paddingTop: 4,

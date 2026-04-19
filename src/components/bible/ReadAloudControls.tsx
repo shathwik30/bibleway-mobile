@@ -3,6 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { speak, stopSpeaking, setSpeed, getSpeed } from "@/lib/tts";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
+import { colors } from "@/theme/colors";
 
 interface ReadAloudControlsProps {
   text: string;
@@ -55,11 +56,16 @@ export default function ReadAloudControls({
 
   return (
     <View className="flex-row items-center bg-primary/5 rounded-full px-4 py-2.5">
-      <Pressable onPress={togglePlay} className="mr-3">
+      <Pressable
+        onPress={togglePlay}
+        accessibilityLabel={isPlaying ? "Pause read aloud" : "Start read aloud"}
+        accessibilityRole="button"
+        className="mr-3"
+      >
         <Ionicons
           name={isPlaying ? "pause-circle" : "play-circle"}
           size={28}
-          color="#59021a"
+          color={colors.primary.DEFAULT}
         />
       </Pressable>
       <Text
@@ -70,6 +76,8 @@ export default function ReadAloudControls({
       </Text>
       <Pressable
         onPress={cycleSpeed}
+        accessibilityLabel={`Playback speed ${currentSpeed}x. Tap to change.`}
+        accessibilityRole="button"
         className="bg-primary/10 rounded-full px-2.5 py-1"
       >
         <Text className="text-xs font-semibold text-primary">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
+import { colors } from "@/theme/colors";
 
 interface VerseTextProps {
   text: string;
@@ -10,7 +11,7 @@ interface VerseTextProps {
 export default function VerseText({
   text,
   highlighted = false,
-  highlightColor = "#FEF3C7",
+  highlightColor = colors.highlight.yellow,
 }: VerseTextProps) {
   return (
     <Text

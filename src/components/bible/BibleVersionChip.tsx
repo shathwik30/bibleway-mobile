@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/theme/colors";
 
 interface BibleVersionChipProps {
   version: string;
@@ -14,10 +15,12 @@ export default function BibleVersionChip({
   return (
     <Pressable
       onPress={onPress}
+      accessibilityLabel={`Bible version: ${version}. Tap to change.`}
+      accessibilityRole="button"
       className="flex-row items-center bg-surfaceContainerHigh rounded-full px-3 py-1.5"
     >
       <Text className="text-sm font-semibold text-primary mr-1">{version}</Text>
-      <Ionicons name="chevron-down" size={14} color="#59021a" />
+      <Ionicons name="chevron-down" size={14} color={colors.primary.DEFAULT} />
     </Pressable>
   );
 }

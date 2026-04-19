@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { registerForPushNotifications } from "@/lib/pushNotifications";
 import AuthNavigator from "./AuthNavigator";
 import MainTabNavigator from "./MainTabNavigator";
+import { colors } from "@/theme/colors";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -16,6 +17,7 @@ export default function RootNavigator() {
 
   useEffect(() => {
     bootstrap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function RootNavigator() {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#fcf9f8",
+          backgroundColor: colors.surface,
           paddingHorizontal: 40,
         }}
       >
@@ -55,7 +57,7 @@ export default function RootNavigator() {
             fontFamily: "PlayfairDisplay_400Regular_Italic",
             fontSize: 18,
             fontStyle: "italic",
-            color: "#1c1b1b",
+            color: colors.textPrimary,
             textAlign: "center",
             lineHeight: 28,
           }}
@@ -66,7 +68,7 @@ export default function RootNavigator() {
           style={{
             fontFamily: "Inter_500Medium",
             fontSize: 14,
-            color: "#564243",
+            color: colors.textSecondary,
             marginTop: 8,
           }}
         >

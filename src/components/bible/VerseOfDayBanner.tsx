@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useVerseOfDay } from "@/hooks/useVerseOfDay";
+import { colors } from "@/theme/colors";
 
 export default function VerseOfDayBanner() {
   const { data: verse, isLoading } = useVerseOfDay();
@@ -24,7 +25,7 @@ export default function VerseOfDayBanner() {
         className="p-5"
       >
         <View className="flex-row items-center mb-2">
-          <Ionicons name="sunny-outline" size={16} color="#ffdf9e" />
+          <Ionicons name="sunny-outline" size={16} color={colors.tertiary.fixed} />
           <Text className="text-tertiary-fixed text-xs font-semibold ml-1">
             VERSE OF THE DAY
           </Text>

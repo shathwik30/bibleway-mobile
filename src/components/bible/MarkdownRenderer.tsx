@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import Markdown from "react-native-markdown-display";
+import { colors } from "@/theme/colors";
 
 interface MarkdownRendererProps {
   content: string;
@@ -8,7 +9,7 @@ interface MarkdownRendererProps {
 
 const markdownStyles = {
   body: {
-    color: "#1c1b1b",
+    color: colors.textPrimary,
     fontSize: 16,
     lineHeight: 26,
     fontFamily: "Inter_400Regular",
@@ -16,28 +17,28 @@ const markdownStyles = {
   heading1: {
     fontSize: 24,
     fontFamily: "PlayfairDisplay_700Bold",
-    color: "#1c1b1b",
+    color: colors.textPrimary,
     marginBottom: 8,
   },
   heading2: {
     fontSize: 20,
     fontFamily: "PlayfairDisplay_700Bold",
-    color: "#1c1b1b",
+    color: colors.textPrimary,
     marginBottom: 6,
   },
   heading3: {
     fontSize: 18,
     fontFamily: "Inter_600SemiBold",
-    color: "#1c1b1b",
+    color: colors.textPrimary,
     marginBottom: 4,
   },
   paragraph: { marginBottom: 12 },
   listItem: { marginBottom: 4 },
-  link: { color: "#59021a" },
+  link: { color: colors.primary.DEFAULT },
   blockquote: {
-    backgroundColor: "#f6f3f2",
+    backgroundColor: colors.surfaceContainerLow,
     borderLeftWidth: 4,
-    borderLeftColor: "#59021a",
+    borderLeftColor: colors.primary.DEFAULT,
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginBottom: 12,
