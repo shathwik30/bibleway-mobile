@@ -174,6 +174,14 @@ export default function GameView({
     shakeX,
   ]);
 
+  const progressFillStyle = useMemo(
+    () =>
+      ({
+        width: `${(solved.size / level.words.length) * 100}%` as const,
+      }) as const,
+    [solved.size, level.words.length],
+  );
+
   const hint = useCallback(() => {
     const next = input.length;
     if (next >= word.word.length || hints >= 2) return;
@@ -201,14 +209,14 @@ export default function GameView({
 
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-row items-center px-4 py-2" style={styles.progressRow}>
           <View className="flex-1 h-1.5 bg-surfaceContainerHigh rounded-full overflow-hidden">
             <View
               className="h-full bg-primary rounded-full"
-              style={{ width: `${(solved.size / level.words.length) * 100}%` }}
+              style={progressFillStyle}
             />
           </View>
           <Text className="text-xs font-bold text-textSecondary">
@@ -225,12 +233,7 @@ export default function GameView({
 
         <View className="items-center px-4 mb-4">
           <View
-            style={{
-              width: GRID_PX,
-              padding: 4,
-              borderRadius: 16,
-              gap: CELL_GAP,
-            }}
+            style={[styles.gridWrap, { width: GRID_PX }]}
             className="bg-surfaceContainerHigh"
           >
             <GameGrid
@@ -330,7 +333,9 @@ export default function GameView({
             accessibilityLabel="Check answer"
             accessibilityRole="button"
             accessibilityState={{ disabled: input.length < word.word.length }}
-            style={{ opacity: input.length < word.word.length ? 0.4 : 1 }}
+            style={
+              input.length < word.word.length ? styles.submitDisabled : undefined
+            }
             className="h-14 rounded-2xl bg-primary items-center justify-center"
           >
             <Text className="text-base font-bold text-white tracking-wide">
@@ -344,8 +349,11 @@ export default function GameView({
 }
 
 const styles = StyleSheet.create({
+  scrollContent: { paddingBottom: 100 },
   progressRow: { gap: 8 },
   clueRow: { gap: 8 },
   controls: { gap: 10 },
   controlButton: { flex: 1, gap: 6 },
+  gridWrap: { padding: 4, borderRadius: 16, gap: CELL_GAP },
+  submitDisabled: { opacity: 0.4 },
 });

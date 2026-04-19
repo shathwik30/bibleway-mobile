@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import Animated, {
   ZoomIn,
@@ -33,6 +33,11 @@ export default function InputBoxes({
     transform: [{ translateX: shakeX.value }, { scale: popScale.value }],
   }));
 
+  const boxSize = useMemo(
+    () => ({ width: boxWidth, height: boxWidth + 4 }),
+    [boxWidth],
+  );
+
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
       {Array.from({ length }).map((_, i) => {
@@ -56,16 +61,7 @@ export default function InputBoxes({
         return (
           <View
             key={i}
-            style={{
-              width: boxWidth,
-              height: boxWidth + 4,
-              borderWidth: 2,
-              borderRadius: 10,
-              borderColor,
-              backgroundColor,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={[styles.box, boxSize, { borderColor, backgroundColor }]}
           >
             {input[i] ? (
               <Animated.Text
@@ -92,6 +88,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 20,
     paddingHorizontal: 16,
+  },
+  box: {
+    borderWidth: 2,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   dash: { width: 12, height: 2, borderRadius: 1 },
 });

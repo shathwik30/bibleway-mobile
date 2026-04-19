@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { StyleSheet } from "react-native";
 import SafeAreaScreen from "@/components/layout/SafeAreaScreen";
 import TabBar from "@/components/ui/TabBar";
 import { colors } from "@/theme/colors";
@@ -45,7 +46,7 @@ export default function HomeFeedScreen() {
       <View className="flex-row items-center justify-between px-4 py-3 bg-surfaceContainerLowest">
         <Image
           source={require("../../../assets/logo.png")}
-          style={{ width: 120, height: 36 }}
+          style={styles.logo}
           contentFit="contain"
         />
         <View className="flex-row items-center">
@@ -91,7 +92,7 @@ export default function HomeFeedScreen() {
 
       <Pressable
         onPress={handleFabPress}
-        style={{ position: "absolute", bottom: tabBarHeight + 16, right: 24 }}
+        style={[styles.fab, { bottom: tabBarHeight + 16 }]}
         className="w-14 h-14 bg-primary rounded-full items-center justify-center shadow-lg"
         accessibilityLabel="Create new"
       >
@@ -100,3 +101,8 @@ export default function HomeFeedScreen() {
     </SafeAreaScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  logo: { width: 120, height: 36 },
+  fab: { position: "absolute", right: 24 },
+});

@@ -8,6 +8,7 @@ import {
   Platform,
   Modal,
   TextInput,
+  StyleSheet,
 } from "react-native";
 import {
   useRoute,
@@ -213,7 +214,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
             name="close-circle"
             size={14}
             color={colors.primary.DEFAULT}
-            style={{ marginLeft: 6 }}
+            style={styles.closeIcon}
           />
         </Pressable>
       )}
@@ -235,7 +236,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
               keyboardDismissMode="on-drag"
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.5}
-              contentContainerStyle={{ flexGrow: 1 }}
+              contentContainerStyle={styles.listContent}
               ListFooterComponent={
                 messagesQuery.isFetchingNextPage ? (
                   <View className="py-4">
@@ -267,7 +268,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
         />
         <View
           className="bg-surfaceContainerLowest rounded-t-2xl"
-          style={{ maxHeight: "70%" }}
+          style={styles.modalSheet}
         >
           <View className="px-4 py-3 bg-surfaceContainerLow rounded-t-2xl">
             <View className="flex-row items-center justify-between mb-3">
@@ -335,5 +336,11 @@ export default function ChatRoomScreen(): React.JSX.Element {
     </SafeAreaScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  closeIcon: { marginLeft: 6 },
+  listContent: { flexGrow: 1 },
+  modalSheet: { maxHeight: "70%" },
+});
 
 const keyExtractor = (item: ChatMessage): string => item.id;

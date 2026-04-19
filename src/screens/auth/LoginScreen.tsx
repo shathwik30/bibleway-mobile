@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Pressable, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  Image,
+  StyleSheet,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useForm, Controller } from "react-hook-form";
@@ -94,17 +101,13 @@ export default function LoginScreen() {
     <SafeAreaScreen>
       <KeyboardAvoidingWrapper>
         <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
-            padding: 24,
-          }}
+          contentContainerStyle={loginStyles.scroll}
           keyboardShouldPersistTaps="handled"
         >
           <View className="items-center mb-8">
             <Image
               source={require("../../../assets/logo.png")}
-              style={{ width: 220, height: 80 }}
+              style={loginStyles.logo}
               resizeMode="contain"
             />
             <Text
@@ -212,3 +215,8 @@ export default function LoginScreen() {
     </SafeAreaScreen>
   );
 }
+
+const loginStyles = StyleSheet.create({
+  scroll: { flexGrow: 1, justifyContent: "center", padding: 24 },
+  logo: { width: 220, height: 80 },
+});

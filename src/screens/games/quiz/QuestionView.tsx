@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
 import Animated, {
   FadeInDown,
@@ -110,6 +110,10 @@ export default function QuestionView({
   };
 
   const progressWidth = `${((questionIdx + (answered ? 1 : 0)) / level.questions.length) * 100}%` as const;
+  const progressFillStyle = useMemo(
+    () => ({ width: progressWidth }),
+    [progressWidth],
+  );
 
   return (
     <SafeAreaScreen>
@@ -124,14 +128,14 @@ export default function QuestionView({
 
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         <View className="px-4 py-3">
           <View className="h-1.5 bg-surfaceContainerHigh rounded-full overflow-hidden">
             <View
               className="h-full bg-primary rounded-full"
-              style={{ width: progressWidth }}
+              style={progressFillStyle}
             />
           </View>
         </View>
@@ -240,6 +244,7 @@ export default function QuestionView({
 }
 
 const styles = StyleSheet.create({
+  scrollContent: { paddingBottom: 100 },
   badge: {
     width: 28,
     height: 28,

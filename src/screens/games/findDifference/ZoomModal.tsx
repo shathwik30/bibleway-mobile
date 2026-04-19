@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   View,
   Text,
@@ -28,6 +28,10 @@ export default function ZoomModal({
   onClose,
 }: ZoomModalProps) {
   const { width: SW } = useWindowDimensions();
+  const imageStyle = useMemo(
+    () => ({ width: SW, height: SW * IMG_ASPECT }),
+    [SW],
+  );
 
   return (
     <Modal
@@ -62,8 +66,9 @@ export default function ZoomModal({
           {source && (
             <Image
               source={source}
-              style={{ width: SW, height: SW * IMG_ASPECT }}
+              style={imageStyle}
               resizeMode="contain"
+              accessibilityLabel={`Zoomed image ${imageNumber}`}
             />
           )}
         </ReactNativeZoomableView>

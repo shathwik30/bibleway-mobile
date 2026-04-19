@@ -151,13 +151,7 @@ export default function GameView({
             >
               <Image
                 source={num === 1 ? IMG1_MAP[levelId] : IMG2_MAP[levelId]}
-                style={{
-                  width: imgWidth,
-                  height: imgHeight,
-                  borderRadius: 12,
-                  borderWidth: 1.5,
-                  borderColor: colors.surfaceContainerHighest,
-                }}
+                style={[styles.image, { width: imgWidth, height: imgHeight }]}
                 resizeMode="cover"
               />
             </Pressable>
@@ -194,12 +188,13 @@ export default function GameView({
                     disabled: submitted,
                   }}
                   className="flex-row items-center p-4 rounded-2xl"
-                  style={{
-                    borderWidth: 2,
-                    borderColor: style.borderColor,
-                    backgroundColor: style.backgroundColor,
-                    gap: 12,
-                  }}
+                  style={[
+                    styles.option,
+                    {
+                      borderColor: style.borderColor,
+                      backgroundColor: style.backgroundColor,
+                    },
+                  ]}
                 >
                   <Ionicons
                     name={style.iconName}
@@ -226,7 +221,7 @@ export default function GameView({
               accessibilityLabel="Check answers"
               accessibilityRole="button"
               accessibilityState={{ disabled: selected.size === 0 }}
-              style={{ opacity: selected.size === 0 ? 0.4 : 1 }}
+              style={selected.size === 0 ? styles.submitDisabled : undefined}
               className="h-14 rounded-2xl bg-primary items-center justify-center"
             >
               <Text className="text-base font-bold text-white">
@@ -264,4 +259,11 @@ const styles = StyleSheet.create({
   zoomTrigger: { gap: 3 },
   optionsList: { gap: 8 },
   retryWrap: { gap: 10 },
+  image: {
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: colors.surfaceContainerHighest,
+  },
+  option: { borderWidth: 2, gap: 12 },
+  submitDisabled: { opacity: 0.4 },
 });

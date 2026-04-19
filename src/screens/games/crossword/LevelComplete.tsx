@@ -64,7 +64,7 @@ export default function LevelComplete({
 
           <View
             className="flex-row items-center bg-surfaceContainerLow rounded-2xl mb-8"
-            style={{ width: buttonWidth }}
+            style={[styles.statBox, { width: buttonWidth }]}
           >
             <View className="flex-1 items-center py-4">
               <Ionicons name="trophy-outline" size={20} color={colors.warning} />
@@ -133,4 +133,5 @@ const styles = StyleSheet.create({
   star: { marginHorizontal: 4 },
   divider: { width: 1, height: 40 },
   actionButton: { gap: 8 },
+  statBox: {},
 });

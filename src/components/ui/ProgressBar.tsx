@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View } from "react-native";
 import { colors } from "@/theme/colors";
 
@@ -12,6 +12,14 @@ export default function ProgressBar({
   color = colors.primary.DEFAULT,
 }: ProgressBarProps) {
   const clampedProgress = Math.min(Math.max(progress, 0), 1);
+  const fillStyle = useMemo(
+    () =>
+      ({
+        width: `${clampedProgress * 100}%` as const,
+        backgroundColor: color,
+      }) as const,
+    [clampedProgress, color],
+  );
 
   return (
     <View
@@ -19,13 +27,7 @@ export default function ProgressBar({
       accessibilityValue={{ min: 0, max: 1, now: clampedProgress }}
       className="h-2 bg-surface rounded-full overflow-hidden"
     >
-      <View
-        style={{
-          width: `${clampedProgress * 100}%` as const,
-          backgroundColor: color,
-        }}
-        className="h-full rounded-full"
-      />
+      <View style={fillStyle} className="h-full rounded-full" />
     </View>
   );
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useMemo } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { colors } from "@/theme/colors";
 import type { LevelData } from "@/constants/crosswordLevels";
 import type { CellInfo } from "./types";
@@ -24,6 +24,19 @@ export default function GameGrid({
   cellSize,
   cellGap,
 }: GameGridProps) {
+  const cellBox = useMemo(
+    () => ({ width: cellSize, height: cellSize }),
+    [cellSize],
+  );
+  const letterSize = useMemo(
+    () => ({ fontSize: cellSize * 0.4 }),
+    [cellSize],
+  );
+  const rowStyle = useMemo(
+    () => ({ flexDirection: "row" as const, gap: cellGap }),
+    [cellGap],
+  );
+
   const rows: React.ReactNode[] = [];
   for (let r = 0; r < level.gridSize; r++) {
     const cells: React.ReactNode[] = [];
@@ -37,11 +50,7 @@ export default function GameGrid({
 
       if (!cell) {
         cells.push(
-          <View
-            key={k}
-            style={{ width: cellSize, height: cellSize }}
-            className="bg-surfaceContainerHigh"
-          />,
+          <View key={k} style={cellBox} className="bg-surfaceContainerHigh" />,
         );
         continue;
       }
@@ -60,18 +69,12 @@ export default function GameGrid({
       cells.push(
         <View
           key={k}
-          style={{
-            width: cellSize,
-            height: cellSize,
-            borderWidth: 1.5,
-            borderColor,
-            backgroundColor,
-          }}
+          style={[styles.cell, cellBox, { borderColor, backgroundColor }]}
           className="items-center justify-center"
         >
           {isDone && (
             <Text
-              style={{ fontSize: cellSize * 0.4 }}
+              style={[styles.letter, letterSize]}
               className="font-bold text-textPrimary"
             >
               {cell.letter}
@@ -81,10 +84,15 @@ export default function GameGrid({
       );
     }
     rows.push(
-      <View key={r} style={{ flexDirection: "row", gap: cellGap }}>
+      <View key={r} style={rowStyle}>
         {cells}
       </View>,
     );
   }
   return <>{rows}</>;
 }
+
+const styles = StyleSheet.create({
+  cell: { borderWidth: 1.5 },
+  letter: {},
+});

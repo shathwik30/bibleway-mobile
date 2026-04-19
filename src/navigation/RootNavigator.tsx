@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, StyleSheet } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { RootStackParamList } from "@/types/navigation";
 import { useAuthStore } from "@/stores/authStore";
@@ -8,6 +8,7 @@ import { registerForPushNotifications } from "@/lib/pushNotifications";
 import AuthNavigator from "./AuthNavigator";
 import MainTabNavigator from "./MainTabNavigator";
 import { colors } from "@/theme/colors";
+import { fonts } from "@/theme/fonts";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -38,42 +39,16 @@ export default function RootNavigator() {
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: colors.surface,
-          paddingHorizontal: 40,
-        }}
-      >
+      <View style={styles.splash}>
         <Image
           source={require("../../assets/logo.png")}
-          style={{ width: 220, height: 80, marginBottom: 32 }}
+          style={styles.logo}
           resizeMode="contain"
         />
-        <Text
-          style={{
-            fontFamily: "PlayfairDisplay_400Regular_Italic",
-            fontSize: 18,
-            fontStyle: "italic",
-            color: colors.textPrimary,
-            textAlign: "center",
-            lineHeight: 28,
-          }}
-        >
+        <Text style={[fonts.serifItalic, styles.verse]}>
           "As iron sharpens iron, so one person sharpens another."
         </Text>
-        <Text
-          style={{
-            fontFamily: "Inter_500Medium",
-            fontSize: 14,
-            color: colors.textSecondary,
-            marginTop: 8,
-          }}
-        >
-          — Proverbs 27:17
-        </Text>
+        <Text style={[fonts.medium, styles.reference]}>— Proverbs 27:17</Text>
       </View>
     );
   }
@@ -88,3 +63,26 @@ export default function RootNavigator() {
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  splash: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    paddingHorizontal: 40,
+  },
+  logo: { width: 220, height: 80, marginBottom: 32 },
+  verse: {
+    fontSize: 18,
+    fontStyle: "italic",
+    color: colors.textPrimary,
+    textAlign: "center",
+    lineHeight: 28,
+  },
+  reference: {
+    fontSize: 14,
+    color: colors.textSecondary,
+    marginTop: 8,
+  },
+});

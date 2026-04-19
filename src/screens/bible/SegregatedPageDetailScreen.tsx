@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  Pressable,
+  StyleSheet,
+} from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
@@ -49,42 +56,12 @@ export default function SegregatedPageDetailScreen() {
       <SafeAreaScreen>
         <ScreenHeader title="Page" />
         <View className="flex-1 px-4 pt-4">
-          <Skeleton
-            width="60%"
-            height={22}
-            borderRadius={4}
-            style={{ marginBottom: 16 }}
-          />
-          <Skeleton
-            width="100%"
-            height={14}
-            borderRadius={4}
-            style={{ marginBottom: 10 }}
-          />
-          <Skeleton
-            width="100%"
-            height={14}
-            borderRadius={4}
-            style={{ marginBottom: 10 }}
-          />
-          <Skeleton
-            width="95%"
-            height={14}
-            borderRadius={4}
-            style={{ marginBottom: 10 }}
-          />
-          <Skeleton
-            width="100%"
-            height={14}
-            borderRadius={4}
-            style={{ marginBottom: 10 }}
-          />
-          <Skeleton
-            width="80%"
-            height={14}
-            borderRadius={4}
-            style={{ marginBottom: 10 }}
-          />
+          <Skeleton width="60%" height={22} borderRadius={4} style={styles.headerGap} />
+          <Skeleton width="100%" height={14} borderRadius={4} style={styles.rowGap} />
+          <Skeleton width="100%" height={14} borderRadius={4} style={styles.rowGap} />
+          <Skeleton width="95%" height={14} borderRadius={4} style={styles.rowGap} />
+          <Skeleton width="100%" height={14} borderRadius={4} style={styles.rowGap} />
+          <Skeleton width="80%" height={14} borderRadius={4} style={styles.rowGap} />
         </View>
       </SafeAreaScreen>
     );
@@ -143,6 +120,11 @@ export default function SegregatedPageDetailScreen() {
             <Pressable
               onPress={handleSubmitComment}
               disabled={!comment.trim() || commentMutation.isPending}
+              accessibilityLabel="Send feedback"
+              accessibilityRole="button"
+              accessibilityState={{
+                disabled: !comment.trim() || commentMutation.isPending,
+              }}
               className={`ml-2 p-2 ${comment.trim() ? "" : "opacity-40"}`}
             >
               <Ionicons name="send" size={22} color={colors.primary.DEFAULT} />
@@ -153,3 +135,8 @@ export default function SegregatedPageDetailScreen() {
     </SafeAreaScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  headerGap: { marginBottom: 16 },
+  rowGap: { marginBottom: 10 },
+});

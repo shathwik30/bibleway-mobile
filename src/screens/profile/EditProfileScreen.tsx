@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   Platform,
+  StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
@@ -177,10 +178,7 @@ export default function EditProfileScreen(): React.ReactElement {
             accessibilityRole="button"
           >
             {avatarSource ? (
-              <Image
-                source={{ uri: avatarSource }}
-                style={{ width: 96, height: 96, borderRadius: 48 }}
-              />
+              <Image source={{ uri: avatarSource }} style={styles.avatar} />
             ) : (
               <Avatar source={null} name={profile?.full_name || ""} size={96} />
             )}
@@ -290,3 +288,7 @@ export default function EditProfileScreen(): React.ReactElement {
     </SafeAreaScreen>
   );
 }
+
+const styles = StyleSheet.create({
+  avatar: { width: 96, height: 96, borderRadius: 48 },
+});
