@@ -14,6 +14,7 @@ import SearchBar from "@/components/ui/SearchBar";
 import EmptyState from "@/components/ui/EmptyState";
 import { useBibleSearch, useApiBibleSearch } from "@/hooks/useBible";
 import type { BibleStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 interface SearchResultItem {
   id: string;
@@ -70,7 +71,7 @@ export default function BibleSearchScreen() {
             <Pressable
               onPress={() => {
                 if (item.bibleId && item.chapterId) {
-                  navigation.navigate("BibleVerse", {
+                  navigation.navigate(ROUTES.BibleVerse, {
                     bibleId: item.bibleId,
                     chapterId: item.chapterId,
                   });

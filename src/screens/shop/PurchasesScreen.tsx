@@ -9,6 +9,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import { usePurchases } from "@/hooks/useShop";
 import { flattenPages } from "@/lib/pages";
 import { colors } from "@/theme/colors";
+import { ROUTES } from "@/navigation/routes";
 
 export default function PurchasesScreen() {
   const navigation = useNavigation();
@@ -29,7 +30,7 @@ export default function PurchasesScreen() {
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
-              navigation.navigate("ProductDetail", {
+              navigation.navigate(ROUTES.ProductDetail, {
                 productId: item.product.id,
               })
             }

@@ -6,6 +6,7 @@ import Avatar from "../ui/Avatar";
 import StickerMessage from "./StickerMessage";
 import { isSticker } from "@/constants/stickers";
 import type { Reply } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 interface ReplyItemProps {
   reply: Reply;
@@ -19,7 +20,7 @@ export default function ReplyItem({ reply }: ReplyItemProps) {
     <View className="flex-row pl-12 pr-4 py-2">
       <Pressable
         onPress={() =>
-          navigation.navigate("UserProfile", { userId: reply.user.id })
+          navigation.navigate(ROUTES.UserProfile, { userId: reply.user.id })
         }
       >
         <Avatar

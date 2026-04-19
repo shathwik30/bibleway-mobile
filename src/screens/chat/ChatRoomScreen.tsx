@@ -35,6 +35,7 @@ import { flattenPages } from "@/lib/pages";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import type { ChatStackParamList } from "@/types/navigation";
 import type { ChatMessage } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 export default function ChatRoomScreen(): React.JSX.Element {
   const route = useRoute<RouteProp<ChatStackParamList, "ChatRoom">>();
@@ -58,6 +59,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
     setActiveConversationId(conversationId);
     markReadMutation.mutate();
     return () => setActiveConversationId(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId]);
 
   const allMessages: ChatMessage[] = flattenPages(messagesQuery.data);
@@ -89,7 +91,7 @@ export default function ChatRoomScreen(): React.JSX.Element {
   );
 
   const navigateToProfile = useCallback(() => {
-    navigation.navigate("HomeTab", {
+    navigation.navigate(ROUTES.HomeTab, {
       screen: "UserProfile",
       params: { userId: otherUser.id },
     } as never);

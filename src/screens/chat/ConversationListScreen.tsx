@@ -19,6 +19,7 @@ import { useConversations, useChatUnreadCount } from "@/hooks/useChat";
 import { flattenPages } from "@/lib/pages";
 import type { ChatStackParamList } from "@/types/navigation";
 import type { Conversation } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 type Nav = NativeStackNavigationProp<ChatStackParamList>;
 
@@ -33,7 +34,7 @@ export default function ConversationListScreen(): React.JSX.Element {
 
   const handlePress = useCallback(
     (conversation: Conversation): void => {
-      navigation.navigate("ChatRoom", {
+      navigation.navigate(ROUTES.ChatRoom, {
         conversationId: conversation.id,
         otherUser: conversation.other_user,
       });
@@ -76,7 +77,7 @@ export default function ConversationListScreen(): React.JSX.Element {
         showBack={false}
         rightAction={
           <Pressable
-            onPress={() => navigation.navigate("NewChat")}
+            onPress={() => navigation.navigate(ROUTES.NewChat)}
             className="p-2"
             hitSlop={8}
             accessibilityLabel="New message"

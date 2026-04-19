@@ -11,6 +11,7 @@ import { useVerifyEmail, useResendOtp } from "@/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { successHaptic } from "@/lib/haptics";
 import { AuthStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 export default function OTPVerificationScreen() {
   const { t } = useTranslation();
@@ -40,9 +41,9 @@ export default function OTPVerificationScreen() {
           successHaptic();
           showToast("success", "Verified", "Email verified successfully");
           if (purpose === "password_reset") {
-            navigation.navigate("ResetPassword", { email });
+            navigation.navigate(ROUTES.ResetPassword, { email });
           } else {
-            navigation.navigate("Login");
+            navigation.navigate(ROUTES.Login);
           }
         },
         onError: (error) => {
@@ -64,6 +65,7 @@ export default function OTPVerificationScreen() {
     if (otp.length < 6) {
       hasAutoSubmitted.current = false;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otp]);
 
   const handleResend = () => {

@@ -12,6 +12,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
 import { useSections } from "@/hooks/useBible";
 import { colors } from "@/theme/colors";
+import { ROUTES } from "@/navigation/routes";
 
 export default function SegregatedSectionsScreen() {
   const navigation = useNavigation();
@@ -37,7 +38,7 @@ export default function SegregatedSectionsScreen() {
       renderItem={({ item }) => (
         <Pressable
           onPress={() =>
-            navigation.navigate("SegregatedChapters", {
+            navigation.navigate(ROUTES.SegregatedChapters, {
               sectionId: item.id,
               sectionTitle: item.title,
             })

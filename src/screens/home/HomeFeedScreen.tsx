@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, Text, Pressable, Platform } from "react-native";
+import { View, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +17,7 @@ import { useUnreadCount } from "@/hooks/useNotifications";
 import { useNotificationStore } from "@/stores/notificationStore";
 import { lightHaptic } from "@/lib/haptics";
 import type { Post, Prayer } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 export default function HomeFeedScreen() {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ export default function HomeFeedScreen() {
         />
         <View className="flex-row items-center">
           <Pressable
-            onPress={() => navigation.navigate("Notifications")}
+            onPress={() => navigation.navigate(ROUTES.Notifications)}
             className="relative p-2"
             accessibilityLabel="Notifications"
           >

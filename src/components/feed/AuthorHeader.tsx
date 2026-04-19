@@ -3,6 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { formatDistanceToNow } from "date-fns";
 import Avatar from "../ui/Avatar";
+import { ROUTES } from "@/navigation/routes";
 import type { Author } from "@/types/models";
 
 interface AuthorHeaderProps {
@@ -27,7 +28,7 @@ function AuthorHeader({ author, createdAt, rightContent }: AuthorHeaderProps) {
     <View className="flex-row items-center mb-2">
       <Pressable
         onPress={() =>
-          navigation.navigate("UserProfile", { userId: author.id })
+          navigation.navigate(ROUTES.UserProfile, { userId: author.id })
         }
         className="flex-row items-center flex-1"
       >

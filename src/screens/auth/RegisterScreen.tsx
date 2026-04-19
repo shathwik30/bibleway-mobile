@@ -17,6 +17,7 @@ import { useRegister } from "@/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { SUPPORTED_LANGUAGES } from "@/constants/languages";
 import { AuthStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 const registerSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -76,7 +77,7 @@ export default function RegisterScreen() {
     registerMutation.mutate(data, {
       onSuccess: () => {
         showToast("success", "Account Created", "Please verify your email");
-        navigation.navigate("OTPVerification", {
+        navigation.navigate(ROUTES.OTPVerification, {
           email: data.email,
           purpose: "email_verification",
         });

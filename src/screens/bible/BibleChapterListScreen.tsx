@@ -7,6 +7,7 @@ import LoadingScreen from "@/components/layout/LoadingScreen";
 import EmptyState from "@/components/ui/EmptyState";
 import { useBibleChapters } from "@/hooks/useBible";
 import type { BibleStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 export default function BibleChapterListScreen() {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ export default function BibleChapterListScreen() {
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
-              navigation.navigate("BibleVerse", { bibleId, chapterId: item.id })
+              navigation.navigate(ROUTES.BibleVerse, { bibleId, chapterId: item.id })
             }
             className="flex-1 items-center justify-center p-4 bg-surface rounded-xl mb-3"
           >

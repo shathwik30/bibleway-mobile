@@ -15,6 +15,7 @@ import PostCard from "@/components/feed/PostCard";
 import { usePostDetail } from "@/hooks/useSocial";
 import { useRecordView } from "@/hooks/useAnalytics";
 import type { HomeStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 export default function PostDetailScreen() {
   const navigation = useNavigation();
@@ -58,7 +59,7 @@ export default function PostDetailScreen() {
 
         <Pressable
           onPress={() =>
-            navigation.navigate("Comments", {
+            navigation.navigate(ROUTES.Comments, {
               contentType: "post",
               objectId: post.id,
             })

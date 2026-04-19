@@ -14,6 +14,7 @@ import { generateDeepLink, shareContent } from "@/lib/share";
 import { useToggleReaction } from "@/hooks/useSocial";
 import { useRecordShare } from "@/hooks/useAnalytics";
 import type { EmojiType } from "@/types/enums";
+import { ROUTES } from "@/navigation/routes";
 
 interface ReactionBarProps {
   contentType: "post" | "prayer";
@@ -38,6 +39,7 @@ function ReactionBar({
 
   React.useEffect(() => {
     pickerOpacity.value = withTiming(showPicker ? 1 : 0, { duration: 200 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showPicker]);
 
   const pickerAnimatedStyle = useAnimatedStyle(() => ({
@@ -81,7 +83,7 @@ function ReactionBar({
 
           <Pressable
             onPress={() =>
-              navigation.navigate("Comments", { contentType, objectId })
+              navigation.navigate(ROUTES.Comments, { contentType, objectId })
             }
             className="flex-row items-center"
           >

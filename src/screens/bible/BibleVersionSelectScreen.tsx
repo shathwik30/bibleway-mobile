@@ -15,6 +15,7 @@ import ErrorState from "@/components/ui/ErrorState";
 import { useBibleVersions } from "@/hooks/useBible";
 import { colors } from "@/theme/colors";
 import type { BibleVersion } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 export default function BibleVersionSelectScreen() {
   const navigation = useNavigation();
@@ -67,7 +68,7 @@ export default function BibleVersionSelectScreen() {
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
-              navigation.navigate("BibleBookList", { bibleId: item.id })
+              navigation.navigate(ROUTES.BibleBookList, { bibleId: item.id })
             }
             className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3"
           >

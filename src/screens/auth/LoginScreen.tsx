@@ -16,6 +16,7 @@ import { successHaptic } from "@/lib/haptics";
 import { signInWithGoogle, getFirebaseIdToken } from "@/lib/firebase";
 import GoogleLogo from "@/components/ui/GoogleLogo";
 import { AuthStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -42,7 +43,7 @@ export default function LoginScreen() {
 
   const handleGoogleSignIn = async () => {
     try {
-      const userCredential = await signInWithGoogle();
+      const _userCredential = await signInWithGoogle();
       const firebaseIdToken = await getFirebaseIdToken();
 
       googleAuthMutation.mutate(
@@ -50,7 +51,7 @@ export default function LoginScreen() {
         {
           onSuccess: (data) => {
             if (data.is_new_user && data.google_user) {
-              navigation.navigate("GoogleCompleteProfile", {
+              navigation.navigate(ROUTES.GoogleCompleteProfile, {
                 email: data.google_user.email,
                 fullName: data.google_user.full_name,
                 profilePhoto: data.google_user.profile_photo,
@@ -145,7 +146,7 @@ export default function LoginScreen() {
           />
 
           <Pressable
-            onPress={() => navigation.navigate("ForgotPassword")}
+            onPress={() => navigation.navigate(ROUTES.ForgotPassword)}
             className="self-end mb-6"
           >
             <Text
@@ -196,7 +197,7 @@ export default function LoginScreen() {
             >
               {t("auth.noAccount")}{" "}
             </Text>
-            <Pressable onPress={() => navigation.navigate("Register")}>
+            <Pressable onPress={() => navigation.navigate(ROUTES.Register)}>
               <Text
                 className="text-sm text-primary font-semibold"
                 style={{ fontFamily: "Inter_500Medium" }}

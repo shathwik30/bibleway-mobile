@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, Pressable } from "react-native";
+import { Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Avatar from "../ui/Avatar";
+import { ROUTES } from "@/navigation/routes";
 import type { UserListItem } from "@/types/models";
 
 interface UserCardProps {
@@ -13,7 +14,7 @@ function UserCard({ user }: UserCardProps) {
 
   return (
     <Pressable
-      onPress={() => navigation.navigate("UserProfile", { userId: user.id })}
+      onPress={() => navigation.navigate(ROUTES.UserProfile, { userId: user.id })}
       className="items-center mr-4 w-20"
     >
       <Avatar source={user.profile_photo} name={user.full_name} size={56} />

@@ -18,6 +18,7 @@ import ErrorState from "@/components/ui/ErrorState";
 import { useNotifications, useMarkRead } from "@/hooks/useNotifications";
 import { flattenPages } from "@/lib/pages";
 import type { Notification } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 export default function NotificationsScreen() {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ export default function NotificationsScreen() {
     switch (notification.notification_type) {
       case "follow":
         if (data.user_id)
-          navigation.navigate("UserProfile", { userId: String(data.user_id) });
+          navigation.navigate(ROUTES.UserProfile, { userId: String(data.user_id) });
         break;
       case "reaction":
       case "comment":
@@ -44,20 +45,20 @@ export default function NotificationsScreen() {
       case "boost_live":
       case "boost_digest":
         if (data.post_id)
-          navigation.navigate("PostDetail", { postId: String(data.post_id) });
+          navigation.navigate(ROUTES.PostDetail, { postId: String(data.post_id) });
         else if (data.prayer_id)
-          navigation.navigate("PrayerDetail", {
+          navigation.navigate(ROUTES.PrayerDetail, {
             prayerId: String(data.prayer_id),
           });
         break;
       case "reply":
         if (data.post_id)
-          navigation.navigate("Comments", {
+          navigation.navigate(ROUTES.Comments, {
             contentType: "post",
             objectId: String(data.post_id),
           });
         else if (data.prayer_id)
-          navigation.navigate("Comments", {
+          navigation.navigate(ROUTES.Comments, {
             contentType: "prayer",
             objectId: String(data.prayer_id),
           });
@@ -71,7 +72,7 @@ export default function NotificationsScreen() {
             profile_photo?: string | null;
             age?: number;
           };
-          navigation.navigate("ChatTab", {
+          navigation.navigate(ROUTES.ChatTab, {
             screen: "ChatRoom",
             params: {
               conversationId: String(data.conversation_id),

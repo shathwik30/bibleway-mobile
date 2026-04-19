@@ -3,6 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Avatar from "../ui/Avatar";
 import type { UserListItem as UserListItemType } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 interface UserListItemProps {
   user: UserListItemType;
@@ -14,7 +15,7 @@ function UserListItemComponent({ user, rightAction }: UserListItemProps) {
 
   return (
     <Pressable
-      onPress={() => navigation.navigate("UserProfile", { userId: user.id })}
+      onPress={() => navigation.navigate(ROUTES.UserProfile, { userId: user.id })}
       className="flex-row items-center p-4 bg-surface rounded-xl mb-2"
     >
       <Avatar source={user.profile_photo} name={user.full_name} size={40} />

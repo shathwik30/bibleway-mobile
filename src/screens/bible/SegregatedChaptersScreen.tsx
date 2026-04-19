@@ -9,6 +9,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import { useChapters } from "@/hooks/useBible";
 import { colors } from "@/theme/colors";
 import type { BibleStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 export default function SegregatedChaptersScreen() {
   const navigation = useNavigation();
@@ -29,7 +30,7 @@ export default function SegregatedChaptersScreen() {
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
-              navigation.navigate("SegregatedPages", {
+              navigation.navigate(ROUTES.SegregatedPages, {
                 chapterId: item.id,
                 chapterTitle: item.title,
               })

@@ -8,6 +8,7 @@ import MediaCarousel from "./MediaCarousel";
 import ReactionBar from "./ReactionBar";
 import BoostedBadge from "./BoostedBadge";
 import { FEED_TEXT_TRUNCATE_LENGTH } from "@/constants/app";
+import { ROUTES } from "@/navigation/routes";
 import type { Post } from "@/types/models";
 
 interface PostCardProps {
@@ -26,14 +27,14 @@ function PostCard({ post }: PostCardProps) {
 
   return (
     <AnimatedPressable
-      onPress={() => navigation.navigate("PostDetail", { postId: post.id })}
+      onPress={() => navigation.navigate(ROUTES.PostDetail, { postId: post.id })}
       className="bg-surfaceContainerLowest mb-2 rounded-xl mx-4"
     >
       <View className="px-4 pt-3">
         <View className="flex-row items-center mb-2">
           <Pressable
             onPress={() =>
-              navigation.navigate("UserProfile", { userId: post.author.id })
+              navigation.navigate(ROUTES.UserProfile, { userId: post.author.id })
             }
             className="flex-row items-center flex-1"
           >

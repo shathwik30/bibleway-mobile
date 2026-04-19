@@ -5,6 +5,7 @@ import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
 import { mmkvStorage } from "@/lib/storage";
 import { useChatStore } from "@/stores/chatStore";
+import { logger } from "@/utils/logger";
 
 Notifications.setNotificationHandler({
   handleNotification: async (notification) => {
@@ -68,8 +69,8 @@ export async function registerForPushNotifications(): Promise<string | null> {
       platform: Platform.OS as "ios" | "android",
     });
     mmkvStorage.setString("push_token", token);
-  } catch (e) {
-    console.warn("[push] Failed to register device token", e);
+  } catch (err) {
+    logger.warn("[push] Failed to register device token", err);
   }
 
   return token;
@@ -80,7 +81,7 @@ export async function deregisterPushNotifications(
 ): Promise<void> {
   try {
     await api.post(ENDPOINTS.notifications.deregisterToken, { token });
-  } catch (e) {
-    console.warn("[push] Failed to deregister device token", e);
+  } catch (err) {
+    logger.warn("[push] Failed to deregister device token", err);
   }
 }

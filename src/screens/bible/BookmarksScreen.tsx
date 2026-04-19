@@ -10,6 +10,7 @@ import { useBookmarks, useDeleteBookmark } from "@/hooks/useBible";
 import { flattenPages } from "@/lib/pages";
 import { confirmAction } from "@/lib/confirm";
 import { colors } from "@/theme/colors";
+import { ROUTES } from "@/navigation/routes";
 
 export default function BookmarksScreen() {
   const navigation = useNavigation();
@@ -33,7 +34,7 @@ export default function BookmarksScreen() {
             <Pressable
               onPress={() =>
                 item.object_id
-                  ? navigation.navigate("SegregatedPageDetail", {
+                  ? navigation.navigate(ROUTES.SegregatedPageDetail, {
                       pageId: item.object_id,
                     })
                   : undefined

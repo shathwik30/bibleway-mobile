@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { ROUTES } from "@/navigation/routes";
 
 interface StatsRowProps {
   followers: number;
@@ -30,14 +31,14 @@ export default function StatsRow({
         <Text className="text-xs text-textSecondary">Prayers</Text>
       </View>
       <Pressable
-        onPress={() => navigation.navigate("Followers", { userId })}
+        onPress={() => navigation.navigate(ROUTES.Followers, { userId })}
         className="items-center"
       >
         <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{followers}</Text>
         <Text className="text-xs text-textSecondary">Followers</Text>
       </Pressable>
       <Pressable
-        onPress={() => navigation.navigate("Following", { userId })}
+        onPress={() => navigation.navigate(ROUTES.Following, { userId })}
         className="items-center"
       >
         <Text className="text-lg text-textPrimary" style={{ fontFamily: "Inter_700Bold" }}>{following}</Text>

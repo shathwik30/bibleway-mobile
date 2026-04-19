@@ -13,6 +13,7 @@ import Button from "@/components/ui/Button";
 import { usePasswordReset } from "@/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { AuthStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 const schema = z.object({ email: z.string().email("Invalid email") });
 
@@ -35,7 +36,7 @@ export default function ForgotPasswordScreen() {
           "Code Sent",
           "Check your email for the reset code",
         );
-        navigation.navigate("OTPVerification", {
+        navigation.navigate(ROUTES.OTPVerification, {
           email: data.email,
           purpose: "password_reset",
         });

@@ -7,6 +7,7 @@ import AnimatedPressable from "../ui/AnimatedPressable";
 import MediaCarousel from "./MediaCarousel";
 import ReactionBar from "./ReactionBar";
 import { FEED_TEXT_TRUNCATE_LENGTH } from "@/constants/app";
+import { ROUTES } from "@/navigation/routes";
 import type { Prayer } from "@/types/models";
 
 interface PrayerCardProps {
@@ -27,7 +28,7 @@ function PrayerCard({ prayer }: PrayerCardProps) {
   return (
     <AnimatedPressable
       onPress={() =>
-        navigation.navigate("PrayerDetail", { prayerId: prayer.id })
+        navigation.navigate(ROUTES.PrayerDetail, { prayerId: prayer.id })
       }
       className="bg-surfaceContainerLow mb-2 rounded-xl mx-4"
     >
@@ -35,7 +36,7 @@ function PrayerCard({ prayer }: PrayerCardProps) {
         <View className="flex-row items-center mb-2">
           <Pressable
             onPress={() =>
-              navigation.navigate("UserProfile", { userId: prayer.author.id })
+              navigation.navigate(ROUTES.UserProfile, { userId: prayer.author.id })
             }
             className="flex-row items-center flex-1"
           >

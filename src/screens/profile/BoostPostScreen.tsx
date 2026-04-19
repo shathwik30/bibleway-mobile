@@ -14,6 +14,8 @@ import {
   teardownIAP,
   type BoostProductId,
 } from "@/lib/iap";
+import { parseError } from "@/utils/parseError";
+import { logger } from "@/utils/logger";
 import type { ProfileStackParamList } from "@/types/navigation";
 
 const BOOST_TIERS: {
@@ -52,12 +54,25 @@ export default function BoostPostScreen() {
   const { postId } = route.params;
   const [selectedTier, setSelectedTier] = useState<BoostProductId | null>(null);
   const [purchasing, setPurchasing] = useState(false);
+  const [iapReady, setIapReady] = useState(false);
   const boostMutation = useCreateBoost();
 
   useEffect(() => {
-    initIAP().catch(() => {});
+    let cancelled = false;
+    (async () => {
+      try {
+        await initIAP();
+        if (!cancelled) setIapReady(true);
+      } catch (err) {
+        logger.error("[BoostPost] initIAP failed", err);
+        if (!cancelled) setIapReady(false);
+      }
+    })();
     return () => {
-      teardownIAP().catch(() => {});
+      cancelled = true;
+      teardownIAP().catch((err) =>
+        logger.error("[BoostPost] teardownIAP failed", err),
+      );
     };
   }, []);
 
@@ -65,6 +80,14 @@ export default function BoostPostScreen() {
     if (!selectedTier) return;
     const tier = BOOST_TIERS.find((t) => t.productId === selectedTier);
     if (!tier) return;
+    if (!iapReady) {
+      showToast(
+        "error",
+        "Store unavailable",
+        "In-app purchases aren't available right now. Try again later.",
+      );
+      return;
+    }
 
     setPurchasing(true);
     try {
@@ -86,23 +109,18 @@ export default function BoostPostScreen() {
             showToast("success", "Boosted", "Your post is now being boosted!");
             navigation.goBack();
           },
-          onError: (error) => {
-            showToast(
-              "error",
-              "Error",
-              error.message || "Failed to activate boost",
-            );
+          onError: (err) => {
+            logger.error("[BoostPost] activate failed", err);
+            showToast("error", "Error", parseError(err, "Failed to activate boost"));
           },
           onSettled: () => setPurchasing(false),
         },
       );
-    } catch (error) {
+    } catch (err) {
       setPurchasing(false);
-      const message =
-        error instanceof Error ? error.message : "An error occurred";
-      if (message.includes("cancelled")) {
-        return;
-      }
+      const message = parseError(err, "Purchase failed");
+      if (message.toLowerCase().includes("cancel")) return;
+      logger.error("[BoostPost] purchase failed", err);
       showToast("error", "Purchase Failed", message);
     }
   };

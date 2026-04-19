@@ -9,6 +9,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import { usePages } from "@/hooks/useBible";
 import { colors } from "@/theme/colors";
 import type { BibleStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 export default function SegregatedPagesScreen() {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ export default function SegregatedPagesScreen() {
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
-              navigation.navigate("SegregatedPageDetail", { pageId: item.id })
+              navigation.navigate(ROUTES.SegregatedPageDetail, { pageId: item.id })
             }
             className="flex-row items-center justify-between p-4 bg-surface rounded-xl mb-3"
           >

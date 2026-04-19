@@ -14,6 +14,7 @@ import PrayerCard from "@/components/feed/PrayerCard";
 import { useMyProfile } from "@/hooks/useProfile";
 import { useUserPosts, useUserPrayers } from "@/hooks/useSocial";
 import type { Post, Prayer } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 type Tab = "posts" | "prayers";
 
@@ -39,7 +40,7 @@ export default function MyProfileScreen() {
       <ProfileHeader
         user={profile}
         isOwnProfile
-        onEditPress={() => navigation.navigate("EditProfile")}
+        onEditPress={() => navigation.navigate(ROUTES.EditProfile)}
       />
       <View className="flex-row bg-surfaceContainerLow">
         <Pressable
@@ -74,7 +75,7 @@ export default function MyProfileScreen() {
         title="My Profile"
         rightAction={
           <AnimatedPressable
-            onPress={() => navigation.navigate("Settings")}
+            onPress={() => navigation.navigate(ROUTES.Settings)}
             accessibilityLabel="Settings"
           >
             <Ionicons

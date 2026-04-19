@@ -2,10 +2,10 @@ import { useEffect, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api/client";
 import { ENDPOINTS } from "@/api/endpoints";
+import { logger } from "@/utils/logger";
 import type { PaginatedResponse } from "@/types/api";
 import type {
   PostAnalytics,
-  PostBoost,
   BoostAnalyticSnapshot,
 } from "@/types/models";
 
@@ -23,7 +23,7 @@ export function useRecordView(
         object_id: objectId,
         view_type: "view",
       })
-      .catch(() => {});
+      .catch((err) => logger.debug("[analytics] recordView failed", err));
   }, [contentType, objectId]);
 }
 

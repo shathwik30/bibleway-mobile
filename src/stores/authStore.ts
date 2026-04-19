@@ -11,6 +11,7 @@ import { mmkvStorage } from "@/lib/storage";
 import { deregisterPushNotifications } from "@/lib/pushNotifications";
 import { firebaseSignOut } from "@/lib/firebase";
 import { AuthTokens } from "@/types/api";
+import { logger } from "@/utils/logger";
 
 interface AuthState {
   accessToken: string | null;
@@ -49,21 +50,27 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       try {
         const pushToken = mmkvStorage.getString("push_token");
         if (pushToken) {
-          await deregisterPushNotifications(pushToken).catch(() => {});
+          await deregisterPushNotifications(pushToken).catch((err) =>
+            logger.warn("[auth] push deregister failed", err),
+          );
           mmkvStorage.delete("push_token");
         }
-      } catch {}
+      } catch (err) {
+        logger.warn("[auth] push cleanup failed", err);
+      }
       try {
         const refreshToken = await getSecureValue("refresh_token");
         if (refreshToken) {
           await api.post(ENDPOINTS.auth.logout, { refresh: refreshToken });
         }
-      } catch (e) {
-        console.warn("[auth] Server-side logout failed", e);
+      } catch (err) {
+        logger.warn("[auth] Server-side logout failed", err);
       }
     }
     await deleteSecureValue("refresh_token");
-    await firebaseSignOut().catch(() => {});
+    await firebaseSignOut().catch((err) =>
+      logger.warn("[auth] firebase signOut failed", err),
+    );
     set({
       accessToken: null,
       user: null,

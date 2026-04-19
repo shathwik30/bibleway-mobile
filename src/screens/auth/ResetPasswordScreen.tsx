@@ -13,6 +13,7 @@ import Button from "@/components/ui/Button";
 import { usePasswordResetConfirm } from "@/hooks/useAuth";
 import { showToast } from "@/components/ui/Toast";
 import { AuthStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 const schema = z.object({
   otp_code: z.string().length(6, "OTP must be 6 digits"),
@@ -41,7 +42,7 @@ export default function ResetPasswordScreen() {
       {
         onSuccess: () => {
           showToast("success", "Success", "Password reset successfully");
-          navigation.navigate("Login");
+          navigation.navigate(ROUTES.Login);
         },
         onError: (error) =>
           showToast(

@@ -9,6 +9,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import { useBibleBooks } from "@/hooks/useBible";
 import { colors } from "@/theme/colors";
 import type { BibleStackParamList } from "@/types/navigation";
+import { ROUTES } from "@/navigation/routes";
 
 export default function BibleBookListScreen() {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ export default function BibleBookListScreen() {
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
-              navigation.navigate("BibleChapterList", {
+              navigation.navigate(ROUTES.BibleChapterList, {
                 bibleId,
                 bookId: item.id,
               })

@@ -6,6 +6,7 @@ import Avatar from "../ui/Avatar";
 import StickerMessage from "./StickerMessage";
 import { isSticker } from "@/constants/stickers";
 import type { Comment } from "@/types/models";
+import { ROUTES } from "@/navigation/routes";
 
 interface CommentItemProps {
   comment: Comment;
@@ -25,7 +26,7 @@ export default function CommentItem({
     <View className="flex-row px-4 py-3">
       <Pressable
         onPress={() =>
-          navigation.navigate("UserProfile", { userId: comment.user.id })
+          navigation.navigate(ROUTES.UserProfile, { userId: comment.user.id })
         }
       >
         <Avatar
